@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
 ---
 
 <Layout>
@@ -8,7 +10,11 @@ import Layout from "../layouts/Layout.astro";
       <button class="px-6 py-3 text-sm rounded-full bg-white flex">
         Menu
       </button>
-      <h1 class="w-full text-center">About 11</h1>
+      <h1 class="w-full text-center">
+        <a href="/" title="Libertad" class="inline-block">
+          <Image src={logo} alt="Libertad" class="w-24" />
+        </a>
+      </h1>
       <button class="block px-6 py-3 text-sm text-white rounded-full bg-black">
         Brochure
       </button>
