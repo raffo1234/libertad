@@ -1,11 +1,17 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <main class="max-w-[1280px] mx-auto w-full p-4">
+    <header class="py-4 flex w-full items-center justify-between">
+      <button class="px-6 py-3 text-sm rounded-full bg-white flex">
+        Menu
+      </button>
+      <h1 class="w-full text-center">About 11</h1>
+      <button class="block px-6 py-3 text-sm text-white rounded-full bg-black">
+        Brochure
+      </button>
+    </header>
+  </main>
 </Layout>
