@@ -338,6 +338,16 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.24.0.tgz#168ab1c7e1c318b922637fad8f339d48b01e1244"
   integrity sha512-7IAFPrjSQIJrGsK6flwg7NFmwBoSTyF3rl7If0hNUFQU4ilTsEPL6GuMuU9BfIWVVGuRnuIidkSMC+c0Otu8IA==
 
+"@fontsource/manrope@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/manrope/-/manrope-5.1.1.tgz#8d6d3e7231716774615e5cc4f51ae908a8a0d8cf"
+  integrity sha512-5Ry4+6hRxdE59aTUGu5jH4nFsILKyIdqIs7AtCGMfkOwGRxph/fQyOmE9CdU+4vQgaJBopB6XtL6CRg55Ew8Ag==
+
+"@fontsource/mulish@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/mulish/-/mulish-5.1.1.tgz#f8515b1c3c455aa2a491346f015e53aca2e7ff88"
+  integrity sha512-4zLYQ2iWugtXFSViBpJYfINhIK7s7xANtHgpkvK/UfY7aWYZUss0fLNk2GYW/KT1ohOzwfRd30oPKFNlrWrwVg==
+
 "@img/sharp-darwin-arm64@0.33.5":
   version "0.33.5"
   resolved "https://registry.yarnpkg.com/@img/sharp-darwin-arm64/-/sharp-darwin-arm64-0.33.5.tgz#ef5b5a07862805f1e8145a377c8ba6e98813ca08"

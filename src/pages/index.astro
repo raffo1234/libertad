@@ -2,11 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
+import hero from "../assets/hero.png";
 ---
 
 <Layout>
   <main class="max-w-[1280px] mx-auto w-full p-4">
-    <header class="py-4 flex w-full items-center justify-between">
+    <header class="py-4 flex w-full items-center justify-between mb-20">
       <button class="px-6 py-3 text-sm rounded-full bg-white flex">
         Menu
       </button>
@@ -19,5 +20,36 @@ import logo from "../assets/logo.png";
         Brochure
       </button>
     </header>
+    <p class="text-center text-2xl">Vive una experiencia única e inolvidable</p>
+    <p class="leading-[1em] text-[190px] text-center font-manrope">
+      Hogar soñado
+    </p>
+    <div class="rounded-full mb-20 relative -mt-[32px]">
+      <div
+        class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
+      >
+        <Image
+          src={hero}
+          alt="Libertad"
+          class="absolute left-1/2 -translate-x-1/2 top-0"
+        />
+      </div>
+      <section
+        class="absolute -bottom-9 left-1/2 -translate-x-1/2 w-[70%] p-3 rounded-[26px] justify-between flex items-end bg-[#FD9249]"
+      >
+        <div>
+          <p>City or destination</p>
+          <h2>Oxford, Great Britain</h2>
+        </div>
+        <div>
+          <p>City or destination</p>
+          <h2>Oxford, Great Britain</h2>
+        </div>
+        <div>
+          <p>City or destination</p>
+          <h2>Oxford, Great Britain</h2>
+        </div>
+      </section>
+    </div>
   </main>
 </Layout>
