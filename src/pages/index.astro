@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import logo from "../assets/logo.png";
 import hero from "../assets/hero.png";
 import { Icon } from "astro-icon/components";
 ---
@@ -12,9 +11,18 @@ import { Icon } from "astro-icon/components";
       <button class="px-6 py-3 text-sm rounded-full bg-white flex">
         Menu
       </button>
-      <h1 class="w-full text-center">
-        <a href="/" title="Libertad" class="inline-block">
-          <Image src={logo} alt="Libertad" class="w-24" />
+      <h1 class="w-full flex justify-center">
+        <a
+          href="/"
+          title="Libertad"
+          class="flex items-center space-x-1 self-center text-lg font-manrope tracking-wider"
+        >
+          <Icon
+            name="material-symbols-light:house-with-shield-outline-rounded"
+            class="text-[#ff9100]"
+            size="48"
+          />
+          <b class="block pt-2">Libertad</b>
         </a>
       </h1>
       <button class="block px-6 py-3 text-sm text-white rounded-full bg-black">
@@ -36,29 +44,51 @@ import { Icon } from "astro-icon/components";
         />
       </div>
       <section
-        class="absolute -bottom-9 left-1/2 -translate-x-1/2 w-[70%] p-3 rounded-[26px] justify-between flex items-end bg-[#e0ddd5]"
+        class="absolute -bottom-9 drop-shadow-2xl left-1/2 -translate-x-1/2 w-[70%] py-5 px-6 rounded-[26px] justify-between flex items-end bg-[#e0ddd5]"
       >
-        <div class="flex items-center">
-          <Icon name="material-symbols-light:king-bed-outline" />
+        <div class="flex items-center space-x-3">
+          <Icon
+            name="material-symbols-light:king-bed-outline"
+            size="40"
+            class="text-[#ff9100]"
+          />
           <div>
             <p>3 Dorms</p>
-            <p>2 Baños</p>
+            <p><b>2 Baños</b></p>
           </div>
         </div>
-        <div class="flex items-center">
-          <Icon name="material-symbols-light:activity-zone-outline" />
+        <div class="flex items-center space-x-3">
+          <Icon
+            name="material-symbols-light:activity-zone-outline"
+            size="40"
+            class="text-[#ff9100]"
+          />
           <div>
-            <p>3 Dorms</p>
-            <p>2 Baños</p>
+            <h3>Área</h3>
+            <p><b>Desde 85 m<sup>2</sup></b></p>
           </div>
         </div>
-        <div class="flex items-center">
-          <Icon name="material-symbols-light:graph-5" />
+        <div class="flex items-center space-x-3">
+          <Icon
+            name="material-symbols-light:graph-5"
+            size="40"
+            class="text-[#ff9100]"
+          />
           <div>
-            <p>3 Dorms</p>
-            <p>2 Baños</p>
+            <h3>Etapa</h3>
+            <p><b>Lanzamiento</b></p>
           </div>
         </div>
+        <a
+          href="#plans"
+          class="bg-[#ff9100] text-white rounded-xl flex items-center space-x-1 px-4 py-2"
+        >
+          <Icon
+            name="material-symbols-light:auto-awesome-mosaic-outline"
+            size="40"
+          />
+          <span> Planos </span>
+        </a>
       </section>
     </div>
   </main>
