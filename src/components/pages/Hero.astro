@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import hero from "../../assets/hero.png";
+import { Icon } from "astro-icon/components";
+---
+
+<section>
+  <p class="text-center text-2xl">Vive una experiencia única</p>
+  <p class="leading-[1em] text-[190px] text-center font-manrope">
+    Hogar soñado
+  </p>
+  <div class="rounded-full mb-[120px] relative -mt-[32px]">
+    <div
+      class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
+    >
+      <Image
+        src={hero}
+        alt="Libertad"
+        class="absolute left-1/2 -translate-x-1/2 top-0"
+      />
+    </div>
+    <section
+      class="absolute -bottom-9 drop-shadow-xl left-1/2 -translate-x-1/2 w-[70%] py-5 px-6 rounded-[26px] justify-between flex items-center bg-[#e0ddd5]"
+    >
+      <div class="flex items-center space-x-3">
+        <Icon
+          name="material-symbols-light:king-bed-outline"
+          size="40"
+          class="text-[#ff9100]"
+        />
+        <div>
+          <p>3 Dorms</p>
+          <p><b>2 Baños</b></p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <Icon
+          name="material-symbols-light:activity-zone-outline"
+          size="40"
+          class="text-[#ff9100]"
+        />
+        <div>
+          <h3>Área</h3>
+          <p><b>Desde 85 m<sup>2</sup></b></p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <Icon
+          name="material-symbols-light:graph-5"
+          size="40"
+          class="text-[#ff9100]"
+        />
+        <div>
+          <h3>Etapa</h3>
+          <p><b>Lanzamiento</b></p>
+        </div>
+      </div>
+      <a
+        href="#planos"
+        class="bg-[#ff9100] text-white rounded-xl flex items-center space-x-1 px-4 py-2"
+      >
+        <Icon
+          name="material-symbols-light:auto-awesome-mosaic-outline"
+          size="40"
+        />
+        <span> Planos </span>
+      </a>
+    </section>
+  </div>
+</section>

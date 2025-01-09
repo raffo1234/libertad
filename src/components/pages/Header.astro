@@ -1,0 +1,40 @@
+---
+import whatsapp from "../../assets/whatsapp.svg";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+---
+
+<header class="py-4 flex w-full items-center justify-between mb-16 relative">
+  <button class="px-6 py-3 text-sm rounded-full bg-white flex"> Menu </button>
+  <h1 class="flex justify-center absolute left-1/2 -translate-x-1/2 top-3">
+    <a
+      href="/"
+      title="Libertad"
+      class="flex items-center space-x-1 self-center text-lg font-manrope tracking-wider"
+    >
+      <Icon
+        name="material-symbols-light:house-with-shield-outline-rounded"
+        class="text-[#ff9100]"
+        size="48"
+      />
+      <b class="block pt-2">Libertad</b>
+    </a>
+  </h1>
+  <div class="flex space-x-2">
+    <a
+      href="https://wa.me/51988226088/?text=Quiero%20reservar%20una%20cita.%20%0AProyecto%20Libertad%20124%2C%20El%20Tambo%20Huancayo"
+      class="bg-[#25D366] p-2 rounded-full w-11 h-11 relative"
+      target="_blank"
+      rel="noopener"
+    >
+      <Image
+        src={whatsapp}
+        alt="Libertad | Whatsapp"
+        class="w-6 absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+      />
+    </a>
+    <button class="block px-6 py-3 text-sm text-white rounded-full bg-black">
+      Brochure
+    </button>
+  </div>
+</header>

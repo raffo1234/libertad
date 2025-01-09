@@ -1,0 +1,137 @@
+---
+import interior1 from "../../assets/interior-1.jpg";
+import interior2 from "../../assets/interior-2.jpg";
+import interior3 from "../../assets/interior-3.jpg";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+---
+
+<section id="planos" class="bg-[#0C0C0C] mb-[70px] py-10 text-white px-2">
+  <h2 class="text-center mb-8 text-xl">
+    <b>¡Encuentra el departamento perfecto para ti!</b>
+  </h2>
+  <section class="flex space-x-2 mb-2">
+    <div class="w-1/2">
+      <article
+        class="rounded-[50px] px-8 py-11 h-[332px] bg-[#ff9100] text-white relative"
+      >
+        <h3 class="text-[30px] mb-5 font-bold">Tipo 1</h3>
+        <ul>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:king-bed-outline"
+              size="42"
+              class="text-white"
+            />
+            <span> 2 Dormitorios </span>
+          </li>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:shower-outline-rounded"
+              size="42"
+              class="text-white"
+            />
+            <span>2 Baños</span>
+          </li>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:activity-zone-outline"
+              size="42"
+              class="text-white"
+            />
+            <span>
+              Area: 80m <sup>2</sup>
+            </span>
+          </li>
+        </ul>
+        <button
+          class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 top-5"
+        >
+          <Icon
+            name="material-symbols-light:arrow-outward-rounded"
+            size="40"
+            class="text-[#ff9100]"
+          />
+        </button>
+      </article>
+    </div>
+    <div class="w-1/2 flex space-x-2">
+      <article class="rounded-[50px] flex-1 h-[332px] relative overflow-hidden">
+        <Image
+          src={interior1}
+          alt="Libertad"
+          class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        />
+      </article>
+      <article class="rounded-[50px] flex-1 h-[332px] relative overflow-hidden">
+        <Image
+          src={interior2}
+          alt="Libertad"
+          class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        />
+      </article>
+    </div>
+  </section>
+  <section class="flex space-x-2">
+    <div class="w-1/2 flex space-x-2">
+      <article class="rounded-[50px] flex-1 h-[332px] relative overflow-hidden">
+        <Image
+          src={interior3}
+          alt="Libertad"
+          class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        />
+      </article>
+      <article class="rounded-[50px] flex-1 h-[332px] relative overflow-hidden">
+        <Image
+          src={interior2}
+          alt="Libertad"
+          class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        />
+      </article>
+    </div>
+    <div class="w-1/2">
+      <article
+        class="rounded-[50px] px-8 py-11 h-[332px] bg-[#ff9100] text-white relative"
+      >
+        <h3 class="text-[30px] mb-5 font-bold">Tipo 2</h3>
+        <ul>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:king-bed-outline"
+              size="42"
+              class="text-white"
+            />
+            <span> 2 Dormitorios </span>
+          </li>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:shower-outline-rounded"
+              size="42"
+              class="text-white"
+            />
+            <span>2 Baños</span>
+          </li>
+          <li class="flex items-center space-x-2">
+            <Icon
+              name="material-symbols-light:activity-zone-outline"
+              size="42"
+              class="text-white"
+            />
+            <span>
+              Area: 82m <sup>2</sup>
+            </span>
+          </li>
+        </ul>
+        <button
+          class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 top-5"
+        >
+          <Icon
+            name="material-symbols-light:arrow-outward-rounded"
+            size="40"
+            class="text-[#ff9100]"
+          />
+        </button>
+      </article>
+    </div>
+  </section>
+</section>

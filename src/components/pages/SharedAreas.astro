@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets";
+import interior1 from "../../assets/interior-1.jpg";
+import interior2 from "../../assets/interior-2.jpg";
+import interior3 from "../../assets/interior-3.jpg";
+import { Icon } from "astro-icon/components";
+---
+
+<section class="mb-[70px]">
+  <h2 class="text-xl text-center mb-8"><b>Áreas comunes</b></h2>
+  <div class="flex justify-center w-full mb-11">
+    <div class="bg-[#E0DDD8] rounded-[19px] p-2 flex space-x-2 text-sm">
+      <button class="bg-[#EAE8E4] rounded-[15px] font-bold py-3 px-8"
+        >Gymnasio</button
+      >
+      <button class="text-[#807357] font-bold py-3 px-8">Terraza</button>
+      <button class="text-[#807357] font-bold py-3 px-8">Reuniones SUM</button>
+    </div>
+  </div>
+  <div class="flex space-x-2">
+    <article class="rounded-[50px] flex-1 h-[332px] overflow-hidden">
+      <Image src={interior1} alt="Libertad" class="" />
+    </article>
+    <article class="rounded-[50px] h-[332px] flex-1 overflow-hidden">
+      <Image src={interior2} alt="Libertad" class="" />
+    </article>
+    <article class="rounded-[50px] h-[332px] flex-1 overflow-hidden">
+      <Image src={interior3} alt="Libertad" class="" />
+    </article>
+    <article
+      class="rounded-[50px] px-8 py-11 text-white h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
+    >
+      <h3 class="text-2xl mb-5"><b>Espacios que Conectan</b></h3>
+      <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
+      <button
+        class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
+      >
+        <Icon
+          name="material-symbols-light:arrow-outward-rounded"
+          size="40"
+          class="text-[#ff9100]"
+        />
+      </button>
+    </article>
+  </div>
+</section>
