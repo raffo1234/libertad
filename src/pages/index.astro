@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
 import hero from "../assets/hero.png";
+import { Icon } from "astro-icon/components";
 ---
 
 <Layout>
@@ -35,19 +36,28 @@ import hero from "../assets/hero.png";
         />
       </div>
       <section
-        class="absolute -bottom-9 left-1/2 -translate-x-1/2 w-[70%] p-3 rounded-[26px] justify-between flex items-end bg-[#FD9249]"
+        class="absolute -bottom-9 left-1/2 -translate-x-1/2 w-[70%] p-3 rounded-[26px] justify-between flex items-end bg-[#e0ddd5]"
       >
-        <div>
-          <p>City or destination</p>
-          <h2>Oxford, Great Britain</h2>
+        <div class="flex items-center">
+          <Icon name="material-symbols-light:king-bed-outline" />
+          <div>
+            <p>3 Dorms</p>
+            <p>2 Baños</p>
+          </div>
         </div>
-        <div>
-          <p>City or destination</p>
-          <h2>Oxford, Great Britain</h2>
+        <div class="flex items-center">
+          <Icon name="material-symbols-light:activity-zone-outline" />
+          <div>
+            <p>3 Dorms</p>
+            <p>2 Baños</p>
+          </div>
         </div>
-        <div>
-          <p>City or destination</p>
-          <h2>Oxford, Great Britain</h2>
+        <div class="flex items-center">
+          <Icon name="material-symbols-light:graph-5" />
+          <div>
+            <p>3 Dorms</p>
+            <p>2 Baños</p>
+          </div>
         </div>
       </section>
     </div>
