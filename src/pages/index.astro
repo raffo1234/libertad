@@ -2,6 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import hero from "../assets/hero.png";
+import interior1 from "../assets/interior-1.jpg";
+import interior2 from "../assets/interior-2.jpg";
+import interior3 from "../assets/interior-3.jpg";
 import { Icon } from "astro-icon/components";
 ---
 
@@ -29,67 +32,102 @@ import { Icon } from "astro-icon/components";
         Brochure
       </button>
     </header>
-    <p class="text-center text-2xl">Vive una experiencia única e inolvidable</p>
-    <p class="leading-[1em] text-[190px] text-center font-manrope">
-      Hogar soñado
-    </p>
-    <div class="rounded-full mb-20 relative -mt-[32px]">
-      <div
-        class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
-      >
-        <Image
-          src={hero}
-          alt="Libertad"
-          class="absolute left-1/2 -translate-x-1/2 top-0"
-        />
-      </div>
-      <section
-        class="absolute -bottom-9 drop-shadow-2xl left-1/2 -translate-x-1/2 w-[70%] py-5 px-6 rounded-[26px] justify-between flex items-center bg-[#e0ddd5]"
-      >
-        <div class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:king-bed-outline"
-            size="40"
-            class="text-[#ff9100]"
-          />
-          <div>
-            <p>3 Dorms</p>
-            <p><b>2 Baños</b></p>
-          </div>
-        </div>
-        <div class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:activity-zone-outline"
-            size="40"
-            class="text-[#ff9100]"
-          />
-          <div>
-            <h3>Área</h3>
-            <p><b>Desde 85 m<sup>2</sup></b></p>
-          </div>
-        </div>
-        <div class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:graph-5"
-            size="40"
-            class="text-[#ff9100]"
-          />
-          <div>
-            <h3>Etapa</h3>
-            <p><b>Lanzamiento</b></p>
-          </div>
-        </div>
-        <a
-          href="#plans"
-          class="bg-[#ff9100] text-white rounded-xl flex items-center space-x-1 px-4 py-2"
+    <section>
+      <p class="text-center text-2xl">
+        Vive una experiencia única e inolvidable
+      </p>
+      <p class="leading-[1em] text-[190px] text-center font-manrope">
+        Hogar soñado
+      </p>
+      <div class="rounded-full mb-[120px] relative -mt-[32px]">
+        <div
+          class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
         >
-          <Icon
-            name="material-symbols-light:auto-awesome-mosaic-outline"
-            size="40"
+          <Image
+            src={hero}
+            alt="Libertad"
+            class="absolute left-1/2 -translate-x-1/2 top-0"
           />
-          <span> Planos </span>
-        </a>
-      </section>
-    </div>
+        </div>
+        <section
+          class="absolute -bottom-9 drop-shadow-2xl left-1/2 -translate-x-1/2 w-[70%] py-5 px-6 rounded-[26px] justify-between flex items-center bg-[#e0ddd5]"
+        >
+          <div class="flex items-center space-x-3">
+            <Icon
+              name="material-symbols-light:king-bed-outline"
+              size="40"
+              class="text-[#ff9100]"
+            />
+            <div>
+              <p>3 Dorms</p>
+              <p><b>2 Baños</b></p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <Icon
+              name="material-symbols-light:activity-zone-outline"
+              size="40"
+              class="text-[#ff9100]"
+            />
+            <div>
+              <h3>Área</h3>
+              <p><b>Desde 85 m<sup>2</sup></b></p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <Icon
+              name="material-symbols-light:graph-5"
+              size="40"
+              class="text-[#ff9100]"
+            />
+            <div>
+              <h3>Etapa</h3>
+              <p><b>Lanzamiento</b></p>
+            </div>
+          </div>
+          <a
+            href="#plans"
+            class="bg-[#ff9100] text-white rounded-xl flex items-center space-x-1 px-4 py-2"
+          >
+            <Icon
+              name="material-symbols-light:auto-awesome-mosaic-outline"
+              size="40"
+            />
+            <span> Planos </span>
+          </a>
+        </section>
+      </div>
+    </section>
+    <section>
+      <h2 class="text-xl text-center mb-8"><b>Áreas comunes</b></h2>
+      <div class="flex space-x-2">
+        <article class="rounded-[50px] flex-1 h-[332px] overflow-hidden">
+          <Image src={interior1} alt="Libertad" class="" />
+        </article>
+        <article class="rounded-[50px] h-[332px] flex-1 overflow-hidden">
+          <Image src={interior2} alt="Libertad" class="" />
+        </article>
+        <article class="rounded-[50px] h-[332px] flex-1 overflow-hidden">
+          <Image src={interior3} alt="Libertad" class="" />
+        </article>
+        <article
+          class="rounded-[50px] px-5 py-11 text-white h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
+        >
+          <h3 class="text-xl mb-4"><b>Espacios que Conectan</b></h3>
+          <p class="text-sm">
+            Diseñadas para inspirar, relajar y crear momentos inolvidables.
+          </p>
+          <button
+            class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
+          >
+            <Icon
+              name="material-symbols-light:arrow-outward-rounded"
+              size="40"
+              class="text-[#ff9100]"
+            />
+          </button>
+        </article>
+      </div>
+    </section>
   </main>
 </Layout>
