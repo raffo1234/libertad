@@ -7,6 +7,7 @@ import interior2 from "../assets/interior-2.jpg";
 import interior3 from "../assets/interior-3.jpg";
 import outside from "../assets/outside.jpg";
 import map from "../assets/map.png";
+import whatsapp from "../assets/whatsapp.svg";
 import { Icon } from "astro-icon/components";
 ---
 
@@ -30,9 +31,25 @@ import { Icon } from "astro-icon/components";
           <b class="block pt-2">Libertad</b>
         </a>
       </h1>
-      <button class="block px-6 py-3 text-sm text-white rounded-full bg-black">
-        Brochure
-      </button>
+      <div class="flex space-x-2">
+        <a
+          href="https://wa.me/51988226088/?text=Quiero%20reservar%20una%20cita.%20%0AProyecto%20Libertad%20124%2C%20El%20Tambo%20Huancayo"
+          class="bg-[#25D366] p-2 rounded-full w-11 h-11 relative"
+          target="_blank"
+          rel="noopener"
+        >
+          <Image
+            src={whatsapp}
+            alt="Libertad | Whatsapp"
+            class="w-6 absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+          />
+        </a>
+        <button
+          class="block px-6 py-3 text-sm text-white rounded-full bg-black"
+        >
+          Brochure
+        </button>
+      </div>
     </header>
     <section>
       <p class="text-center text-2xl">Vive una experiencia única</p>
@@ -122,7 +139,7 @@ import { Icon } from "astro-icon/components";
           <Image src={interior3} alt="Libertad" class="" />
         </article>
         <article
-          class="rounded-[50px] px-5 py-11 text-white h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
+          class="rounded-[50px] px-8 py-11 text-white h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
         >
           <h3 class="text-2xl mb-5"><b>Espacios que Conectan</b></h3>
           <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
@@ -145,7 +162,7 @@ import { Icon } from "astro-icon/components";
       <section class="flex space-x-2 mb-2">
         <div class="w-1/2">
           <article
-            class="rounded-[50px] px-5 py-11 h-[332px] bg-[#ff9100] text-white relative"
+            class="rounded-[50px] px-8 py-11 h-[332px] bg-[#ff9100] text-white relative"
           >
             <h3 class="text-[30px] mb-5 font-bold">Tipo 1</h3>
             <ul>
@@ -231,7 +248,7 @@ import { Icon } from "astro-icon/components";
         </div>
         <div class="w-1/2">
           <article
-            class="rounded-[50px] px-5 py-11 h-[332px] bg-[#ff9100] text-white relative"
+            class="rounded-[50px] px-8 py-11 h-[332px] bg-[#ff9100] text-white relative"
           >
             <h3 class="text-[30px] mb-5 font-bold">Tipo 2</h3>
             <ul>
@@ -279,7 +296,7 @@ import { Icon } from "astro-icon/components";
       <h2 class="text-xl text-center mb-8"><b>Ubicaci&oacute;n</b></h2>
       <div class="flex space-x-2">
         <article
-          class="rounded-[50px] w-1/4 px-5 py-11 text-white h-[500px] flex-1 overflow-hidden bg-[#ff9100] relative"
+          class="rounded-[50px] w-1/4 px-8 py-11 text-white h-[500px] flex-1 overflow-hidden bg-[#ff9100] relative"
         >
           <h3 class="text-2xl mb-5"><b>Jr. Pedro Galvez </b></h3>
           <p>Urbanizaci&oacute;n: Pio Pata</p>
