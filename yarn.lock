@@ -520,6 +520,13 @@
   dependencies:
     "@iconify/types" "*"
 
+"@iconify/react@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@iconify/react/-/react-5.2.0.tgz#c525afc322edba4152aa81e42e22a71a7c31a62b"
+  integrity sha512-7Sdjrqq3fkkQNks9SY3adGC37NQTHsBJL2PRKlQd455PoDi9s+Es9AUTY+vGLFOYs5yO9w9yCE42pmxCwG26WA==
+  dependencies:
+    "@iconify/types" "^2.0.0"
+
 "@iconify/tools@^4.0.5":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@iconify/tools/-/tools-4.1.1.tgz#40cf7b49efd72b2ea4e332aa883ed78365231ea8"

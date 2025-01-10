@@ -35,18 +35,7 @@ import DialogCloseButton from "../DialogCloseButton";
     >
       <h3 class="text-2xl mb-5"><b>Espacios que Conectan</b></h3>
       <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
-      <Button client:load
-        ><Icon
-          name="material-symbols-light:arrow-outward-rounded"
-          size="40"
-          class="text-[#ff9100]"
-        /></Button
-      >
+      <Dialog client:load />
     </article>
   </div>
 </section>
-<Dialog client:load>
-  <DialogCloseButton client:load>
-    <Icon name="material-symbols-light:close-rounded" size="40" />
-  </DialogCloseButton>
-</Dialog>
