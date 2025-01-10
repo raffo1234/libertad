@@ -17,7 +17,7 @@ import { Icon } from "astro-icon/components";
   </h2>
   <div class="flex space-x-2">
     <article
-      class="rounded-[50px] w-1/4 px-8 py-11 text-white h-[500px] flex-1 overflow-hidden bg-[#ff9100] relative"
+      class="rounded-[50px] w-1/2 md:w-1/4 px-8 py-11 text-white md:h-[500px] h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
     >
       <h3 class="text-2xl mb-5">
         <b>Jr. Pedro Galvez </b>
@@ -37,8 +37,14 @@ import { Icon } from "astro-icon/components";
         />
       </a>
     </article>
-    <article class="w-3/4 rounded-[50px] h-[500px] overflow-hidden relative">
-      <Image src={map} alt="Libertad" />
+    <article
+      class="w-1/2 md:w-3/4 rounded-[50px] md:h-[500px] h-[332px] overflow-hidden relative"
+    >
+      <Image
+        src={map}
+        alt="Libertad"
+        class="w-full h-full object-cover object-top"
+      />
       <a
         href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
         target="_blank"

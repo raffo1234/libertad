@@ -93,7 +93,7 @@ export default function Dialog() {
         <section className="fixed top-0 left-0 z-40 w-full h-full bg-white">
           <img
             src={imageToShow}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover object-top"
             alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
             title="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
           />

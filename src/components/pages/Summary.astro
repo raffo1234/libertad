@@ -4,7 +4,7 @@ import outside from "../../assets/outside.jpg";
 import { Icon } from "astro-icon/components";
 ---
 
-<section class="py-[100px]">
+<section class="py-[50px] md:py-[100px]">
   <div class="text-center">
     <h2 class="text-xl mb-8 flex justify-center">
       <span
@@ -17,17 +17,17 @@ import { Icon } from "astro-icon/components";
         <b class="block pt-2">Libertad</b>
       </span>
     </h2>
-    <p class="w-1/3 mb-8 mx-auto">
+    <p class="w-2/3 md:w-1/3 mb-8 mx-auto">
       Diseño moderno, funcionalidad y comodidad en la ubicación ideal.
     </p>
   </div>
   <article
-    class="w-1/2 mx-auto h-[816px] rounded-[30px] relative overflow-hidden"
+    class="w-full sm:w-3/4 lg:w-1/2 mx-auto h-[400px] sm:h-[600px] lg:h-[816px] rounded-[30px] relative overflow-hidden"
   >
     <Image
       src={outside}
       alt="Libertad"
-      class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+      class="object-cover object-top w-full h-full"
     />
     <button
       class="w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white absolute right-5 top-5"
