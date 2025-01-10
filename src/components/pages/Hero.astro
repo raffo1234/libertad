@@ -6,10 +6,15 @@ import { Icon } from "astro-icon/components";
 
 <section>
   <p class="text-center text-2xl">Vive una experiencia única</p>
-  <p class="leading-[1em] text-[190px] text-center font-manrope">
+  <p
+    class="leading-[1em] text-center font-manrope"
+    style={{
+      fontSize: "clamp(24px, 10vw + 1rem, 190px)",
+    }}
+  >
     Hogar soñado
   </p>
-  <div class="rounded-full mb-[120px] relative -mt-[32px]">
+  <div class="rounded-full mb-[120px] relative -mt-[2.5%]">
     <div
       class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
     >
