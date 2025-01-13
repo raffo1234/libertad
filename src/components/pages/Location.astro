@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import map from "../../assets/map.jpg";
 import { Icon } from "astro-icon/components";
+import BoxSubtitle from "../BoxSubtitle.astro";
 ---
 
 <section class="mb-[70px]">
@@ -16,27 +17,24 @@ import { Icon } from "astro-icon/components";
     <span> Ubicaci&oacute;n </span>
   </h2>
   <div class="flex space-x-2">
-    <article
-      class="rounded-[50px] w-1/2 md:w-1/4 px-8 py-11 text-white md:h-[500px] h-[332px] flex-1 overflow-hidden bg-[#ff9100] relative"
-    >
-      <h3 class="text-2xl mb-5">
-        <b>Jr. Pedro Galvez </b>
-      </h3>
-      <p>Urbanizaci&oacute;n: Pio Pata</p>
-      <p>A 2 cuadras de la Capilla Santo Cura de Ars</p>
-      <a
-        href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
-        target="_blank"
-        rel="noopener"
-        class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
-      >
-        <Icon
-          name="material-symbols-light:arrow-outward-rounded"
-          size="40"
-          class="text-[#ff9100]"
-        />
-      </a>
-    </article>
+    <div class="w-1/2 md:w-1/4 md:h-[500px] flex-1">
+      <BoxSubtitle subtitle="Jr. Pedro Galvez">
+        <p>Urbanizaci&oacute;n: Pio Pata</p>
+        <p>A 2 cuadras de la Capilla Santo Cura de Ars</p>
+        <a
+          href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
+          target="_blank"
+          rel="noopener"
+          class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
+        >
+          <Icon
+            name="material-symbols-light:arrow-outward-rounded"
+            size="40"
+            class="text-[#ff9100]"
+          />
+        </a>
+      </BoxSubtitle>
+    </div>
     <article
       class="w-1/2 md:w-3/4 rounded-[50px] md:h-[500px] h-[332px] overflow-hidden relative"
     >

@@ -1,0 +1,10 @@
+---
+const { subtitle } = Astro.props;
+---
+
+<div
+  class="rounded-[50px] px-4 sm:px-8 py-10 sm:py-11 text-white h-[332px] overflow-hidden bg-[#ff9100] relative"
+>
+  <h3 class="text-lg sm:text-2xl mb-5 font-bold">{subtitle}</h3>
+  <slot />
+</div>
