@@ -1,7 +1,3 @@
-import { useStore } from "@nanostores/react";
-import { isLocationModalOpen } from "../hooks/locationModalState";
-// import { Image } from "astro:assets";
-// import { Icon } from "astro-icon/components";
 import { useState, useEffect } from "react";
 import image1 from "../assets/image1.jpg";
 import image2 from "../assets/image2.jpg";
