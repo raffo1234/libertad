@@ -1,3 +1,3 @@
 import { atom } from "nanostores";
 
-export const sharedAreaTabs = atom(0);
+export const activeSharedArea = atom(0);

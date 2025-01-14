@@ -1,12 +1,8 @@
 ---
-import Dialog from "../../components/pages/Dialog";
+import PageSlider from "../../components/pages/PageSlider";
 import Layout from "../../layouts/Layout.astro";
-import image1 from "../../assets/image1.jpg";
-import image2 from "../../assets/image2.jpg";
-
-const images = [image1.src, image2.src];
 ---
 
 <Layout title="Áreas comunes - Reuniones sum">
-  <Dialog client:load images={images} backHref="/#areas-comunes" />
+  <PageSlider client:load backHref="/#areas-comunes" />
 </Layout>

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { useStore } from "@nanostores/react";
-import { sharedAreaTabs } from "../hooks/states";
+import { activeSharedArea } from "../hooks/states";
 
 const Button = ({
   isActive,
@@ -22,21 +22,19 @@ const Button = ({
   );
 };
 
-export default function TabNavigation() {
-  const $sharedAreaTabs = useStore(sharedAreaTabs);
-
-  const buttons = ["Gimnasio", "Terraza", "Reuniones SUM"];
+export default function TabNavigation({ tabs }: { tabs: string[] }) {
+  const $activeSharedArea = useStore(activeSharedArea);
 
   return (
     <div className="bg-[#E0DDD8] rounded-[19px] p-2 flex space-x-2 text-sm">
-      {buttons.map((button, index) => {
+      {tabs.map((tab, index) => {
         return (
           <Button
             key={index}
-            onClick={() => sharedAreaTabs.set(index)}
-            isActive={$sharedAreaTabs === index}
+            onClick={() => activeSharedArea.set(index)}
+            isActive={$activeSharedArea === index}
           >
-            {button}
+            {tab}
           </Button>
         );
       })}

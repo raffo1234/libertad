@@ -1,19 +1,17 @@
 ---
-import { Image } from "astro:assets";
-import interior1 from "../../assets/interior-1.jpg";
-import interior2 from "../../assets/interior-2.jpg";
-import interior3 from "../../assets/interior-3.jpg";
-import BoxSubtitle from "../BoxSubtitle.astro";
-import { Icon } from "astro-icon/components";
 import TabNavigation from "../TabNavigation";
 import TabNavigationImages from "../TabNavigationImages";
+import areas from "../../data/areas";
+
+const tabs = areas.map((area) => area.label);
+const images = areas.map((area) => area.images);
+const hrefs = areas.map((area) => area.href);
 ---
 
-<div id="active"></div>
 <section id="areas-comunes" class="mb-[70px] pt-[50px]">
   <h2 class="text-xl text-center mb-8"><b>Áreas comunes</b></h2>
   <div class="flex justify-center w-full mb-11">
-    <TabNavigation client:load />
+    <TabNavigation client:load tabs={tabs} />
   </div>
-  <TabNavigationImages client:load />
+  <TabNavigationImages client:load images={images} hrefs={hrefs} />
 </section>

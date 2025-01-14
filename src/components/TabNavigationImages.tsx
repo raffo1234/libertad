@@ -1,43 +1,40 @@
 import { Icon } from "@iconify/react";
-import interior1 from "../assets/interior-1.jpg";
-import interior2 from "../assets/interior-2.jpg";
-import interior3 from "../assets/interior-3.jpg";
 import { useStore } from "@nanostores/react";
-import { sharedAreaTabs } from "../hooks/states";
+import { activeSharedArea } from "../hooks/states";
 
-const sharedAreaImages = [
-  [interior1.src, interior3.src, interior2.src],
-  [interior2.src, interior1.src, interior3.src],
-  [interior3.src, interior2.src, interior1.src],
-];
-
-export default function TabNavigationImages() {
-  const $sharedAreaTabs = useStore(sharedAreaTabs);
+export default function TabNavigationImages({
+  images,
+  hrefs,
+}: {
+  images: string[][];
+  hrefs: string[];
+}) {
+  const $activeSharedArea = useStore(activeSharedArea);
 
   return (
     <div className="flex space-x-2 -ml-2 lg:ml-0">
       <article className="hidden lg:w-1/4 lg:block rounded-[50px] h-[332px] overflow-hidden">
-        <a href="/areas-comunes/gymnasio">
+        <a href={hrefs[$activeSharedArea]}>
           <img
-            src={sharedAreaImages[$sharedAreaTabs][0]}
+            src={images[$activeSharedArea][0]}
             alt="Libertad"
             className="object-cover w-full h-full object-top"
           />
         </a>
       </article>
       <article className="hidden md:w-1/3 lg:w-1/4 md:block rounded-[50px] h-[332px] overflow-hidden">
-        <a href="/areas-comunes/terraza">
+        <a href={hrefs[$activeSharedArea]}>
           <img
-            src={sharedAreaImages[$sharedAreaTabs][1]}
+            src={images[$activeSharedArea][1]}
             alt="Libertad"
             className="object-cover w-full h-full object-top"
           />
         </a>
       </article>
       <article className="w-1/2 lg:w-1/4 md:w-1/3 rounded-[50px] h-[332px] overflow-hidden">
-        <a href="/areas-comunes/reuniones-sum">
+        <a href={hrefs[$activeSharedArea]}>
           <img
-            src={sharedAreaImages[$sharedAreaTabs][2]}
+            src={images[$activeSharedArea][2]}
             alt="Libertad"
             className="object-cover w-full h-full object-top"
           />
@@ -50,7 +47,7 @@ export default function TabNavigationImages() {
           </h3>
           <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
           <a
-            href="/areas-comunes/reuniones-sum"
+            href={hrefs[$activeSharedArea]}
             title="Libertad"
             className="w-16 flex items-center justify-center h-16 rounded-full
           text-[#ff9100] bg-white absolute right-5 bottom-5"
