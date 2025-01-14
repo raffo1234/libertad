@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import "@iconify-json/material-symbols-light/icons.json";
 import areas from "../../data/areas";
-import { sharedArea } from "../../hooks/states";
+import { firstSliderImage, sharedArea } from "../../hooks/states";
 
 export default function PageSlider({ backHref }: { backHref: string }) {
   const images = areas[Number(sharedArea.get())].images;
+  const firstImage = Number(firstSliderImage.get());
 
   const useEscape = (onEscape: () => void) => {
     useEffect(() => {
@@ -46,7 +47,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
     }, [onNext]);
   };
 
-  const [imageToShow, setImageToShow] = useState(images[0]);
+  const [imageToShow, setImageToShow] = useState(images[firstImage]);
   let currentIndex = images.indexOf(imageToShow);
 
   const showPrev = () => {
