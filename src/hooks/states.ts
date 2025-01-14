@@ -1,3 +1,6 @@
-import { atom } from "nanostores";
+import { atom  } from "nanostores";
+import { persistentAtom } from '@nanostores/persistent';
 
-export const activeSharedArea = atom(0);
+export const isLocationModalOpen = atom(false);
+
+export const sharedArea = persistentAtom<string>("sharedArea", "0")

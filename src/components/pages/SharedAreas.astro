@@ -11,7 +11,7 @@ const hrefs = areas.map((area) => area.href);
 <section id="areas-comunes" class="mb-[70px] pt-[50px]">
   <h2 class="text-xl text-center mb-8"><b>Áreas comunes</b></h2>
   <div class="flex justify-center w-full mb-11">
-    <TabNavigation client:load tabs={tabs} />
+    <TabNavigation client:only tabs={tabs} />
   </div>
-  <TabNavigationImages client:load images={images} hrefs={hrefs} />
+  <TabNavigationImages client:only images={images} hrefs={hrefs} />
 </section>

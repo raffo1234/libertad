@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import "@iconify-json/material-symbols-light/icons.json";
-import { useStore } from "@nanostores/react";
-import { activeSharedArea } from "../../hooks/states";
 import areas from "../../data/areas";
+import { sharedArea } from "../../hooks/states";
 
 export default function PageSlider({ backHref }: { backHref: string }) {
-  const $activeSharedArea = useStore(activeSharedArea);
-  const activeArea = areas[$activeSharedArea];
-  const images = activeArea.images;
+  const images = areas[Number(sharedArea.get())].images;
 
   const useEscape = (onEscape: () => void) => {
     useEffect(() => {
