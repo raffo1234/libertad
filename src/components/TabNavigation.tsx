@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { useStore } from "@nanostores/react";
-import { sharedArea } from "../hooks/states";
+import { sharedArea } from "../stores/states";
 
 const Button = ({
   isActive,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import "@iconify-json/material-symbols-light/icons.json";
 import areas from "../../data/areas";
-import { firstSliderImage, sharedArea } from "../../hooks/states";
+import { firstSliderImage, sharedArea } from "../../stores/states";
 
 export default function PageSlider({ backHref }: { backHref: string }) {
   const images = areas[Number(sharedArea.get())].images;

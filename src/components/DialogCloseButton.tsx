@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { isLocationModalOpen } from "../hooks/states";
+import { isLocationModalOpen } from "../stores/states";
 
 export default function DialogCloseButton({
   children,

@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useStore } from "@nanostores/react";
-import { sharedArea, firstSliderImage } from "../hooks/states";
+import { sharedArea, firstSliderImage } from "../stores/states";
 
 export default function TabNavigationImages({
   images,
