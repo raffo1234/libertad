@@ -7,7 +7,8 @@ import { Icon } from "astro-icon/components";
 <section class="mb-[40px]">
   <p class="text-center text-xl sm:text-2xl">Vive una experiencia única</p>
   <p
-    class="leading-[1em] text-center font-manrope text-nowrap"
+    id="title"
+    class="leading-[1em] text-center font-manrope text-nowrap translate-y-4 transition-transform duration-700 ease-in-out"
     style={{
       fontSize: "clamp(24px, 10vw + 1rem, 190px)",
     }}
@@ -18,12 +19,7 @@ import { Icon } from "astro-icon/components";
     <div
       class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
     >
-      <Image
-        id="img"
-        src={living2}
-        alt="Libertad"
-        class="object-cover w-full h-full"
-      />
+      <Image src={living2} alt="Libertad" class="object-cover w-full h-full" />
     </div>
     <section
       class="absolute -bottom-9 drop-shadow-xl left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[70%] py-5 sm:px-6 rounded-[26px] lg:justify-between lg:flex items-center bg-[#e0ddd5]"
@@ -80,3 +76,11 @@ import { Icon } from "astro-icon/components";
     </section>
   </div>
 </section>
+
+<script is:inline>
+  const title = document.getElementById("title"); // The entire page is fully loaded
+  setTimeout(function () {
+    title.classList.remove("translate-y-4");
+    title.classList.add("translate-y-0");
+  }, 650);
+</script>
