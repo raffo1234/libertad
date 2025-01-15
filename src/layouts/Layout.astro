@@ -12,7 +12,17 @@ import "@fontsource/manrope";
     <meta name="generator" content={Astro.generator} />
     <title>Libertad</title>
   </head>
-  <body class="bg-[#e2e1df] font-mulish">
+  <body
+    id="app"
+    class="bg-[#e2e1df] font-mulish opacity-0 transition-opacity duration-300"
+  >
     <slot />
   </body>
 </html>
+
+<script is:inline>
+  window.onload = function () {
+    const app = document.getElementById("app"); // The entire page is fully loaded
+    app.classList.add("opacity-100");
+  };
+</script>

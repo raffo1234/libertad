@@ -85,6 +85,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   return (
     <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
       <img
+        id="img"
         src={imageToShow}
         className="w-full  h-full object-cover md:object-contain"
         alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
