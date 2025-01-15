@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import "@iconify-json/material-symbols-light/icons.json";
 import areas from "../../data/areas";
 import { firstSliderImage, sharedArea } from "../../stores/states";
+import useSwipe from "../../hooks/useSwipe";
 
 export default function PageSlider({ backHref }: { backHref: string }) {
   const images = areas[Number(sharedArea.get())].images;
@@ -74,11 +75,18 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   usePrev(() => showPrev());
   useNext(() => showNext());
 
+  const handleSwipe = (direction: "left" | "right" | "up" | "down") => {
+    if (direction === "left") showNext();
+    if (direction === "right") showPrev();
+  };
+
+  useSwipe(handleSwipe, 50);
+
   return (
     <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
       <img
         src={imageToShow}
-        className="w-full h-full object-cover md:object-contain"
+        className="w-full  h-full object-cover md:object-contain"
         alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
         title="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
       />
@@ -109,7 +117,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
         </a>
       </div>
       <button
-        className="absolute top-0 text-white left-0 z-10 h-full p-4 focus:outline-none group"
+        className="hidden sm:block absolute top-0 text-white left-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showPrev}
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
@@ -121,7 +129,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
         </div>
       </button>
       <button
-        className="absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
+        className="hidden sm:block absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showNext}
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
