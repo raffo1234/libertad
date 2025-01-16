@@ -1,4 +1,3 @@
-import { type ReactNode } from "react";
 import { useStore } from "@nanostores/react";
 import { sharedArea } from "../stores/states";
 
