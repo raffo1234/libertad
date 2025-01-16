@@ -108,6 +108,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
         </div>
         <a
           href={backHref}
+          title="Volver"
           className="flex items-center justify-center rounded-full w-16 h-16 text-[#ff9100] bg-white"
         >
           <Icon
@@ -120,6 +121,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       <button
         className="hidden sm:block absolute top-0 text-white left-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showPrev}
+        title="Imagen Anterior"
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon
@@ -132,6 +134,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       <button
         className="hidden sm:block absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showNext}
+        title="Imagen Siguiente"
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon

@@ -1,8 +1,24 @@
 ---
 import { Image } from "astro:assets";
-import living2 from "../../assets/living2.png";
 import { Icon } from "astro-icon/components";
-import hero from "../../assets/hero.png";
+import hero1 from "../../assets/hero1.png";
+import hero2 from "../../assets/hero2.png";
+import hero3 from "../../assets/hero3.png";
+
+const images = [
+  {
+    alt: "Libertad | Sala luminosa con grandes ventanales, muebles claros y decoración minimalista",
+    imageSrc: hero1,
+  },
+  {
+    alt: "Libertad | Espacio de estudio luminoso con ventanales grandes y decoración minimalista",
+    imageSrc: hero2,
+  },
+  {
+    alt: "Libertad | Habitación bien iluminada con cama grande ",
+    imageSrc: hero3,
+  },
+];
 ---
 
 <section class="mb-[40px]">
@@ -20,16 +36,18 @@ import hero from "../../assets/hero.png";
     <div
       class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
     >
-      <Image
-        src={hero}
-        alt="Libertad"
-        class="absolute opacity-0 transition-opacity ease-in-out duration-700 left-0 top-0 object-cover w-full h-full object-top slide-js"
-      />
-      <Image
-        src={living2}
-        alt="Libertad"
-        class="absolute opacity-0 transition-opacity duration-700 ease-in-out left-0 top-0 object-cover w-full h-full object-top slide-js"
-      />
+      {
+        images.map(({ imageSrc, alt }) => {
+          return (
+            <Image
+              src={imageSrc}
+              alt={alt}
+              title={alt}
+              class="absolute opacity-0 transition-opacity ease-in-out duration-1000 left-0 top-0 object-cover w-full h-full object-top slide-js"
+            />
+          );
+        })
+      }
     </div>
     <section
       class="absolute -bottom-9 drop-shadow-xl left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[70%] py-5 sm:px-6 rounded-[26px] lg:justify-between lg:flex items-center bg-[#e0ddd5]"

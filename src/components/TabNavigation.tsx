@@ -2,27 +2,6 @@ import { type ReactNode } from "react";
 import { useStore } from "@nanostores/react";
 import { sharedArea } from "../stores/states";
 
-const Button = ({
-  isActive,
-  onClick,
-  children,
-}: {
-  isActive: boolean;
-  children: ReactNode;
-  onClick: () => void;
-}) => {
-  const activeClass = isActive ? "bg-[#EAE8E4]" : "text-[#807357]";
-
-  return (
-    <button
-      onClick={onClick}
-      className={`${activeClass} font-bold py-3 px-3 sm:px-8 rounded-[15px]`}
-    >
-      {children}
-    </button>
-  );
-};
-
 export default function TabNavigation({ tabs }: { tabs: string[] }) {
   const area = useStore(sharedArea);
 
@@ -33,11 +12,17 @@ export default function TabNavigation({ tabs }: { tabs: string[] }) {
           sharedArea.set(index.toString());
         };
         const isActive = area === index.toString();
+        const activeClass = isActive ? "bg-[#EAE8E4]" : "text-[#807357]";
 
         return (
-          <Button key={index} isActive={isActive} onClick={onClick}>
+          <button
+            key={index}
+            title={tab}
+            className={`${activeClass} font-bold py-3 px-3 sm:px-8 rounded-[15px]`}
+            onClick={onClick}
+          >
             {tab}
-          </Button>
+          </button>
         );
       })}
     </div>

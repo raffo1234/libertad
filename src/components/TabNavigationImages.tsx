@@ -50,7 +50,7 @@ export default function TabNavigationImages({
           <a
             href={hrefs[area]}
             onClick={() => firstSliderImage.set("0")}
-            title="Libertad"
+            title="Ver todas Las Imágenes"
             className="w-16 flex items-center justify-center h-16 rounded-full
           text-[#ff9100] bg-white absolute right-5 bottom-5"
           >
