@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import living2 from "../../assets/living2.png";
 import { Icon } from "astro-icon/components";
+import hero from "../../assets/hero.png";
 ---
 
 <section class="mb-[40px]">
@@ -19,7 +20,16 @@ import { Icon } from "astro-icon/components";
     <div
       class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
     >
-      <Image src={living2} alt="Libertad" class="object-cover w-full h-full" />
+      <Image
+        src={hero}
+        alt="Libertad"
+        class="absolute opacity-0 transition-opacity ease-in-out duration-700 left-0 top-0 object-cover w-full h-full object-top slide-js"
+      />
+      <Image
+        src={living2}
+        alt="Libertad"
+        class="absolute opacity-0 transition-opacity duration-700 ease-in-out left-0 top-0 object-cover w-full h-full object-top slide-js"
+      />
     </div>
     <section
       class="absolute -bottom-9 drop-shadow-xl left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[70%] py-5 sm:px-6 rounded-[26px] lg:justify-between lg:flex items-center bg-[#e0ddd5]"
@@ -83,4 +93,22 @@ import { Icon } from "astro-icon/components";
     title.classList.remove("translate-y-4");
     title.classList.add("translate-y-0");
   }, 650);
+</script>
+
+<script is:inline>
+  const slides = document.querySelectorAll(".slide-js");
+  let currentSlide = 0;
+
+  slides[0].classList.add("opacity-100");
+
+  function showNextSlide() {
+    for (const el of slides) {
+      el.classList.remove("opacity-100");
+    }
+    slides[currentSlide].classList.add("opacity-100");
+    currentSlide = (currentSlide + 1) % slides.length;
+    console.log(currentSlide);
+  }
+
+  setInterval(showNextSlide, 2000);
 </script>
