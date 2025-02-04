@@ -24,19 +24,22 @@ import { Icon } from "astro-icon/components";
   <article
     class="w-full sm:w-3/4 lg:w-1/2 mx-auto h-[400px] sm:h-[600px] lg:h-[816px] rounded-[30px] relative overflow-hidden"
   >
-    <Image
-      src={outside}
-      alt="Libertad"
-      class="object-cover object-top w-full h-full"
-    />
-    <button
-      class="w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white absolute right-5 top-5"
-    >
-      <Icon
-        name="material-symbols-light:arrow-outward-rounded"
-        size="40"
-        class="text-white"
+    <h3>
+      <Image
+        src={outside}
+        alt="Libertad"
+        class="object-cover object-top w-full h-full"
       />
-    </button>
+      <button
+        aria-label="Ver Imagen"
+        class="w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white absolute right-5 top-5"
+      >
+        <Icon
+          name="material-symbols-light:arrow-outward-rounded"
+          size="40"
+          class="text-white"
+        />
+      </button>
+    </h3>
   </article>
 </section>

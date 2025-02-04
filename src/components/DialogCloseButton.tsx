@@ -12,6 +12,7 @@ export default function DialogCloseButton({
   return (
     <button
       onClick={closeModal}
+      aria-label="Cerrar"
       className="absolute top-5 z-30 right-5 w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white "
     >
       {children}

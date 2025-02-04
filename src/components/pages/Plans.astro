@@ -43,6 +43,7 @@ import BoxSubtitle from "../BoxSubtitle.astro";
           </li>
         </ul>
         <button
+          aria-label="Ver Planos"
           class="w-16 flex items-center justify-center h-16 rounded-full
           text-[#ff9100] bg-white absolute right-5 bottom-5 sm:top-5"
         >
@@ -65,11 +66,13 @@ import BoxSubtitle from "../BoxSubtitle.astro";
       <article
         class="hidden md:block rounded-[50px] flex-1 h-[332px] relative overflow-hidden"
       >
-        <Image
-          src={interior2}
-          alt="Libertad"
-          class="w-full h-full object-cover object-top"
-        />
+        <h3>
+          <Image
+            src={interior2}
+            alt="Libertad"
+            class="w-full h-full object-cover object-top"
+          />
+        </h3>
       </article>
     </div>
   </section>
@@ -78,18 +81,22 @@ import BoxSubtitle from "../BoxSubtitle.astro";
       <article
         class="hidden md:block rounded-[50px] flex-1 h-[332px] relative overflow-hidden"
       >
-        <Image
-          src={interior3}
-          alt="Libertad"
-          class="w-full h-full object-cover object-top"
-        />
+        <h3>
+          <Image
+            src={interior3}
+            alt="Libertad"
+            class="w-full h-full object-cover object-top"
+          />
+        </h3>
       </article>
       <article class="rounded-[50px] flex-1 h-[332px] relative overflow-hidden">
-        <Image
-          src={interior2}
-          alt="Libertad"
-          class="w-full h-full object-cover object-top"
-        />
+        <h3>
+          <Image
+            src={interior2}
+            alt="Libertad"
+            class="w-full h-full object-cover object-top"
+          />
+        </h3>
       </article>
     </div>
     <div class="w-1/2 md:w-1/3 lg:w-1/2">
@@ -123,6 +130,7 @@ import BoxSubtitle from "../BoxSubtitle.astro";
           </li>
         </ul>
         <button
+          aria-label="Ver Planos"
           class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5 sm:top-5"
         >
           <Icon

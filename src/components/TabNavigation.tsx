@@ -15,6 +15,7 @@ export default function TabNavigation({ tabs }: { tabs: string[] }) {
 
         return (
           <button
+            aria-label="Ver más"
             key={index}
             title={tab}
             className={`${activeClass} font-bold py-3 px-3 sm:px-8 rounded-[15px]`}

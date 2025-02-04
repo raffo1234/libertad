@@ -94,6 +94,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       <div className="absolute z-20 flex space-x-3 -translate-x-1/2 left-1/2 bottom-6">
         {images.map((image, index) => (
           <button
+            aria-label="Ver Imagen"
             onClick={() => setImageToShow(image)}
             key={index}
             className={`flex items-center transition hover:bg-opacity-100 duration-500 ease-in-out justify-center w-6 h-6 rounded-full ${
@@ -121,7 +122,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       <button
         className="hidden sm:block absolute top-0 text-white left-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showPrev}
-        title="Imagen Anterior"
+        aria-label="Imagen Anterior"
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon
@@ -134,7 +135,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       <button
         className="hidden sm:block absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showNext}
-        title="Imagen Siguiente"
+        aria-label="Imagen Siguiente"
       >
         <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon
