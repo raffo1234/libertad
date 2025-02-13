@@ -86,6 +86,10 @@ export default function PageSlider({ backHref }: { backHref: string }) {
     setImageToShow(images[firstImage]);
   }, []);
 
+  useEffect(() => {
+    firstSliderImage.set(String(currentIndex));
+  }, [imageToShow]);
+
   return (
     <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
       <img
