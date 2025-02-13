@@ -1,6 +1,26 @@
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useStore } from "@nanostores/react";
 import { sharedArea, firstSliderImage } from "../stores/states";
+
+const Image = ({ src, alt }: { src: string; alt: string }) => {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <>
+      {loading && (
+        <div className="animate-pulse w-full h-full bg-[#EAE8E4]"></div>
+      )}
+      <img
+        loading="lazy"
+        src={src}
+        alt={alt}
+        onLoad={() => setLoading(false)}
+        className={`object-cover w-full h-full object-top opacity-0 transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
+      />
+    </>
+  );
+};
 
 export default function TabNavigationImages({
   images,
@@ -20,11 +40,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("0")}
           title="Ver todas Las Imágenes"
         >
-          <img
-            src={images[area][0]}
-            alt="Libertad"
-            className="object-cover w-full h-full object-top"
-          />
+          <Image src={images[area][0]} alt="Libertad" />
         </a>
       </article>
       <article className="hidden md:w-1/3 lg:w-1/4 md:block rounded-[50px] h-[332px] overflow-hidden">
@@ -33,11 +49,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("1")}
           title="Ver todas Las Imágenes"
         >
-          <img
-            src={images[area][1]}
-            alt="Libertad"
-            className="object-cover w-full h-full object-top"
-          />
+          <Image src={images[area][1]} alt="Libertad" />
         </a>
       </article>
       <article className="w-1/2 lg:w-1/4 md:w-1/3 rounded-[50px] h-[332px] overflow-hidden">
@@ -46,11 +58,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("2")}
           title="Ver todas Las Imágenes"
         >
-          <img
-            src={images[area][2]}
-            alt="Libertad"
-            className="object-cover w-full h-full object-top"
-          />
+          <Image src={images[area][2]} alt="Libertad" />
         </a>
       </article>
       <article className="w-1/2 md:w-1/3 lg:w-1/4">

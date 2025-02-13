@@ -5,6 +5,27 @@ import areas from "../../data/areas";
 import { firstSliderImage, sharedArea } from "../../stores/states";
 import useSwipe from "../../hooks/useSwipe";
 
+const Image = ({ src, alt }: { src: string; alt: string }) => {
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <>
+      {loading && (
+        <div className="grid place-items-center w-full h-full">
+          <div className="animate-spin w-16 h-16 border-8 border-[#6D6C6C] border-t-[#ff9100] rounded-full"></div>
+        </div>
+      )}
+      <img
+        loading="lazy"
+        src={src}
+        alt={alt}
+        onLoad={() => setLoading(false)}
+        className={`w-full h-full object-cover md:object-contain opacity-0 transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
+      />
+    </>
+  );
+};
+
 export default function PageSlider({ backHref }: { backHref: string }) {
   const images = areas[Number(sharedArea.get())].images;
   const firstImage = Number(firstSliderImage.get());
@@ -84,12 +105,9 @@ export default function PageSlider({ backHref }: { backHref: string }) {
 
   return (
     <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
-      <img
-        id="img"
+      <Image
         src={imageToShow}
-        className="w-full  h-full object-cover md:object-contain"
         alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
-        title="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
       />
       <div className="absolute z-20 flex space-x-3 -translate-x-1/2 left-1/2 bottom-6">
         {images.map((image, index) => (
