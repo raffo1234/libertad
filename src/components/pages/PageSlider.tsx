@@ -25,7 +25,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   const usePrev = (onPrev: () => void) => {
     useEffect(() => {
       const handlePrev = (event: KeyboardEvent) => {
-        if (event.keyCode === 37) onPrev();
+        if (event.key === "ArrowLeft") onPrev();
       };
       window.addEventListener("keydown", handlePrev);
 
@@ -38,7 +38,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   const useNext = (onNext: () => void) => {
     useEffect(() => {
       const handleNext = (event: KeyboardEvent) => {
-        if (event.keyCode === 39) onNext();
+        if (event.key === "ArrowRight") onNext();
       };
       window.addEventListener("keydown", handleNext, false);
 
@@ -93,6 +93,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   return (
     <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
       <img
+        loading="lazy"
         src={imageToShow}
         alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
         className="w-full h-full object-cover md:object-contain transition-opacity duration-700 ease-in-out"
