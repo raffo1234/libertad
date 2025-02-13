@@ -14,10 +14,10 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       const handleEsc = (event: KeyboardEvent) => {
         if (event.key === "Escape") onEscape();
       };
-      window.addEventListener("keydown", handleEsc);
+      window.addEventListener("keyup", handleEsc);
 
       return () => {
-        window.removeEventListener("keydown", handleEsc);
+        window.removeEventListener("keyup", handleEsc);
       };
     }, [onEscape]);
   };
@@ -27,10 +27,10 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       const handlePrev = (event: KeyboardEvent) => {
         if (event.key === "ArrowLeft") onPrev();
       };
-      window.addEventListener("keydown", handlePrev);
+      window.addEventListener("keyup", handlePrev);
 
       return () => {
-        window.removeEventListener("keydown", handlePrev);
+        window.removeEventListener("keyup", handlePrev);
       };
     }, [onPrev]);
   };
@@ -40,10 +40,10 @@ export default function PageSlider({ backHref }: { backHref: string }) {
       const handleNext = (event: KeyboardEvent) => {
         if (event.key === "ArrowRight") onNext();
       };
-      window.addEventListener("keydown", handleNext, false);
+      window.addEventListener("keyup", handleNext, false);
 
       return () => {
-        window.removeEventListener("keydown", handleNext, false);
+        window.removeEventListener("keyup", handleNext, false);
       };
     }, [onNext]);
   };
