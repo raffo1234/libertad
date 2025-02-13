@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import "@iconify-json/material-symbols-light/icons.json";
 import areas from "../../data/areas";
-import { firstSliderImage, sharedArea } from "../../stores/states";
 import useSwipe from "../../hooks/useSwipe";
+import { firstSliderImage, sharedArea } from "../../stores/states";
 
 export default function PageSlider({ backHref }: { backHref: string }) {
   const images = areas[Number(sharedArea.get())].images;
@@ -111,7 +111,7 @@ export default function PageSlider({ backHref }: { backHref: string }) {
         </div>
         <a
           href={backHref}
-          title="Volver"
+          title="Volver al Inicio"
           className="flex items-center justify-center rounded-full w-16 h-16 text-[#ff9100] bg-white"
         >
           <Icon
@@ -126,26 +126,26 @@ export default function PageSlider({ backHref }: { backHref: string }) {
         onClick={showPrev}
         aria-label="Imagen Anterior"
       >
-        <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
+        <span className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon
             icon="material-symbols-light:arrow-back-rounded"
             width={40}
             height={40}
           />
-        </div>
+        </span>
       </button>
       <button
         className="hidden sm:block absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
         onClick={showNext}
         aria-label="Imagen Siguiente"
       >
-        <div className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
+        <span className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
           <Icon
             icon="material-symbols-light:arrow-forward-rounded"
             width={40}
             height={40}
           />
-        </div>
+        </span>
       </button>
     </section>
   );
