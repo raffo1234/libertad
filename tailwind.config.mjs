@@ -6,7 +6,17 @@ export default {
       mulish: ["Mulish", "sans-serif"],
       manrope: ["Manrope", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        scale: {
+          "0%": { transform: "scale(0.90)", opacity: 0 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+      },
+      animation: {
+        scale: "scale 0.4s",
+      },
+    },
   },
   plugins: [],
 };
