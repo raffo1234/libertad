@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import map from "../../assets/map.jpg";
 import { Icon } from "astro-icon/components";
 import BoxSubtitle from "../BoxSubtitle.astro";
+
+const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
 ---
 
 <section class="mb-[70px]">
@@ -22,7 +24,7 @@ import BoxSubtitle from "../BoxSubtitle.astro";
         <p>Urbanizaci&oacute;n: Pio Pata</p>
         <p>A 2 cuadras de la Capilla Santo Cura de Ars</p>
         <a
-          href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
+          href={location}
           target="_blank"
           rel="noopener"
           class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
@@ -45,7 +47,7 @@ import BoxSubtitle from "../BoxSubtitle.astro";
           class="absolute top-1/2 -translate-y-[60px] left-1/2 -translate-x-1/2"
         >
           <a
-            href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
+            href={location}
             target="_blank"
             rel="noopener"
             title="Ubicación | Libertad | Pedro Galvez"
@@ -60,7 +62,7 @@ import BoxSubtitle from "../BoxSubtitle.astro";
             class="hidden md:flex absolute bottom-full left-1/2 -translate-x-1/2 bg-[#ff9100] text-white justify-center items-center h-[120px] w-[180px] px-10 rounded-[30px]"
           >
             <a
-              href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
+              href={location}
               target="_blank"
               rel="noopener"
               class="text-xl flex justify-center mb-2"
@@ -75,12 +77,12 @@ import BoxSubtitle from "../BoxSubtitle.astro";
                 />
                 <b class="block pt-2">Libertad</b>
               </span>
-          </a>
+            </a>
           </div>
         </div>
       </picture>
       <a
-        href="https://www.google.com/maps/search/pedro+galvez+pio+pata/@-12.0613952,-75.2291533,18.25z?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D"
+        href={location}
         target="_blank"
         rel="noopener"
         class="w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white absolute right-5 top-5"
