@@ -16,7 +16,7 @@ const Image = ({ src, alt }: { src: string; alt: string }) => {
         src={src}
         alt={alt}
         onLoad={() => setLoading(false)}
-        className={`object-cover w-full h-full object-top opacity-0 transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
+        className={`object-cover w-full h-full transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
       />
     </>
   );
@@ -34,7 +34,7 @@ export default function TabNavigationImages({
 
   return (
     <div className="flex space-x-2 -ml-2 lg:ml-0">
-      <article className="hidden lg:w-1/4 lg:block rounded-[50px] h-[332px] overflow-hidden">
+      <article className="flex-1 hidden lg:block rounded-[50px] h-[332px] overflow-hidden">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("0")}
@@ -43,7 +43,7 @@ export default function TabNavigationImages({
           <Image src={images[area][0]} alt="Libertad" />
         </a>
       </article>
-      <article className="hidden md:w-1/3 lg:w-1/4 md:block rounded-[50px] h-[332px] overflow-hidden">
+      <article className="flex-1 hidden md:block rounded-[50px] h-[332px] overflow-hidden">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("1")}
@@ -52,7 +52,7 @@ export default function TabNavigationImages({
           <Image src={images[area][1]} alt="Libertad" />
         </a>
       </article>
-      <article className="w-1/2 lg:w-1/4 md:w-1/3 rounded-[50px] h-[332px] overflow-hidden">
+      <article className="flex-1 rounded-[50px] h-[332px] overflow-hidden">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("2")}
@@ -61,7 +61,7 @@ export default function TabNavigationImages({
           <Image src={images[area][2]} alt="Libertad" />
         </a>
       </article>
-      <article className="w-1/2 md:w-1/3 lg:w-1/4">
+      <article className="flex-1">
         <div className="rounded-[50px] px-4 sm:px-8 py-10 sm:py-11 text-white h-[332px] overflow-hidden bg-[#ff9100] relative">
           <h3 className="text-lg sm:text-2xl mb-5 font-bold">
             Espacios que Conectan
