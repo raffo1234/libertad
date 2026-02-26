@@ -1,3 +1,5 @@
+@import "./custom-photoswipe.css";
+
 @font-face {
   font-family: "Tan Pearl";
   src: url("../fonts/tan-pearl.woff2") format("opentype");

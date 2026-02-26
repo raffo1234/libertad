@@ -1,0 +1,56 @@
+.pswp__img {
+  border-radius: 1rem;
+}
+
+.pswp__button--arrow--prev,
+.pswp__button--arrow--next {
+  background: rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  margin: 0 20px;
+  top: 50% !important;
+}
+
+.pswp__button--arrow--prev:hover,
+.pswp__button--arrow--next:hover {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.pswp__button--close,
+.pswp__button--zoom {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50%;
+  margin-top: 10px !important;
+  margin-left: 10px !important;
+  width: 60px !important;
+}
+
+.pswp__button--close:hover,
+.pswp__button--zoom:hover {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+} 
+
+.pswp__button--close svg,
+.pswp__button--zoom svg {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.pswp__button--arrow--next .pswp__icn {
+  right: 8px !important;
+}
+
+.pswp__counter {
+  background-color: #b45309 !important;
+  text-shadow: none !important;
+  color: #fff;
+  padding: 0.75rem !important;
+  height: auto !important;
+  border-radius: 1rem;
+  line-height: 1.5;
+}
