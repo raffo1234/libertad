@@ -38,7 +38,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("0")}
           title="Ver todas Las Imágenes"
         >
-          <Image src={images[area][0]} alt="Libertad" />
+          <Image src={images[area][0]} alt="Galvez1519" />
         </a>
       </article>
       <article className="hidden h-[332px] flex-1 overflow-hidden rounded-[50px] md:block">
@@ -47,7 +47,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("1")}
           title="Ver todas Las Imágenes"
         >
-          <Image src={images[area][1]} alt="Libertad" />
+          <Image src={images[area][1]} alt="Galvez1519" />
         </a>
       </article>
       <article className="h-[332px] flex-1 overflow-hidden rounded-[50px]">
@@ -56,7 +56,7 @@ export default function TabNavigationImages({
           onClick={() => firstSliderImage.set("2")}
           title="Ver todas Las Imágenes"
         >
-          <Image src={images[area][2]} alt="Libertad" />
+          <Image src={images[area][2]} alt="Galvez1519" />
         </a>
       </article>
       <article className="flex-1">
