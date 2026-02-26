@@ -15,9 +15,28 @@ import Typologies from "../components/Typologies.astro";
     <Hero />
     <SharedAreas />
     <Typologies />
-    <!-- <Plans /> -->
     <Location />
     <Summary />
     <Footer />
   </main>
 </Layout>
+
+<script>
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.1,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll(".reveal").forEach((section) => {
+    observer.observe(section);
+  });
+</script>
