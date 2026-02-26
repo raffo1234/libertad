@@ -1,5 +1,5 @@
 ---
-import image1 from "../assets/image1.jpg";
+import image1 from "../assets/interior-1.jpg";
 
 import TypologyCard from "./TypologyCard.astro";
 
@@ -63,3 +63,16 @@ const typology4 = {
     </div>
   </div>
 </section>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/dist/photoswipe.css";
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: ".pswp-gallery",
+    children: "a",
+    pswpModule: () => import("photoswipe"),
+  });
+
+  lightbox.init();
+</script>
