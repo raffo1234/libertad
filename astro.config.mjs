@@ -1,13 +1,14 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import tailwind from "@astrojs/tailwind";
+import icon from "astro-icon";
+import react from "@astrojs/react";
 
-import tailwind from '@astrojs/tailwind';
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
-import icon from 'astro-icon';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import react from '@astrojs/react';
-
-// https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), icon(), react()]
+  integrations: [tailwind(), icon(), react()],
 });

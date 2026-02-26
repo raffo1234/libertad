@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
 import image1 from "../../assets/image1.jpg";
 import image2 from "../../assets/image2.jpg";
 import image3 from "../../assets/image3.jpg";
@@ -8,142 +7,107 @@ import image4 from "../../assets/image4.jpg";
 import image5 from "../../assets/image5.jpg";
 
 const images = [
-  {
-    alt: "Libertad | Sala luminosa con grandes ventanales, muebles claros y decoración minimalista",
-    imageSrc: image1,
-  },
-  {
-    alt: "Libertad | Espacio de estudio luminoso con ventanales grandes y decoración minimalista",
-    imageSrc: image2,
-  },
-  {
-    alt: "Libertad | Espacio de estudio luminoso con ventanales grandes y decoración minimalista",
-    imageSrc: image3,
-  },
-  {
-    alt: "Libertad | Espacio de estudio luminoso con ventanales grandes y decoración minimalista",
-    imageSrc: image4,
-  },
-  {
-    alt: "Libertad | Habitación bien iluminada con cama grande ",
-    imageSrc: image5,
-  },
+  { src: image1, alt: "Libertad | Sala luminosa..." },
+  { src: image2, alt: "Libertad | Espacio de estudio..." },
+  { src: image3, alt: "Libertad | Espacio de estudio..." },
+  { src: image4, alt: "Libertad | Espacio de estudio..." },
+  { src: image5, alt: "Libertad | Habitación bien iluminada..." },
 ];
 ---
 
-<section class="mb-[40px]">
+<section class="mb-[40px] relative" >
   <p class="text-center text-xl sm:text-2xl">Vive una experiencia única</p>
-  <h2
-    id="title"
-    class="leading-[1em] text-center font-manrope text-nowrap translate-y-4 transition-transform duration-700 ease-in-out"
-    style={{
-      fontSize: "clamp(24px, 10vw + 1rem, 190px)",
-    }}
-  >
-    Hogar soñado
-  </h2>
-  <div class="rounded-full relative -mt-[3%]">
-    <div
-      class="relative overflow-hidden h-[540px] backdrop-blur-sm w-full rounded-[50px] bg-opacity-30 bg-white"
-    >
-      {
-        images.map(({ imageSrc, alt }) => {
-          return (
-            <Image
-              src={imageSrc}
-              alt={alt}
-              title={alt}
-              priority
-              fetchpriority="high"
-              class="absolute opacity-0 transition-opacity ease-in-out duration-1000 left-0 top-0 object-cover w-full h-full slide-js"
-              style={{
-                maskImage:
-                  "linear-gradient(to bottom, rgba(255,0,0,0.5), rgba(255,0,0,1) 10%, rgba(255,0,0,1) 90%) ",
-              }}
-            />
-          );
-        })
-      }
-    </div>
-    <section
-      class="absolute -bottom-9 drop-shadow-xl left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[70%] py-5 sm:px-6 rounded-[26px] lg:justify-between lg:flex items-center bg-[#e0ddd5]"
-    >
-      <h2 class="hidden">características</h2>
-      <div
-        class="flex items-center w-full lg:w-1/2 justify-around mb-4 lg:mb-0"
-      >
-        <article class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:king-bed-outline"
-            size="40"
-            class="text-amber-700"
-          />
-          <div>
-            <h3>3 Dorms</h3>
-            <p><b>2 Baños</b></p>
-          </div>
-        </article>
-        <article class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:activity-zone-outline"
-            size="40"
-            class="text-amber-700"
-          />
-          <div>
-            <h3>Área</h3>
-            <p><b>Desde 85 m<sup>2</sup></b></p>
-          </div>
-        </article>
-      </div>
-      <div class="flex items-center w-full lg:w-1/2 justify-around">
-        <article class="flex items-center space-x-3">
-          <Icon
-            name="material-symbols-light:graph-5"
-            size="40"
-            class="text-amber-700"
-          />
-          <div>
-            <h3>Etapa</h3>
-            <p><b>Lanzamiento</b></p>
-          </div>
-        </article>
+  <h2 id="title" class="leading-[1em] text-center font-manrope text-nowrap transition-transform duration-700 ease-in-out translate-y-0" style="font-size:clamp(24px, 10vw + 1rem, 190px)">
+Hogar soñado
+</h2>
+  <div id="gallery-container" class="-mt-[3%] pswp-gallery relative h-[540px] w-full bg-white rounded-[50px] bg-opacity-30 backdrop-blur-sm">
+    {
+      images.map((img, index) => (
         <a
-          href="#planos"
-          class="bg-[#795a45] text-white rounded-xl flex items-center space-x-1 px-4 py-2"
-          title="Ver planos"
+          href={img.src.src}
+          data-pswp-width={img.src.width}
+          data-pswp-height={img.src.height}
+          target="_blank"
+          class={`slide-js cursor-pointer absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         >
-          <Icon
-            name="material-symbols-light:auto-awesome-mosaic-outline"
-            size="40"
+          <Image
+            src={img.src}
+            alt={img.alt}
+            loading={index === 0 ? "eager" : "lazy"}
+            class="w-full h-full object-cover rounded-[50px]"
+            style={{
+              maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%)",
+              WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%)"
+            }}
           />
-          <span> Planos </span>
         </a>
-      </div>
-    </section>
+      ))
+    }
   </div>
+  <section class="absolute -bottom-9 drop-shadow-xl left-0 sm:left-1/2 sm:-translate-x-1/2 w-full sm:w-[70%] py-5 sm:px-6 rounded-[26px] lg:justify-between lg:flex items-center bg-[#e0ddd5]"> <h2 class="hidden">características</h2> <div class="flex items-center w-full lg:w-1/2 justify-around mb-4 lg:mb-0"> <article class="flex items-center space-x-3"> <svg width="40" height="40" class="text-amber-700" data-icon="material-symbols-light:king-bed-outline">   <symbol id="ai:material-symbols-light:king-bed-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M4.77 18h-.54l-.38-2H3v-3.39q0-.671.472-1.14q.472-.47 1.144-.47H5V8.615q0-.67.472-1.143Q5.944 7 6.616 7h10.769q.67 0 1.143.472q.472.472.472 1.143V11h.385q.67 0 1.143.472q.472.472.472 1.144V16h-.85l-.38 2h-.54l-.38-2H5.15zm7.73-7H18V8.615q0-.269-.173-.442T17.385 8H12.5zM6 11h5.5V8H6.616q-.27 0-.443.173T6 8.615zm-2 4h16v-2.384q0-.27-.173-.443T19.385 12H4.615q-.269 0-.442.173T4 12.616zm16 0H4z"></path></symbol><use href="#ai:material-symbols-light:king-bed-outline"></use>  </svg> <div> <h3>3 Dorms</h3> <p><b>2 Baños</b></p> </div> </article> <article class="flex items-center space-x-3"> <svg width="40" height="40" class="text-amber-700" data-icon="material-symbols-light:activity-zone-outline">   <symbol id="ai:material-symbols-light:activity-zone-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M5.77 20.23q-.834 0-1.417-.582q-.584-.584-.584-1.417q0-.706.428-1.238q.428-.531 1.072-.702V7.71q-.644-.171-1.072-.703t-.428-1.238q0-.833.584-1.416q.583-.584 1.416-.584q.706 0 1.238.428t.703 1.072h8.58q.166-.644.702-1.072t1.239-.428q.833 0 1.417.583q.583.584.583 1.417q0 .703-.428 1.24q-.428.535-1.072.7v8.582q.644.17 1.072.702t.428 1.238q0 .833-.583 1.417q-.584.583-1.417.583q-.706 0-1.238-.428q-.531-.428-.702-1.072H7.71q-.171.644-.703 1.072t-1.238.428m0-13.462q.425 0 .713-.287t.287-.713t-.287-.712t-.713-.288t-.712.288t-.288.712t.288.713t.712.287m12.462 0q.425 0 .712-.287t.288-.713t-.288-.712t-.712-.288t-.713.288t-.287.712t.287.713t.713.287M7.709 17.731h8.582q.148-.535.526-.914q.38-.378.914-.526V7.71q-.535-.13-.923-.518t-.518-.923H7.71q-.148.535-.527.914q-.38.378-.914.526v8.582q.535.148.914.526q.379.38.527.914m10.52 1.5q.426 0 .713-.288t.288-.712t-.288-.713t-.712-.287t-.713.287t-.287.713t.287.712t.713.288m-12.462 0q.425 0 .713-.288t.287-.712t-.287-.713t-.713-.287t-.712.287t-.288.713t.288.712t.712.288m0-1"></path></symbol><use href="#ai:material-symbols-light:activity-zone-outline"></use>  </svg> <div> <h3>Área</h3> <p><b>Desde 85 m<sup>2</sup></b></p> </div> </article> </div> <div class="flex items-center w-full lg:w-1/2 justify-around"> <article class="flex items-center space-x-3"> <svg width="40" height="40" class="text-amber-700" data-icon="material-symbols-light:graph-5">   <symbol id="ai:material-symbols-light:graph-5" viewBox="0 0 24 24"><path fill="currentColor" d="M11.983 21.462q-.978 0-1.664-.69t-.685-1.676q0-.84.534-1.49t1.332-.816v-2.478q-.39-.062-.717-.257t-.566-.491l-2.094 1.252q.064.173.095.363q.032.19.032.379q0 .985-.702 1.675t-1.68.69t-1.664-.689t-.685-1.673t.684-1.676t1.662-.693q.526 0 .983.207t.78.557l2.09-1.246q-.045-.164-.077-.347t-.032-.368q0-.183.032-.36t.095-.358l-2.088-1.213q-.323.369-.786.576q-.464.206-.997.206q-.977 0-1.662-.689T3.52 8.484t.685-1.676t1.664-.692t1.68.69t.702 1.675q0 .188-.022.377q-.022.188-.086.352l2.094 1.207q.239-.276.556-.469t.708-.254V7.196q-.798-.165-1.332-.818q-.533-.653-.533-1.493q0-.986.685-1.676t1.663-.69t1.68.69t.703 1.676q0 .84-.534 1.493t-1.332.818v2.518q.371.08.686.266q.314.186.553.462l2.138-1.219q-.063-.173-.095-.363t-.032-.38q0-.985.685-1.675t1.664-.69t1.68.69t.702 1.672t-.702 1.677t-1.683.692q-.518 0-.957-.206q-.439-.207-.762-.557l-2.144 1.219q.063.164.085.34q.023.175.023.358t-.032.352t-.076.333l2.144 1.27q.323-.35.762-.556q.44-.207.957-.207q.981 0 1.683.69q.702.688.702 1.672q0 .985-.702 1.677t-1.68.692t-1.664-.69t-.685-1.675q0-.198.032-.379t.095-.363l-2.12-1.252q-.238.296-.552.478q-.314.183-.705.264v2.485q.798.165 1.332.815t.533 1.49q0 .986-.702 1.676t-1.68.69m.007-1q.57 0 .972-.393t.403-.972q0-.58-.398-.973t-.986-.393q-.56 0-.953.403q-.393.402-.393.962t.393.963t.963.402m-6.116-3.538q.57 0 .972-.392q.403-.392.403-.972t-.398-.973t-.986-.394q-.56 0-.953.403q-.394.403-.394.963t.393.962q.394.403.963.403m12.23 0q.57 0 .973-.392t.403-.972t-.398-.973t-.987-.394q-.56 0-.953.403t-.393.963t.393.962t.963.403m-6.116-3.558q.57 0 .972-.392q.403-.392.403-.972t-.398-.973t-.986-.394q-.56 0-.953.403q-.394.403-.394.963t.394.962t.962.403M5.875 9.846q.57 0 .972-.392q.403-.392.403-.972t-.398-.973q-.398-.394-.986-.394q-.56 0-.953.403q-.394.403-.394.963t.393.962q.394.403.963.403m12.23 0q.57 0 .973-.392t.403-.972t-.398-.973q-.398-.394-.987-.394q-.56 0-.953.403t-.393.963t.393.962t.963.403M11.99 6.25q.57 0 .973-.392t.403-.972t-.399-.973q-.398-.394-.986-.394q-.56 0-.953.403t-.393.963t.393.962t.963.403"></path></symbol><use href="#ai:material-symbols-light:graph-5"></use>  </svg> <div> <h3>Etapa</h3> <p><b>Lanzamiento</b></p> </div> </article> <a href="#planos" class="bg-[#795a45] text-white rounded-xl flex items-center space-x-1 px-4 py-2" title="Ver planos"> <svg width="40" height="40" data-icon="material-symbols-light:auto-awesome-mosaic-outline">   <symbol id="ai:material-symbols-light:auto-awesome-mosaic-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M11 20H5.616q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4H11zm-1-1V5H5.616q-.27 0-.443.173T5 5.616v12.769q0 .269.173.442t.443.173zm3-8V4h5.385q.69 0 1.152.463T20 5.616V11zm1-1h5V5.616q0-.27-.173-.443T18.385 5H14zm-1 10v-7h7v5.385q0 .69-.462 1.152T18.384 20zm1-1h4.385q.269 0 .442-.173t.173-.442V14h-5zm0-5"></path></symbol><use href="#ai:material-symbols-light:auto-awesome-mosaic-outline"></use>  </svg> <span> Planos </span> </a> </div> </section>
 </section>
 
-<script is:inline>
-  const title = document.getElementById("title"); // The entire page is fully loaded
-  setTimeout(function () {
-    title.classList.remove("translate-y-4");
-    title.classList.add("translate-y-0");
-  }, 650);
-</script>
+<script>
+  // @ts-ignore
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/dist/photoswipe.css';
 
-<script is:inline>
-  const slides = document.querySelectorAll(".slide-js");
-  let currentSlide = 0;
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery-container',
+    children: 'a.slide-js', 
+    pswpModule: () => import('photoswipe'),
+    secondaryZoomLevel: 2,
+    bgOpacity: 0.9,
+    showHideAnimationType: 'zoom',
+  });
 
-  slides[0].classList.add("opacity-100");
+  lightbox.init();
 
-  function showNextSlide() {
-    for (const el of slides) {
-      el.classList.remove("opacity-100");
-    }
-    slides[currentSlide].classList.add("opacity-100");
-    currentSlide = (currentSlide + 1) % slides.length;
+  let current = 0;
+  const slides = document.querySelectorAll("a.slide-js");
+  let carouselInterval: number | null = null;
+
+  function goToSlide(nextIndex: number) {
+    if (!slides[current] || !slides[nextIndex]) return;
+    if (slides.length <= 1) return;
+
+    slides[current].classList.replace("opacity-100", "opacity-0");
+    slides[current].classList.replace("visible", "invisible");
+
+    current = nextIndex;
+
+    slides[current].classList.replace("opacity-0", "opacity-100");
+    slides[current].classList.replace("invisible", "visible");
   }
 
-  setInterval(showNextSlide, 3000);
+  function startCarousel() {
+    stopCarousel(); 
+    carouselInterval = window.setInterval(() => {
+      if (!document.querySelector('.pswp--open')) {
+        const next = (current + 1) % slides.length;
+        goToSlide(next);
+      }
+    }, 3500);
+  }
+
+  function stopCarousel() {
+    if (carouselInterval) {
+      clearInterval(carouselInterval);
+      carouselInterval = null;
+    }
+  }
+
+  lightbox.on('beforeOpen', () => {
+    stopCarousel();
+  });
+
+  lightbox.on('close', () => {
+    const index = lightbox.pswp?.currIndex; 
+    if (typeof index === 'number') {
+      goToSlide(index);
+    }
+    startCarousel();
+  });
+
+  startCarousel();
 </script>
