@@ -7,36 +7,24 @@ import BoxSubtitle from "../BoxSubtitle.astro";
 import RoundedImage from "../RoundedImage.astro";
 ---
 
-<main id="planos" class="bg-[#3a2517] mb-[70px] py-10 px-2 rounded-3xl">
-  <h2 class="text-center mb-8 text-xl text-white">
+<main id="planos" class="mb-[70px] rounded-3xl bg-[#3a2517] px-2 py-10">
+  <h2 class="mb-8 text-center text-xl text-white">
     <b>¡Encuentra el departamento perfecto para ti!</b>
   </h2>
-  <section class="flex space-x-2 mb-2">
+  <section class="mb-2 flex space-x-2">
     <article class="flex-1">
       <BoxSubtitle subtitle="Tipo 1">
         <ul class="text-sm sm:text-base">
           <li class="flex items-center space-x-2">
-            <Icon
-              name="material-symbols-light:king-bed-outline"
-              size="42"
-            
-            />
+            <Icon name="material-symbols-light:king-bed-outline" size="42" />
             <span> 3 Dorms. </span>
           </li>
           <li class="flex items-center space-x-2">
-            <Icon
-              name="material-symbols-light:shower-outline-rounded"
-              size="42"
-            
-            />
+            <Icon name="material-symbols-light:shower-outline-rounded" size="42" />
             <span>2 Baños</span>
           </li>
           <li class="flex items-center space-x-2">
-            <Icon
-              name="material-symbols-light:activity-zone-outline"
-              size="42"
-             
-            />
+            <Icon name="material-symbols-light:activity-zone-outline" size="42" />
             <span>
               Area: 80m <sup>2</sup>
             </span>
@@ -44,22 +32,18 @@ import RoundedImage from "../RoundedImage.astro";
         </ul>
         <button
           aria-label="Ver Planos"
-          class="w-16 flex items-center justify-center h-16 rounded-full
-          text-[#795a45] bg-white absolute right-5 bottom-5 sm:top-5"
+          class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white text-[#795a45] sm:top-5"
         >
-          <Icon
-            name="material-symbols-light:arrow-outward-rounded"
-            size="40"
-          />
+          <Icon name="material-symbols-light:arrow-outward-rounded" size="40" />
         </button>
       </BoxSubtitle>
     </article>
-    <article class="hidden md:block flex-1">
+    <article class="hidden flex-1 md:block">
       <h3>
         <RoundedImage src={interior1} alt="Libertad" />
       </h3>
     </article>
-    <article class="hidden lg:block flex-1">
+    <article class="hidden flex-1 lg:block">
       <h3>
         <RoundedImage src={interior2} alt="Libertad" />
       </h3>
@@ -71,7 +55,7 @@ import RoundedImage from "../RoundedImage.astro";
     </article>
   </section>
   <section class="flex space-x-2">
-    <article class="hidden md:block flex-1">
+    <article class="hidden flex-1 md:block">
       <h3>
         <RoundedImage src={interior3} alt="Libertad" />
       </h3>
@@ -90,11 +74,7 @@ import RoundedImage from "../RoundedImage.astro";
       <BoxSubtitle subtitle="Tipo 2">
         <ul class="text-sm sm:text-base">
           <li class="flex items-center space-x-2">
-            <Icon
-              name="material-symbols-light:king-bed-outline"
-              size="42"
-              class="text-white"
-            />
+            <Icon name="material-symbols-light:king-bed-outline" size="42" class="text-white" />
             <span> 3 Dorms. </span>
           </li>
           <li class="flex items-center space-x-2">
@@ -118,7 +98,7 @@ import RoundedImage from "../RoundedImage.astro";
         </ul>
         <button
           aria-label="Ver Planos"
-          class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5 sm:top-5"
+          class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white text-[#ff9100] sm:top-5"
         >
           <Icon
             name="material-symbols-light:arrow-outward-rounded"

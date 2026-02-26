@@ -8,18 +8,12 @@ const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
 ---
 
 <section class="mb-[70px]">
-  <h2
-    class="text-xl text-center mb-8 flex justify-center items-center font-bold"
-  >
-    <Icon
-      name="material-symbols-light:distance-outline"
-      size="40"
-      class="text-[#ff9100]"
-    />
+  <h2 class="mb-8 flex items-center justify-center text-center text-xl font-bold">
+    <Icon name="material-symbols-light:distance-outline" size="40" class="text-[#ff9100]" />
     <span> Ubicaci&oacute;n </span>
   </h2>
   <div class="flex space-x-2">
-    <div class="w-1/2 md:w-1/4 md:h-[500px] flex-1">
+    <div class="w-1/2 flex-1 md:h-[500px] md:w-1/4">
       <BoxSubtitle subtitle="Jr. Pedro Galvez">
         <p>Urbanizaci&oacute;n: Pio Pata</p>
         <p>A 2 cuadras de la Capilla Santo Cura de Ars</p>
@@ -27,7 +21,7 @@ const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
           href={location}
           target="_blank"
           rel="noopener"
-          class="w-16 flex items-center justify-center h-16 rounded-full text-[#ff9100] bg-white absolute right-5 bottom-5"
+          class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white text-[#ff9100]"
           title="Ubicación | Libertad | Pedro Galvez"
         >
           <Icon
@@ -38,43 +32,32 @@ const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
         </a>
       </BoxSubtitle>
     </div>
-    <div
-      class="w-1/2 md:w-3/4 rounded-[50px] md:h-[500px] h-[332px] overflow-hidden relative"
-    >
+    <div class="relative h-[332px] w-1/2 overflow-hidden rounded-[50px] md:h-[500px] md:w-3/4">
       <picture class="relative">
-        <Image src={map} alt="Libertad" class="w-full h-full object-cover" />
-        <div
-          class="absolute top-1/2 -translate-y-[60px] left-1/2 -translate-x-1/2"
-        >
+        <Image src={map} alt="Libertad" class="size-full object-cover" />
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[60px]">
           <a
             href={location}
             target="_blank"
             rel="noopener"
             title="Ubicación | Libertad | Pedro Galvez"
           >
-            <Icon
-              name="material-symbols-light:location-on"
-              size="90"
-              class="text-black"
-            />
+            <Icon name="material-symbols-light:location-on" size="90" class="text-black" />
           </a>
           <div
-            class="hidden md:flex absolute bottom-full left-1/2 -translate-x-1/2 bg-[#ff9100] text-white justify-center items-center h-[120px] w-[180px] px-10 rounded-[30px]"
+            class="absolute bottom-full left-1/2 hidden h-[120px] w-[180px] -translate-x-1/2 items-center justify-center rounded-[30px] bg-[#ff9100] px-10 text-white md:flex"
           >
             <a
               href={location}
               target="_blank"
               rel="noopener"
-              class="text-xl flex justify-center mb-2"
+              class="mb-2 flex justify-center text-xl"
               title="Ubicación | Libertad | Pedro Galvez"
             >
               <span
-                class="flex items-center space-x-1 self-center text-lg font-manrope tracking-wider"
+                class="flex items-center space-x-1 self-center font-manrope text-lg tracking-wider"
               >
-                <Icon
-                  name="material-symbols-light:home-work-outline-rounded"
-                  size="48"
-                />
+                <Icon name="material-symbols-light:home-work-outline-rounded" size="48" />
                 <b class="block pt-2">Libertad</b>
               </span>
             </a>
@@ -85,14 +68,10 @@ const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
         href={location}
         target="_blank"
         rel="noopener"
-        class="w-16 flex items-center justify-center h-16 rounded-full bg-[#ff9100] text-white absolute right-5 top-5"
+        class="absolute right-5 top-5 flex size-16 items-center justify-center rounded-full bg-[#ff9100] text-white"
         title="Ubicación | Libertad | Pedro Galvez"
       >
-        <Icon
-          name="material-symbols-light:arrow-outward-rounded"
-          size="40"
-          class="text-white"
-        />
+        <Icon name="material-symbols-light:arrow-outward-rounded" size="40" class="text-white" />
       </a>
     </div>
   </div>

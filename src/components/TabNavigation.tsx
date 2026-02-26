@@ -5,7 +5,7 @@ export default function TabNavigation({ tabs }: { tabs: string[] }) {
   const area = useStore(sharedArea);
 
   return (
-    <div className="bg-[#E0DDD8] rounded-[19px] p-2 flex space-x-2 text-sm">
+    <div className="flex space-x-2 rounded-[19px] bg-[#E0DDD8] p-2 text-sm">
       {tabs.map((tab, index) => {
         const onClick = () => {
           sharedArea.set(index.toString());
@@ -18,7 +18,7 @@ export default function TabNavigation({ tabs }: { tabs: string[] }) {
             aria-label="Ver más"
             key={index}
             title={tab}
-            className={`${activeClass} font-bold py-3 px-3 sm:px-8 rounded-[15px]`}
+            className={`${activeClass} rounded-[15px] p-3 font-bold sm:px-8`}
             onClick={onClick}
           >
             {tab}

@@ -91,65 +91,53 @@ export default function PageSlider({ backHref }: { backHref: string }) {
   }, [imageToShow]);
 
   return (
-    <section className="fixed top-0 left-0 z-40 w-full h-full bg-[#0C0C0C] p-1">
+    <section className="fixed left-0 top-0 z-40 size-full bg-[#0C0C0C] p-1">
       <img
         loading="lazy"
         src={imageToShow}
         alt="Libertad, Departamentos en Venta. Huancayo El Tambo Pio Pata"
-        className="w-full animate-scale h-full object-cover md:object-contain transition-opacity duration-700 ease-in-out"
+        className="size-full animate-scale object-cover transition-opacity duration-700 ease-in-out md:object-contain"
       />
-      <div className="absolute z-20 flex space-x-3 -translate-x-1/2 left-1/2 bottom-6">
+      <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 space-x-3">
         {images.map((image, index) => (
           <button
             aria-label="Ver Imagen"
             onClick={() => setImageToShow(image)}
             key={index}
-            className={`flex items-center transition hover:bg-opacity-100 duration-500 ease-in-out justify-center w-6 h-6 rounded-full ${
+            className={`flex size-6 items-center justify-center rounded-full transition duration-500 ease-in-out hover:bg-opacity-100 ${
               index === currentIndex ? "bg-[#ff9100]" : "bg-white bg-opacity-40"
             } `}
           ></button>
         ))}
       </div>
-      <div className="absolute z-20 flex items-center top-5 right-5 bg-[#ff9100] p-2 rounded-[50px]">
-        <div className="flex items-center text-xl h-16 px-4 mr-2 bg-white bg-opacity-20 rounded-full text-white">
+      <div className="absolute right-5 top-5 z-20 flex items-center rounded-[50px] bg-[#ff9100] p-2">
+        <div className="mr-2 flex h-16 items-center rounded-full bg-white bg-opacity-20 px-4 text-xl text-white">
           {currentIndex + 1}&nbsp;/&nbsp;{images.length}
         </div>
         <a
           href={backHref}
           title="Volver al Inicio"
-          className="flex items-center justify-center rounded-full w-16 h-16 text-[#ff9100] bg-white"
+          className="flex size-16 items-center justify-center rounded-full bg-white text-[#ff9100]"
         >
-          <Icon
-            icon="material-symbols-light:close-rounded"
-            width={40}
-            height={40}
-          />
+          <Icon icon="material-symbols-light:close-rounded" width={40} height={40} />
         </a>
       </div>
       <button
-        className="hidden sm:block absolute top-0 text-white left-0 z-10 h-full p-4 focus:outline-none group"
+        className="group absolute left-0 top-0 z-10 hidden h-full p-4 text-white focus:outline-none sm:block"
         onClick={showPrev}
         aria-label="Imagen Anterior"
       >
-        <span className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
-          <Icon
-            icon="material-symbols-light:arrow-back-rounded"
-            width={40}
-            height={40}
-          />
+        <span className="flex size-16 items-center justify-center rounded-full bg-[#ff9100] group-focus:ring">
+          <Icon icon="material-symbols-light:arrow-back-rounded" width={40} height={40} />
         </span>
       </button>
       <button
-        className="hidden sm:block absolute text-white top-0 right-0 z-10 h-full p-4 focus:outline-none group"
+        className="group absolute right-0 top-0 z-10 hidden h-full p-4 text-white focus:outline-none sm:block"
         onClick={showNext}
         aria-label="Imagen Siguiente"
       >
-        <span className="flex items-center justify-center w-16 h-16 rounded-full group-focus:ring bg-[#ff9100]">
-          <Icon
-            icon="material-symbols-light:arrow-forward-rounded"
-            width={40}
-            height={40}
-          />
+        <span className="flex size-16 items-center justify-center rounded-full bg-[#ff9100] group-focus:ring">
+          <Icon icon="material-symbols-light:arrow-forward-rounded" width={40} height={40} />
         </span>
       </button>
     </section>

@@ -8,15 +8,13 @@ const Image = ({ src, alt }: { src: string; alt: string }) => {
 
   return (
     <>
-      {loading && (
-        <div className="animate-pulse w-full h-full bg-[#EAE8E4]"></div>
-      )}
+      {loading && <div className="size-full animate-pulse bg-[#EAE8E4]"></div>}
       <img
         loading="lazy"
         src={src}
         alt={alt}
         onLoad={() => setLoading(false)}
-        className={`object-cover w-full h-full transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
+        className={`size-full object-cover transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
       />
     </>
   );
@@ -33,8 +31,8 @@ export default function TabNavigationImages({
   const area = Number($sharedArea);
 
   return (
-    <div className="flex space-x-2 -ml-2 lg:ml-0">
-      <article className="flex-1 hidden lg:block rounded-[50px] h-[332px] overflow-hidden">
+    <div className="-ml-2 flex space-x-2 lg:ml-0">
+      <article className="hidden h-[332px] flex-1 overflow-hidden rounded-[50px] lg:block">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("0")}
@@ -43,7 +41,7 @@ export default function TabNavigationImages({
           <Image src={images[area][0]} alt="Libertad" />
         </a>
       </article>
-      <article className="flex-1 hidden md:block rounded-[50px] h-[332px] overflow-hidden">
+      <article className="hidden h-[332px] flex-1 overflow-hidden rounded-[50px] md:block">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("1")}
@@ -52,7 +50,7 @@ export default function TabNavigationImages({
           <Image src={images[area][1]} alt="Libertad" />
         </a>
       </article>
-      <article className="flex-1 rounded-[50px] h-[332px] overflow-hidden">
+      <article className="h-[332px] flex-1 overflow-hidden rounded-[50px]">
         <a
           href={hrefs[area]}
           onClick={() => firstSliderImage.set("2")}
@@ -62,8 +60,8 @@ export default function TabNavigationImages({
         </a>
       </article>
       <article className="flex-1">
-        <div className="rounded-[50px] px-5 sm:px-12 py-10 sm:py-16 text-white h-[332px] overflow-hidden bg-[#795a45] relative">
-          <h3 className="text-xl sm:text-2xl mb-5 font-semibold tracking-wider">
+        <div className="relative h-[332px] overflow-hidden rounded-[50px] bg-[#795a45] px-5 py-10 text-white sm:px-12 sm:py-16">
+          <h3 className="mb-5 text-xl font-semibold tracking-wider sm:text-2xl">
             Espacios que Conectan
           </h3>
           <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
@@ -71,8 +69,7 @@ export default function TabNavigationImages({
             href={hrefs[area]}
             onClick={() => firstSliderImage.set("0")}
             title="Ver todas Las Imágenes"
-            className="w-16 flex items-center justify-center h-16 rounded-full
-           bg-white absolute right-5 bottom-5"
+            className="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white"
           >
             <Icon
               icon="material-symbols-light:arrow-outward-rounded"

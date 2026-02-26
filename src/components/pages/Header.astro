@@ -3,37 +3,33 @@ import whatsapp from "../../assets/whatsapp.svg";
 import { Image } from "astro:assets";
 ---
 
-<header class="py-4 w-full mb-28 relative">
-  <h1
-    class="flex justify-center absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-8"
-  >
+<header class="relative mb-28 w-full py-4">
+  <h1 class="absolute left-0 top-8 flex justify-center sm:left-1/2 sm:-translate-x-1/2">
     <a
       href="/"
       title="Galvez1519"
-      class="flex items-center font-tanPearl space-x-1 self-center text-2xl tracking-wider"
+      class="flex items-center space-x-1 self-center font-tanPearl text-2xl tracking-wider"
     >
       <span class="pt-1">GALVEZ</span>
-      <span class="pt-1.5 px-2 bg-[#795a45] text-white rounded-md">
-        1519
-      </span>  
+      <span class="rounded-md bg-[#795a45] px-2 pt-1.5 text-white"> 1519 </span>
     </a>
   </h1>
-  <div class="flex space-x-2 absolute right-0 top-5">
+  <div class="absolute right-0 top-5 flex space-x-2">
     <a
       href="https://wa.me/51988226088/?text=Quiero%20reservar%20una%20cita.%20%0AProyecto%20Libertad%20124%2C%20El%20Tambo%20Huancayo"
-      class="bg-[#25D366] p-2 rounded-full w-11 h-11 relative"
+      class="relative size-11 rounded-full bg-[#25D366] p-2"
       target="_blank"
       rel="noopener"
     >
       <Image
         src={whatsapp}
         alt="Libertad | Whatsapp"
-        class="w-6 absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+        class="absolute left-1/2 top-1/2 w-6 -translate-x-1/2 -translate-y-1/2"
       />
     </a>
     <button
       aria-label="Desacargar Brochure"
-      class="px-6 py-3 text-sm text-white rounded-full bg-black"
+      class="rounded-full bg-black px-6 py-3 text-sm text-white"
     >
       Brochure
     </button>

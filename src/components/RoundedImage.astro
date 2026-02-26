@@ -4,8 +4,4 @@ import { Image } from "astro:assets";
 const { src, alt = "Proyecto Libertad" } = Astro.props;
 ---
 
-<Image
-  src={src}
-  alt={alt}
-  class="w-full object-cover h-[332px] rounded-[50px]"
-/>
+<Image src={src} alt={alt} class="h-[332px] w-full rounded-[50px] object-cover" />
