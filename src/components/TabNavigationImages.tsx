@@ -62,7 +62,7 @@ export default function TabNavigationImages({
         </a>
       </article>
       <article className="flex-1">
-        <div className="rounded-[50px] px-5 sm:px-12 py-10 sm:py-16 text-white h-[332px] overflow-hidden bg-amber-700 relative">
+        <div className="rounded-[50px] px-5 sm:px-12 py-10 sm:py-16 text-white h-[332px] overflow-hidden bg-[#795a45] relative">
           <h3 className="text-xl sm:text-2xl mb-5 font-semibold tracking-wider">
             Espacios que Conectan
           </h3>
@@ -76,7 +76,7 @@ export default function TabNavigationImages({
           >
             <Icon
               icon="material-symbols-light:arrow-outward-rounded"
-              className="text-amber-700"
+              className="text-[#795a45]"
               width={40}
               height={40}
             />
