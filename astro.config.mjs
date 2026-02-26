@@ -11,4 +11,5 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   integrations: [tailwind(), icon(), react()],
+  site: "https://www.galvez1519.com",
 });
