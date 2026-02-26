@@ -19,7 +19,7 @@ module.exports = [
     },
     rules: {
       quotes: ["error", "double"],
-      "tailwindcss/no-custom-classname": "off", // Evita alertas por clases que no son de Tailwind
+      "tailwindcss/no-custom-classname": "off",
     },
   },
 
