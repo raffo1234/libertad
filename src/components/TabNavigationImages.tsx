@@ -73,7 +73,7 @@ export default function TabNavigationImages({
           >
             <Icon
               icon="material-symbols-light:arrow-outward-rounded"
-              className="text-[#795a45]"
+              className="text-amber-700"
               width={40}
               height={40}
             />
