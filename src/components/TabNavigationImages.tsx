@@ -62,8 +62,8 @@ export default function TabNavigationImages({
         </a>
       </article>
       <article className="flex-1">
-        <div className="rounded-[50px] px-4 sm:px-8 py-10 sm:py-11 text-white h-[332px] overflow-hidden bg-[#ff9100] relative">
-          <h3 className="text-lg sm:text-2xl mb-5 font-bold">
+        <div className="rounded-[50px] px-5 sm:px-12 py-10 sm:py-16 text-white h-[332px] overflow-hidden bg-amber-700 relative">
+          <h3 className="text-xl sm:text-2xl mb-5 font-semibold tracking-wider">
             Espacios que Conectan
           </h3>
           <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
@@ -72,11 +72,11 @@ export default function TabNavigationImages({
             onClick={() => firstSliderImage.set("0")}
             title="Ver todas Las Imágenes"
             className="w-16 flex items-center justify-center h-16 rounded-full
-          text-[#ff9100] bg-white absolute right-5 bottom-5"
+           bg-white absolute right-5 bottom-5"
           >
             <Icon
               icon="material-symbols-light:arrow-outward-rounded"
-              className="text-[#ff9100]"
+              className="text-amber-700"
               width={40}
               height={40}
             />
