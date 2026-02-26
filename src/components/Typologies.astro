@@ -1,0 +1,65 @@
+---
+import image1 from "../assets/image1.jpg";
+
+import TypologyCard from "./TypologyCard.astro";
+
+const typology1 = {
+  title: "Tipo 1",
+  image: image1,
+  features: [
+    { value: 3, label: "Dorms", isBold: true },
+    { value: 2, label: "Baños", isBold: true },
+    { value: "Kitchenette", label: "" },
+    { value: "Sala / Comedor", label: "" },
+    { value: 70, label: "m²", isBold: true },
+  ],
+};
+
+const typology2 = {
+  title: "Tipo 2",
+  image: image1,
+  features: [
+    { value: 3, label: "Dorms", isBold: true },
+    { value: 2, label: "Baños", isBold: true },
+    { value: "Kitchenette", label: "" },
+    { value: "Sala / Comedor", label: "" },
+    { value: 73, label: "m²", isBold: true },
+  ],
+};
+
+const typology3 = {
+  title: "Tipo 3",
+  image: image1,
+  features: [
+    { value: 3, label: "Dorms", isBold: true },
+    { value: 2, label: "Baños", isBold: true },
+    { value: "Kitchenette", label: "" },
+    { value: "Sala / Comedor", label: "" },
+    { value: 76, label: "m²", isBold: true },
+  ],
+};
+
+const typology4 = {
+  title: "Tipo 4",
+  image: image1,
+  features: [
+    { value: 3, label: "Dorms", isBold: true },
+    { value: 2, label: "Baños", isBold: true },
+    { value: "Kitchenette", label: "" },
+    { value: "Sala / Comedor", label: "" },
+    { value: 81, label: "m²", isBold: true },
+  ],
+};
+---
+
+<section class="mb-[70px]">
+  <h2 class="mb-8 text-center text-xl"><b>Encuentra el departamento perfecto para ti!</b></h2>
+  <div class="flex flex-col gap-2">
+    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+      <TypologyCard {...typology1} />
+      <TypologyCard {...typology2} />
+      <TypologyCard {...typology3} />
+      <TypologyCard {...typology4} />
+    </div>
+  </div>
+</section>

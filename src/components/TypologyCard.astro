@@ -1,0 +1,59 @@
+---
+import interior1 from "../assets/interior-1.jpg";
+import RoundedImage from "./RoundedImage.astro";
+
+interface Spec {
+  label: string;
+  value: string | number;
+  isBold?: boolean;
+}
+
+interface Props {
+  title: string;
+  features: Spec[];
+  image: ImageMetadata;
+  alt?: string;
+}
+
+const { title, features, image, alt = "Tipología del departamento" } = Astro.props;
+---
+
+<article class="grid grid-cols-1 gap-2 rounded-[58px] bg-[#E0DDD8] p-2 md:grid-cols-2">
+  <div class="relative rounded-[50px] bg-[#EAE8E4] px-5 py-10 sm:px-12 sm:py-16">
+    <h3 class="mb-6 text-lg font-semibold">{title}</h3>
+    <ul>
+      {
+        features.map((feature) => (
+          <li>
+            {feature.isBold ? <b>{feature.value}</b> : feature.value}
+            {feature.label && ` ${feature.label}`}
+          </li>
+        ))
+      }
+    </ul>
+    <button
+      title="Ver todas Las Imágenes"
+      class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        aria-hidden="true"
+        role="img"
+        class="iconify iconify--material-symbols-light text-amber-700"
+        width="40"
+        height="40"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill="currentColor"
+          d="m16.289 7.208l-9.766 9.746q-.14.14-.344.13q-.204-.009-.345-.15t-.14-.334t.14-.334L15.582 6.5H6.789q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143h9.692q.343 0 .575.232t.233.576V16q0 .213-.145.356t-.356.144t-.356-.144t-.144-.356z"
+        >
+        </path>
+      </svg>
+    </button>
+  </div>
+  <button>
+    <RoundedImage src={interior1} alt="Galvez 1519" />
+  </button>
+</article>
