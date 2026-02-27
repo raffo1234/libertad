@@ -19,12 +19,12 @@ const areas = [
     href: "/areas-comunes/gimnasio",
   },
   {
-    label: "Terraza",
+    label: "Dormitorio",
     images: [terraza1.src, terraza2.src, terraza3.src],
     href: "/areas-comunes/terraza",
   },
   {
-    label: "Reuniones SUM",
+    label: "Kitchenette",
     images: [wall1.src, wall2.src, wall3.src, wall4.src, wall5.src, wall6.src],
     href: "/areas-comunes/reuniones-sum",
   },
