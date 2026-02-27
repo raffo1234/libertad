@@ -13,19 +13,10 @@ interface Props {
   subtitle: string;
   features: Spec[];
   image: any;
-  floors: {
-    label: string;
-    isSingular: boolean;
-  };
+  floors: string[];
 }
 
-const {
-  title,
-  subtitle,
-  features,
-  floors: { isSingular, label },
-  image,
-} = Astro.props;
+const { title, subtitle, features, floors, image } = Astro.props;
 ---
 
 <article class="grid grid-cols-1 gap-2 rounded-[58px] bg-[#E0DDD8] p-2 md:grid-cols-2">
@@ -47,7 +38,7 @@ const {
       }
     </ul>
     <h5 class="mb-6 text-xs font-semibold uppercase leading-relaxed tracking-widest text-amber-700">
-      Piso{isSingular ? "" : "s"}: {label}
+      {floors.map((floor) => <span class="block">{floor}</span>)}
     </h5>
     <div class="pswp-gallery">
       <a

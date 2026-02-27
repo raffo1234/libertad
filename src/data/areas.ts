@@ -14,7 +14,7 @@ import terraza3 from "../assets/terraza3.jpg";
 
 const areas = [
   {
-    label: "Gimnasio",
+    label: "Interiores",
     images: [gym1.src, gym2.src, gym3.src, gym4.src],
     href: "/areas-comunes/gimnasio",
   },
