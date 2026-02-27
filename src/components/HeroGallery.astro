@@ -1,6 +1,5 @@
 ---
 import { Image, getImage } from "astro:assets";
-// ... (Tus imports de imágenes se mantienen igual)
 import image1 from "../assets/image1.jpg";
 import image2 from "../assets/image2.jpg";
 import image3 from "../assets/image3.jpg";
@@ -15,23 +14,24 @@ const rawImages = [
   { src: image5, alt: "Galvez1519 | Habitación bien iluminada..." },
 ];
 
-const firstImage = await getImage({ src: rawImages[0].src, width: 1200, format: "webp" });
+const firstImageOptimized = await getImage({ src: rawImages[0].src, width: 1200, format: "webp" });
+const secondImageOptimized = await getImage({ src: rawImages[1].src, width: 1200, format: "webp" });
 
-const secondaryImagesData = await Promise.all(
-  rawImages.slice(1).map(async (img) => {
-    const optimized = await getImage({ src: img.src, width: 1200, format: "webp" });
-    return {
-      full: img.src.src,
-      display: optimized.src,
-      width: img.src.width,
-      height: img.src.height,
-      alt: img.alt,
-    };
-  }),
-);
+const priorityImages = [
+  { ...rawImages[0], optimized: firstImageOptimized },
+  { ...rawImages[1], optimized: secondImageOptimized },
+];
+
+const secondaryImagesData = rawImages.slice(2).map((img) => ({
+  full: img.src.src,
+  display: img.src.src,
+  width: img.src.width,
+  height: img.src.height,
+  alt: img.alt,
+}));
 ---
 
-<link rel="preload" as="image" href={firstImage.src} fetchpriority="high" />
+<link rel="preload" as="image" href={firstImageOptimized.src} fetchpriority="high" />
 
 <div
   id="gallery-container"
@@ -49,29 +49,32 @@ const secondaryImagesData = await Promise.all(
   >
   </div>
 
-  <a
-    id="first-slide"
-    href={rawImages[0].src.src}
-    data-pswp-width={rawImages[0].src.width}
-    data-pswp-height={rawImages[0].src.height}
-    target="_blank"
-    class="slide-js visible absolute inset-0 size-full cursor-pointer opacity-100 transition-opacity duration-1000 ease-in-out"
-  >
-    <Image
-      src={rawImages[0].src}
-      alt={rawImages[0].alt}
-      loading="eager"
-      fetchpriority="high"
-      decoding="sync"
-      class="size-full rounded-[50px] bg-[#e0ddd5] object-cover"
-      style={{
-        maskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
-        transform: "translateZ(0)",
-        backfaceVisibility: "hidden",
-      }}
-    />
-  </a>
+  {
+    priorityImages.map((img, idx) => (
+      <a
+        id={idx === 0 ? "first-slide" : undefined}
+        href={img.src.src}
+        data-pswp-width={img.src.width}
+        data-pswp-height={img.src.height}
+        target="_blank"
+        class={`slide-js absolute inset-0 size-full cursor-pointer transition-opacity duration-1000 ease-in-out ${idx === 0 ? "visible opacity-100" : "invisible opacity-0"}`}
+      >
+        <Image
+          src={img.src}
+          alt={img.alt}
+          loading={idx === 0 ? "eager" : "lazy"}
+          fetchpriority={idx === 0 ? "high" : "low"}
+          decoding={idx === 0 ? "sync" : "async"}
+          class="size-full rounded-[50px] object-cover"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
+            transform: "translateZ(0)",
+          }}
+        />
+      </a>
+    ))
+  }
 </div>
 
 <script>
@@ -81,7 +84,8 @@ const secondaryImagesData = await Promise.all(
 
   const container = document.getElementById("gallery-container") as HTMLElement;
   const secondaryData = JSON.parse(container.dataset.secondary || "[]");
-  let slides: HTMLElement[] = [document.getElementById("first-slide")!];
+
+  let slides: HTMLElement[] = Array.from(container.querySelectorAll(".slide-js"));
   let current = 0;
   let carouselInterval: number | null = null;
 
@@ -99,17 +103,16 @@ const secondaryImagesData = await Promise.all(
       img.src = data.display;
       img.alt = data.alt;
       img.className = "size-full rounded-[50px] object-cover";
-
-      const maskStyle = "linear-gradient(to bottom, transparent 0%, black 20%, black 100%)";
-      img.style.maskImage = maskStyle;
+      img.style.maskImage = "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)";
       // @ts-ignore
-      img.style.WebkitMaskImage = maskStyle;
+      img.style.WebkitMaskImage =
+        "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)";
 
       anchor.appendChild(img);
       container.appendChild(anchor);
       slides.push(anchor);
     });
-    startCarousel();
+    if (slides.length > 1 && !carouselInterval) startCarousel();
   }
 
   if ("requestIdleCallback" in window) {
@@ -123,7 +126,6 @@ const secondaryImagesData = await Promise.all(
     children: "a.slide-js",
     ...pswpConfig,
   });
-
   lightbox.init();
 
   function goToSlide(nextIndex: number) {
@@ -143,6 +145,8 @@ const secondaryImagesData = await Promise.all(
       }
     }, 3500);
   }
+
+  if (slides.length > 1) startCarousel();
 
   lightbox.on("beforeOpen", () => {
     if (carouselInterval) clearInterval(carouselInterval);
