@@ -8,6 +8,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Nourd";
+  src: url("../fonts/nourd_bold.woff2") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(30px);

@@ -6,8 +6,8 @@ export default {
       fontFamily: {
         mulish: ["Mulish", "sans-serif"],
         manrope: ["Manrope", "sans-serif"],
-        urbanist: ["Urbanist", "sans-serif"],
         tanPearl: ["Tan Pearl", "sans-serif"],
+        nourd: ["Nourd", "sans-serif"],
       },
       colors: {
         "custom-orange": "#ff9100",
