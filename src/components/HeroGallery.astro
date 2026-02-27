@@ -62,10 +62,13 @@ const secondaryImagesData = await Promise.all(
       alt={rawImages[0].alt}
       loading="eager"
       fetchpriority="high"
+      decoding="sync"
       class="size-full rounded-[50px] bg-[#e0ddd5] object-cover"
       style={{
         maskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
         WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
+        transform: "translateZ(0)",
+        backfaceVisibility: "hidden",
       }}
     />
   </a>
@@ -82,7 +85,6 @@ const secondaryImagesData = await Promise.all(
   let current = 0;
   let carouselInterval: number | null = null;
 
-  // 1. LÓGICA DE CARGA DIFERIDA
   function lazyLoadImages() {
     secondaryData.forEach((data: any) => {
       const anchor = document.createElement("a");
@@ -116,16 +118,14 @@ const secondaryImagesData = await Promise.all(
     setTimeout(lazyLoadImages, 3000);
   }
 
-  // 2. INICIALIZACIÓN DE PHOTOSWIPE (CON LA CONFIG CENTRAL)
   const lightbox = new PhotoSwipeLightbox({
-    gallery: "#gallery-container", // CORREGIDO: antes decía #main-outside-gallery
-    children: "a.slide-js", // CORREGIDO: antes decía .main-img-link
-    ...pswpConfig, // INYECTAMOS ICONOS Y OPCIONES
+    gallery: "#gallery-container",
+    children: "a.slide-js",
+    ...pswpConfig,
   });
 
   lightbox.init();
 
-  // 3. LÓGICA DEL CARRUSEL
   function goToSlide(nextIndex: number) {
     if (!slides[current] || !slides[nextIndex]) return;
     slides[current].classList.replace("opacity-100", "opacity-0");
@@ -144,7 +144,6 @@ const secondaryImagesData = await Promise.all(
     }, 3500);
   }
 
-  // 4. CONTROL DE EVENTOS
   lightbox.on("beforeOpen", () => {
     if (carouselInterval) clearInterval(carouselInterval);
     carouselInterval = null;
