@@ -34,14 +34,14 @@ const mainGallery = [{ src: outside, alt: "Galvez1519 | Fachada Exterior Premium
 </div>
 
 <script>
+  import { pswpConfig } from "../lib/photoswipe";
   import PhotoSwipeLightbox from "photoswipe/lightbox";
   import "photoswipe/dist/photoswipe.css";
 
   const mainLightbox = new PhotoSwipeLightbox({
     gallery: "#main-outside-gallery",
     children: "a.main-img-link",
-    pswpModule: () => import("photoswipe"),
-    bgOpacity: 0.95,
+    ...pswpConfig,
   });
 
   mainLightbox.init();

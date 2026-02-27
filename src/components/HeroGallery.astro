@@ -72,7 +72,7 @@ const secondaryImagesData = await Promise.all(
 </div>
 
 <script>
-  // @ts-ignore
+  import { pswpConfig } from "../lib/photoswipe";
   import PhotoSwipeLightbox from "photoswipe/lightbox";
   import "photoswipe/dist/photoswipe.css";
 
@@ -82,6 +82,7 @@ const secondaryImagesData = await Promise.all(
   let current = 0;
   let carouselInterval: number | null = null;
 
+  // 1. LÓGICA DE CARGA DIFERIDA
   function lazyLoadImages() {
     secondaryData.forEach((data: any) => {
       const anchor = document.createElement("a");
@@ -97,34 +98,34 @@ const secondaryImagesData = await Promise.all(
       img.alt = data.alt;
       img.className = "size-full rounded-[50px] object-cover";
 
-      // Aplicamos la transparencia superior a las nuevas imágenes
       const maskStyle = "linear-gradient(to bottom, transparent 0%, black 20%, black 100%)";
       img.style.maskImage = maskStyle;
       // @ts-ignore
       img.style.WebkitMaskImage = maskStyle;
 
       anchor.appendChild(img);
-      container.appendChild(anchor); // Se inyectan debajo de la capa de blur por el z-index
+      container.appendChild(anchor);
       slides.push(anchor);
     });
     startCarousel();
   }
 
-  // Carga diferida
   if ("requestIdleCallback" in window) {
     window.requestIdleCallback(() => setTimeout(lazyLoadImages, 2000));
   } else {
     setTimeout(lazyLoadImages, 3000);
   }
 
-  // --- Lógica PhotoSwipe y Carrusel (se mantiene igual) ---
+  // 2. INICIALIZACIÓN DE PHOTOSWIPE (CON LA CONFIG CENTRAL)
   const lightbox = new PhotoSwipeLightbox({
-    gallery: "#gallery-container",
-    children: "a.slide-js",
-    pswpModule: () => import("photoswipe"),
+    gallery: "#gallery-container", // CORREGIDO: antes decía #main-outside-gallery
+    children: "a.slide-js", // CORREGIDO: antes decía .main-img-link
+    ...pswpConfig, // INYECTAMOS ICONOS Y OPCIONES
   });
+
   lightbox.init();
 
+  // 3. LÓGICA DEL CARRUSEL
   function goToSlide(nextIndex: number) {
     if (!slides[current] || !slides[nextIndex]) return;
     slides[current].classList.replace("opacity-100", "opacity-0");
@@ -143,10 +144,12 @@ const secondaryImagesData = await Promise.all(
     }, 3500);
   }
 
+  // 4. CONTROL DE EVENTOS
   lightbox.on("beforeOpen", () => {
     if (carouselInterval) clearInterval(carouselInterval);
     carouselInterval = null;
   });
+
   lightbox.on("close", () => {
     const index = lightbox.pswp?.currIndex;
     if (typeof index === "number") goToSlide(index);

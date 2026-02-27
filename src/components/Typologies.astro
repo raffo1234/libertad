@@ -75,13 +75,14 @@ const typology4 = {
 </section>
 
 <script>
+  import { pswpConfig } from "../lib/photoswipe";
   import PhotoSwipeLightbox from "photoswipe/lightbox";
   import "photoswipe/dist/photoswipe.css";
 
   const lightbox = new PhotoSwipeLightbox({
     gallery: ".pswp-gallery",
     children: "a",
-    pswpModule: () => import("photoswipe"),
+    ...pswpConfig,
   });
 
   lightbox.init();

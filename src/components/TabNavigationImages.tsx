@@ -4,6 +4,7 @@ import { sharedArea } from "../stores/states";
 import CircleArrow from "./CircleArrow";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/dist/photoswipe.css";
+import { createLightbox } from "../lib/photoswipe";
 
 const Image = ({ src, alt }: { src: string; alt: string }) => {
   const [loading, setLoading] = useState(true);
@@ -27,12 +28,8 @@ export default function TabNavigationImages({ images }: { images: string[][]; hr
   const currentImages = images[areaIndex] || [];
 
   useEffect(() => {
-    const lightbox = new PhotoSwipeLightbox({
-      gallery: "#gallery-areas",
-      children: "a.pswp-link",
-      pswpModule: () => import("photoswipe"),
-      bgOpacity: 0.9,
-    });
+    const lightbox = createLightbox("#gallery-areas");
+
     lightbox.init();
     return () => lightbox.destroy();
   }, [areaIndex]);
@@ -70,7 +67,7 @@ export default function TabNavigationImages({ images }: { images: string[][]; hr
           <button
             onClick={() => (document.querySelector(".pswp-link") as HTMLElement)?.click()}
             title="Ver Galería Completa"
-            className="absolute bottom-5 right-5 flex size-14 items-center justify-center rounded-full bg-white shadow-xl transition-transform hover:scale-110 active:scale-90"
+            className="absolute bottom-5 right-5"
           >
             <CircleArrow />
           </button>
