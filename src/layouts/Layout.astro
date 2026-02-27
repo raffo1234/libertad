@@ -49,6 +49,46 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
     <slot name="head" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "RealEstateListing",
+        "name": "Galvez 1519 | Departamentos boutique",
+        "description": "Exclusivo proyecto residencial en El Tambo, Huancayo. Departamentos modernos con acabados de lujo y áreas comunes diseñadas para tu estilo de vida.",
+        "url": "https://galvez1519.com",
+        "image": "https://galvez1519.com/images/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jr. Pedro Gálvez 1519",
+          "addressLocality": "El Tambo",
+          "addressRegion": "Huancayo",
+          "addressCountry": "PE"
+        },
+        "amenityFeature": [
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "SUM",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Ascensor",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Seguridad 24/7",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Estacionamiento",
+            "value": true
+          }
+        ]
+      }
+    </script>
   </head>
   <body id="app" class="bg-[#e2e1df] font-mulish opacity-0 transition-opacity duration-200">
     <slot />

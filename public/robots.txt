@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /_astro/    # No indexar archivos de construcción interna
+Disallow: /chunks/    # No indexar fragmentos de JS (si los tienes)
+Disallow: /private/   # Si tienes alguna carpeta de documentos internos
 
+# El mapa del tesoro para Google
 Sitemap: https://galvez1519.com/sitemap-index.xml
