@@ -1,0 +1,32 @@
+---
+import whatsapp from "../assets/whatsapp.svg";
+import { Image } from "astro:assets";
+---
+
+<a
+  href="https://wa.me/51988226088/?text=Quiero%20reservar%20una%20cita.%0AProyecto%20Galvez1519%2C%20El%20Tambo%20Huancayo%0AVengo%20de%20www.galvez1519.com"
+  class="group fixed bottom-5 right-5 z-[100] flex items-center justify-end"
+  target="_blank"
+  rel="noopener"
+>
+  <span
+    class="pointer-events-none mr-3 translate-x-4 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-white opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
+    style={{
+      background: "rgba(0, 0, 0, 0.4)",
+      backdropFilter: "blur(8px)",
+      WebkitBackdropFilter: "blur(8px)",
+      border: "1px solid rgba(255, 255, 255, 0.1)",
+    }}
+  >
+    Agenda una visita personalizada
+  </span>
+  <div
+    class="relative size-14 rounded-full bg-[#25D366] shadow-lg transition-transform duration-300 active:scale-95 group-hover:scale-110"
+  >
+    <Image
+      src={whatsapp}
+      alt="Galvez1519 | Whatsapp"
+      class="absolute left-1/2 top-1/2 w-8 -translate-x-1/2 -translate-y-1/2"
+    />
+  </div>
+</a>

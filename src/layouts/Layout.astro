@@ -2,6 +2,7 @@
 import "@fontsource/mulish";
 import "@fontsource/manrope";
 import "../styles/global.css";
+import WhatsappButton from "../components/WhatsappButton.astro";
 
 interface Props {
   title?: string;
@@ -46,14 +47,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body id="app" class="bg-[#e2e1df] font-mulish opacity-0 transition-opacity duration-200">
     <slot />
+    <WhatsappButton />
   </body>
 </html>
-
-<style is:inline>
-  ::selection {
-    background: rgba(255, 218, 121, 0.5);
-  }
-</style>
 
 <script is:inline>
   window.onload = function () {
