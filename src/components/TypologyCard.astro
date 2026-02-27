@@ -30,7 +30,8 @@ const { title, subtitle, features, image } = Astro.props;
       {
         features.map((item) => (
           <li class="text-[15px] leading-snug text-[#322014]/90">
-            {item.isBold ? <b class="font-nourd">{item.value}</b> : item.value} {item.label}
+            {item.isBold ? <b class="font-nourd text-black">{item.value}</b> : item.value}{" "}
+            {item.label}
           </li>
         ))
       }
