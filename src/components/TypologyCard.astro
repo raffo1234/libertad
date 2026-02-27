@@ -13,9 +13,19 @@ interface Props {
   subtitle: string;
   features: Spec[];
   image: any;
+  floors: {
+    label: string;
+    isSingular: boolean;
+  };
 }
 
-const { title, subtitle, features, image } = Astro.props;
+const {
+  title,
+  subtitle,
+  features,
+  floors: { isSingular, label },
+  image,
+} = Astro.props;
 ---
 
 <article class="grid grid-cols-1 gap-2 rounded-[58px] bg-[#E0DDD8] p-2 md:grid-cols-2">
@@ -26,7 +36,7 @@ const { title, subtitle, features, image } = Astro.props;
     >
       {subtitle}
     </h4>
-    <ul class="space-y-1">
+    <ul class="mb-6 space-y-1">
       {
         features.map((item) => (
           <li class="text-[15px] leading-snug text-[#322014]/90">
@@ -36,6 +46,9 @@ const { title, subtitle, features, image } = Astro.props;
         ))
       }
     </ul>
+    <h5 class="mb-6 text-xs font-semibold uppercase leading-relaxed tracking-widest text-amber-700">
+      Piso{isSingular ? "" : "s"}: {label}
+    </h5>
     <div class="pswp-gallery">
       <a
         href={image.src}

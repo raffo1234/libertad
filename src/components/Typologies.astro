@@ -6,6 +6,7 @@ import TypologyCard from "./TypologyCard.astro";
 const typology1 = {
   title: "70m²",
   subtitle: "Tipo 1",
+  floors: { label: "1", isSingular: true },
   image: image1,
   features: [
     { value: 3, label: "Dorms", isBold: true },
@@ -20,6 +21,7 @@ const typology2 = {
   title: "81m²",
   subtitle: "Tipo 2",
   image: image1,
+  floors: { label: "1", isSingular: true },
   features: [
     { value: 3, label: "Dorms", isBold: true },
     { value: 2, label: "Baños", isBold: true },
@@ -32,6 +34,7 @@ const typology2 = {
 const typology3 = {
   title: "90m²",
   subtitle: "Tipo 3",
+  floors: { label: "2 al 5", isSingular: false },
   image: image1,
   features: [
     { value: 3, label: "Dorms", isBold: true },
@@ -45,6 +48,7 @@ const typology3 = {
 const typology4 = {
   title: "100m²",
   subtitle: "Tipo 4",
+  floors: { label: "2 al 5", isSingular: false },
   image: image1,
   features: [
     { value: 3, label: "Dorms", isBold: true },
