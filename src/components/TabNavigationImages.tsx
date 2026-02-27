@@ -76,8 +76,6 @@ export default function TabNavigationImages({ images }: { images: string[][]; hr
           </button>
         </div>
       </article>
-
-      {/* Imágenes ocultas (del índice 3 en adelante) */}
       <div className="hidden">
         {hiddenImages.map((img, idx) => (
           <a

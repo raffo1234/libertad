@@ -32,7 +32,7 @@
 .pswp__button--zoom:hover {
   background-color: rgba(255, 255, 255, 0.6) !important;
   color: rgba(255, 255, 255, 0.6) !important;
-} 
+}
 
 .pswp__button--close svg,
 .pswp__button--zoom svg {
@@ -49,8 +49,12 @@
   background-color: #b45309 !important;
   text-shadow: none !important;
   color: #fff;
+  font-family: "Nourd";
+  font-size: 16px !important;
   padding: 0.75rem !important;
+  opacity: 1 !important;
   height: auto !important;
   border-radius: 1rem;
   line-height: 1.5;
+  align-self: center;
 }
