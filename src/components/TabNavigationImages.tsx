@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { sharedArea, firstSliderImage } from "../stores/states";
+import { sharedArea } from "../stores/states";
 import CircleArrow from "./CircleArrow";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import "photoswipe/dist/photoswipe.css";
 
 const Image = ({ src, alt }: { src: string; alt: string }) => {
   const [loading, setLoading] = useState(true);
-
   return (
     <>
       {loading && <div className="size-full animate-pulse bg-[#EAE8E4]"></div>}
@@ -20,61 +21,74 @@ const Image = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-export default function TabNavigationImages({
-  images,
-  hrefs,
-}: {
-  images: string[][];
-  hrefs: string[];
-}) {
+export default function TabNavigationImages({ images }: { images: string[][]; hrefs: string[] }) {
   const $sharedArea = useStore(sharedArea);
-  const area = Number($sharedArea);
+  const areaIndex = Number($sharedArea);
+  const currentImages = images[areaIndex] || [];
+
+  useEffect(() => {
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: "#gallery-areas",
+      children: "a.pswp-link",
+      pswpModule: () => import("photoswipe"),
+      bgOpacity: 0.9,
+    });
+    lightbox.init();
+    return () => lightbox.destroy();
+  }, [areaIndex]);
+
+  const visibleImages = currentImages.slice(0, 3);
+  const hiddenImages = currentImages.slice(3);
 
   return (
-    <div className="-ml-2 flex space-x-2 lg:ml-0">
-      <article className="hidden h-[332px] flex-1 overflow-hidden rounded-[50px] lg:block">
-        <a
-          href={hrefs[area]}
-          onClick={() => firstSliderImage.set("0")}
-          title="Ver todas Las Imágenes"
+    <div id="gallery-areas" className="-ml-2 flex h-[332px] space-x-2 lg:ml-0">
+      {visibleImages.map((img, idx) => (
+        <article
+          key={`${areaIndex}-${idx}`}
+          className={`h-full flex-1 overflow-hidden rounded-[50px] ${idx === 0 ? "hidden lg:block" : ""} ${idx === 1 ? "hidden md:block" : ""} ${idx === 2 ? "block" : ""}`}
         >
-          <Image src={images[area][0]} alt="Galvez1519" />
-        </a>
-      </article>
-      <article className="hidden h-[332px] flex-1 overflow-hidden rounded-[50px] md:block">
-        <a
-          href={hrefs[area]}
-          onClick={() => firstSliderImage.set("1")}
-          title="Ver todas Las Imágenes"
-        >
-          <Image src={images[area][1]} alt="Galvez1519" />
-        </a>
-      </article>
-      <article className="h-[332px] flex-1 overflow-hidden rounded-[50px]">
-        <a
-          href={hrefs[area]}
-          onClick={() => firstSliderImage.set("2")}
-          title="Ver todas Las Imágenes"
-        >
-          <Image src={images[area][2]} alt="Galvez1519" />
-        </a>
-      </article>
+          <a
+            href={img}
+            data-pswp-width="1200"
+            data-pswp-height="1600"
+            className="pswp-link block size-full"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Image src={img} alt={`Área ${idx + 1}`} />
+          </a>
+        </article>
+      ))}
       <article className="flex-1">
-        <div className="relative h-[332px] overflow-hidden rounded-[50px] bg-[#795a45] px-5 py-10 text-white sm:px-12 sm:py-16">
+        <div className="relative h-full overflow-hidden rounded-[50px] bg-[#795a45] px-5 py-10 text-white sm:px-12 sm:py-16">
           <h3 className="mb-5 text-xl font-semibold tracking-wider sm:text-2xl">
             Espacios que Conectan
           </h3>
-          <p>Diseñadas para inspirar, relajar y crear momentos inolvidables.</p>
-          <a
-            href={hrefs[area]}
-            onClick={() => firstSliderImage.set("0")}
-            title="Ver todas Las Imágenes"
-            className="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white"
+          <p className="text-sm opacity-90 sm:text-base">
+            {currentImages.length} fotos disponibles para inspirar tus momentos.
+          </p>
+          <button
+            onClick={() => (document.querySelector(".pswp-link") as HTMLElement)?.click()}
+            title="Ver Galería Completa"
+            className="absolute bottom-5 right-5 flex size-14 items-center justify-center rounded-full bg-white shadow-xl transition-transform hover:scale-110 active:scale-90"
           >
             <CircleArrow />
-          </a>
+          </button>
         </div>
       </article>
+
+      {/* Imágenes ocultas (del índice 3 en adelante) */}
+      <div className="hidden">
+        {hiddenImages.map((img, idx) => (
+          <a
+            key={`hidden-${idx}`}
+            href={img}
+            data-pswp-width="1200"
+            data-pswp-height="1600"
+            className="pswp-link"
+          ></a>
+        ))}
+      </div>
     </div>
   );
 }
