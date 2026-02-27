@@ -21,7 +21,7 @@ const { title, subtitle, features, image } = Astro.props;
   <div class="relative flex flex-col justify-center rounded-[50px] bg-[#EAE8E4] p-10 sm:p-12">
     <h3 class="mb-2 font-nourd text-2xl leading-none">{title}</h3>
     <h4
-      class="py-.5 mb-6 w-fit rounded-full bg-amber-700 px-3 text-xs uppercase leading-relaxed tracking-widest text-white"
+      class="-ml-3 mb-6 w-fit rounded-[19px] bg-[#E0DDD8] p-3 text-xs font-semibold uppercase leading-relaxed tracking-widest text-[#807357] sm:px-8"
     >
       {subtitle}
     </h4>
@@ -40,14 +40,14 @@ const { title, subtitle, features, image } = Astro.props;
         data-pswp-width={image.width}
         data-pswp-height={image.height}
         target="_blank"
-        class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white shadow-sm transition-transform hover:scale-110 active:scale-95"
+        class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-amber-700 shadow-sm transition-transform hover:scale-110 active:scale-95"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"
           viewBox="0 0 24 24"
-          class="text-amber-700"
+          class="text-white"
         >
           <path
             fill="currentColor"
