@@ -1,7 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import outside from "../../assets/outside.jpg";
 import { Icon } from "astro-icon/components";
+import FooterImage from "../FooterImage.astro";
 ---
 
 <section>
@@ -21,10 +20,10 @@ import { Icon } from "astro-icon/components";
     </p>
   </div>
   <article
-    class="reveal relative mx-auto h-[400px] w-full overflow-hidden rounded-[30px] sm:h-[600px] sm:w-3/4 lg:h-[816px] lg:w-1/2"
+    class="reveal relative mx-auto h-[400px] w-full overflow-hidden sm:h-[600px] sm:w-3/4 lg:h-[816px] lg:w-1/2"
   >
-    <h3>
-      <Image src={outside} alt="Galvez1519" class="size-full object-cover object-top" />
+    <h3 class="h-full">
+      <FooterImage />
       <button
         aria-label="Ver Imagen"
         class="absolute right-5 top-5 flex size-16 items-center justify-center rounded-full bg-amber-700 text-white"
