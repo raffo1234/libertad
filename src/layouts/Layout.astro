@@ -1,6 +1,7 @@
 ---
-import "@fontsource/mulish";
-import "@fontsource/manrope";
+import "@fontsource/mulish/400.css";
+import "@fontsource/mulish/700.css";
+import "@fontsource/manrope/700.css";
 import "../styles/global.css";
 import WhatsappButton from "../components/WhatsappButton.astro";
 
@@ -12,24 +13,26 @@ interface Props {
 
 const {
   title = "Galvez 1519 | Departamentos boutique",
-  description = "2 -3 Dormitorios. Encuentra el departamento perfecto para ti en el corazón de la ciudad.",
+  description = "2-3 Dormitorios. Encuentra el departamento perfecto para ti en el corazón de la ciudad.",
   image = "/images/og-image.jpg",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(image, Astro.url).href;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="bg-[#e2e1df]">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Galvez 1519" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#e2e1df" />
+
     <link rel="canonical" href={canonicalURL} />
 
     <title>{title}</title>
@@ -40,65 +43,56 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:image" content={socialImageURL} />
 
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <meta property="twitter:image" content={socialImageURL} />
 
     <slot name="head" />
 
-    <script type="application/ld+json">
-      {
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "RealEstateListing",
-        "name": "Galvez 1519 | Departamentos boutique",
-        "description": "Exclusivo proyecto residencial en El Tambo, Huancayo. Departamentos modernos con acabados de lujo y áreas comunes diseñadas para tu estilo de vida.",
-        "url": "https://galvez1519.com",
-        "image": "https://galvez1519.com/images/og-image.jpg",
-        "address": {
+        name: title,
+        description: "Exclusivo proyecto residencial en El Tambo, Huancayo.",
+        url: Astro.url.origin,
+        image: socialImageURL,
+        address: {
           "@type": "PostalAddress",
-          "streetAddress": "Jr. Pedro Gálvez 1519",
-          "addressLocality": "El Tambo",
-          "addressRegion": "Huancayo",
-          "addressCountry": "PE"
+          streetAddress: "Jr. Mariano Gálvez 1519",
+          addressLocality: "El Tambo",
+          addressRegion: "Huancayo",
+          addressCountry: "PE",
         },
-        "amenityFeature": [
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "SUM",
-            "value": true
-          },
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Ascensor",
-            "value": true
-          },
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Seguridad 24/7",
-            "value": true
-          },
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Estacionamiento",
-            "value": true
-          }
-        ]
-      }
-    </script>
+      })}
+    />
   </head>
-  <body id="app" class="bg-[#e2e1df] font-mulish opacity-0 transition-opacity duration-200">
+  <body class="font-mulish text-gray-900 antialiased">
     <slot />
     <WhatsappButton />
   </body>
 </html>
 
-<script is:inline>
-  window.onload = function () {
-    const app = document.getElementById("app");
-    app.classList.add("opacity-100");
-  };
-</script>
+<style is:global>
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
