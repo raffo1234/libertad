@@ -1,7 +1,7 @@
 ---
 import "@fontsource/mulish/400.css";
 import "@fontsource/mulish/700.css";
-import "@fontsource/manrope/700.css";
+import "@fontsource/manrope/400.css";
 import "../styles/global.css";
 import WhatsappButton from "../components/WhatsappButton.astro";
 
@@ -72,7 +72,7 @@ const socialImageURL = new URL(image, Astro.url).href;
       })}
     />
   </head>
-  <body class="font-mulish text-gray-900 antialiased">
+  <body class="font-mulish text-gray-800 antialiased">
     <slot />
     <WhatsappButton />
   </body>
