@@ -1,6 +1,48 @@
 ---
 import { Image } from "astro:assets";
 import outside from "../assets/outside.jpg";
+import CircleArrow from "./CircleArrow";
+
+const mainGallery = [{ src: outside, alt: "Galvez1519 | Fachada Exterior Premium" }];
 ---
 
-<Image src={outside} alt="Galvez1519" class="h-full rounded-[30px] object-fill object-top" />
+<div id="main-outside-gallery" class="size-full">
+  {
+    mainGallery.map((img) => (
+      <a
+        href={img.src.src}
+        data-pswp-width={img.src.width}
+        data-pswp-height={img.src.height}
+        target="_blank"
+        class="main-img-link block size-full"
+      >
+        <Image
+          src={img.src}
+          alt={img.alt}
+          class="size-full rounded-[30px] object-cover object-left-top"
+        />
+      </a>
+    ))
+  }
+  <button
+    onclick="this.parentElement.querySelector('.main-img-link').click();"
+    aria-label="Ver Imagen"
+    class="absolute right-5 top-5 z-10"
+  >
+    <CircleArrow />
+  </button>
+</div>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/dist/photoswipe.css";
+
+  const mainLightbox = new PhotoSwipeLightbox({
+    gallery: "#main-outside-gallery",
+    children: "a.main-img-link",
+    pswpModule: () => import("photoswipe"),
+    bgOpacity: 0.95,
+  });
+
+  mainLightbox.init();
+</script>
