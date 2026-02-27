@@ -1,0 +1,155 @@
+---
+import { Image, getImage } from "astro:assets";
+// ... (Tus imports de imágenes se mantienen igual)
+import image1 from "../assets/image1.jpg";
+import image2 from "../assets/image2.jpg";
+import image3 from "../assets/image3.jpg";
+import image4 from "../assets/image4.jpg";
+import image5 from "../assets/image5.jpg";
+
+const rawImages = [
+  { src: image1, alt: "Galvez1519 | Sala luminosa..." },
+  { src: image2, alt: "Galvez1519 | Dormitorios..." },
+  { src: image3, alt: "Galvez1519 | Espacio de estudio..." },
+  { src: image4, alt: "Galvez1519 | Sala comedor..." },
+  { src: image5, alt: "Galvez1519 | Habitación bien iluminada..." },
+];
+
+const firstImage = await getImage({ src: rawImages[0].src, width: 1200, format: "webp" });
+
+const secondaryImagesData = await Promise.all(
+  rawImages.slice(1).map(async (img) => {
+    const optimized = await getImage({ src: img.src, width: 1200, format: "webp" });
+    return {
+      full: img.src.src,
+      display: optimized.src,
+      width: img.src.width,
+      height: img.src.height,
+      alt: img.alt,
+    };
+  }),
+);
+---
+
+<link rel="preload" as="image" href={firstImage.src} fetchpriority="high" />
+
+<div
+  id="gallery-container"
+  class="pswp-gallery relative mt-[-3%] h-[540px] w-full overflow-hidden rounded-[50px]"
+  data-secondary={JSON.stringify(secondaryImagesData)}
+>
+  <div
+    class="pointer-events-none absolute left-0 top-0 z-20 h-[140px] w-full rounded-t-[50px]"
+    style={{
+      backdropFilter: "blur(5px)",
+      WebkitBackdropFilter: "blur(5px)",
+      maskImage: "linear-gradient(to bottom, black 2%, transparent 100%)",
+      WebkitMaskImage: "linear-gradient(to bottom, black 2%, transparent 100%)",
+    }}
+  >
+  </div>
+
+  <a
+    id="first-slide"
+    href={rawImages[0].src.src}
+    data-pswp-width={rawImages[0].src.width}
+    data-pswp-height={rawImages[0].src.height}
+    target="_blank"
+    class="slide-js visible absolute inset-0 size-full cursor-pointer opacity-100 transition-opacity duration-1000 ease-in-out"
+  >
+    <Image
+      src={rawImages[0].src}
+      alt={rawImages[0].alt}
+      loading="eager"
+      fetchpriority="high"
+      class="size-full rounded-[50px] bg-[#e0ddd5] object-cover"
+      style={{
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
+      }}
+    />
+  </a>
+</div>
+
+<script>
+  // @ts-ignore
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/dist/photoswipe.css";
+
+  const container = document.getElementById("gallery-container") as HTMLElement;
+  const secondaryData = JSON.parse(container.dataset.secondary || "[]");
+  let slides: HTMLElement[] = [document.getElementById("first-slide")!];
+  let current = 0;
+  let carouselInterval: number | null = null;
+
+  function lazyLoadImages() {
+    secondaryData.forEach((data: any) => {
+      const anchor = document.createElement("a");
+      anchor.href = data.full;
+      anchor.className =
+        "slide-js absolute inset-0 size-full cursor-pointer opacity-0 invisible transition-opacity duration-1000 ease-in-out";
+      anchor.setAttribute("data-pswp-width", data.width);
+      anchor.setAttribute("data-pswp-height", data.height);
+      anchor.target = "_blank";
+
+      const img = document.createElement("img");
+      img.src = data.display;
+      img.alt = data.alt;
+      img.className = "size-full rounded-[50px] object-cover";
+
+      // Aplicamos la transparencia superior a las nuevas imágenes
+      const maskStyle = "linear-gradient(to bottom, transparent 0%, black 20%, black 100%)";
+      img.style.maskImage = maskStyle;
+      // @ts-ignore
+      img.style.WebkitMaskImage = maskStyle;
+
+      anchor.appendChild(img);
+      container.appendChild(anchor); // Se inyectan debajo de la capa de blur por el z-index
+      slides.push(anchor);
+    });
+    startCarousel();
+  }
+
+  // Carga diferida
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(() => setTimeout(lazyLoadImages, 2000));
+  } else {
+    setTimeout(lazyLoadImages, 3000);
+  }
+
+  // --- Lógica PhotoSwipe y Carrusel (se mantiene igual) ---
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#gallery-container",
+    children: "a.slide-js",
+    pswpModule: () => import("photoswipe"),
+  });
+  lightbox.init();
+
+  function goToSlide(nextIndex: number) {
+    if (!slides[current] || !slides[nextIndex]) return;
+    slides[current].classList.replace("opacity-100", "opacity-0");
+    slides[current].classList.replace("visible", "invisible");
+    current = nextIndex;
+    slides[current].classList.replace("opacity-0", "opacity-100");
+    slides[current].classList.replace("invisible", "visible");
+  }
+
+  function startCarousel() {
+    if (carouselInterval || slides.length <= 1) return;
+    carouselInterval = window.setInterval(() => {
+      if (!document.querySelector(".pswp--open")) {
+        goToSlide((current + 1) % slides.length);
+      }
+    }, 3500);
+  }
+
+  lightbox.on("beforeOpen", () => {
+    if (carouselInterval) clearInterval(carouselInterval);
+    carouselInterval = null;
+  });
+  lightbox.on("close", () => {
+    const index = lightbox.pswp?.currIndex;
+    if (typeof index === "number") goToSlide(index);
+    startCarousel();
+  });
+</script>
