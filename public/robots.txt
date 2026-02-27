@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://galvez1519.com/sitemap-index.xml
