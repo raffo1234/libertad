@@ -1,4 +1,5 @@
 ---
+import CircleArrow from "./CircleArrow";
 import RoundedImage from "./RoundedImage.astro";
 
 interface Spec {
@@ -40,20 +41,9 @@ const { title, subtitle, features, image } = Astro.props;
         data-pswp-width={image.width}
         data-pswp-height={image.height}
         target="_blank"
-        class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-amber-700 shadow-sm transition-transform hover:scale-110 active:scale-95"
+        class="absolute bottom-5 right-5"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="40"
-          height="40"
-          viewBox="0 0 24 24"
-          class="text-white"
-        >
-          <path
-            fill="currentColor"
-            d="m16.289 7.208l-9.766 9.746q-.14.14-.344.13q-.204-.009-.345-.15t-.14-.334t.14-.334L15.582 6.5H6.789q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143h9.692q.343 0 .575.232t.233.576V16q0 .213-.145.356t-.356.144t-.356-.144t-.144-.356z"
-          ></path>
-        </svg>
+        <CircleArrow isDark />
       </a>
     </div>
   </div>

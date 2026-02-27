@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Icon } from "@iconify/react";
 import { useStore } from "@nanostores/react";
 import { sharedArea, firstSliderImage } from "../stores/states";
+import CircleArrow from "./CircleArrow";
 
 const Image = ({ src, alt }: { src: string; alt: string }) => {
   const [loading, setLoading] = useState(true);
@@ -71,12 +71,7 @@ export default function TabNavigationImages({
             title="Ver todas Las Imágenes"
             className="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-white"
           >
-            <Icon
-              icon="material-symbols-light:arrow-outward-rounded"
-              className="text-amber-700"
-              width={40}
-              height={40}
-            />
+            <CircleArrow />
           </a>
         </div>
       </article>
