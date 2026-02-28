@@ -3,50 +3,72 @@ import { Image } from "astro:assets";
 import map from "../../assets/map.png";
 import { Icon } from "astro-icon/components";
 import BoxSubtitle from "../BoxSubtitle.astro";
+import CircleArrow from "../CircleArrow";
 
 const location = "https://maps.app.goo.gl/sJssGURP4RC8HrHX7";
+// Definimos la curva boutique para reusarla en los estilos inline o clases
+const boutiqueEase = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 ---
 
 <section class="mb-[70px]">
   <h2 class="reveal mb-8 flex items-center justify-center text-center text-xl font-bold">
     <Icon name="material-symbols-light:distance-outline" size="40" class="text-amber-700" />
-    <span> Ubicaci&oacute;n </span>
+    <span> Ubicación </span>
   </h2>
+
   <article class="reveal flex gap-2">
     <div class="hidden w-1/2 flex-1 lg:block lg:h-[500px] lg:w-1/4">
       <BoxSubtitle subtitle="Jr. Pedro Galvez 1519">
         <p>
-          Urbanizaci&oacute;n Pio Pata <br />
+          Urbanización Pio Pata <br />
           <span
             class="text-xs font-semibold uppercase leading-relaxed tracking-widest text-amber-700"
-            >El Tambo - Huancayo</span
           >
+            El Tambo - Huancayo
+          </span>
         </p>
         <br />
         <p class="text-sm">A 2 cuadras de la <br /> Capilla Santo Cura de Ars</p>
+
         <a
           href={location}
           target="_blank"
           rel="noopener"
-          class="absolute bottom-5 right-5 flex size-16 items-center justify-center rounded-full bg-amber-700 text-custom-orange"
+          class="absolute bottom-5 right-5"
           title="Ubicación | Pedro Galvez 1519"
         >
-          <Icon class="text-white" name="material-symbols-light:arrow-outward-rounded" size="40" />
+          <CircleArrow isDark client:load />
         </a>
       </BoxSubtitle>
     </div>
-    <div class="relative h-[500px] w-full overflow-hidden rounded-[50px] lg:w-2/3">
-      <picture class="relative">
-        <Image src={map} alt="Galvez 1519" class="size-full object-cover" />
-        <div class="absolute left-1/2 top-1/2 translate-y-[50px]">
-          <a href={location} target="_blank" rel="noopener" title="Ubicación | Pedro Galvez 1519">
-            <Icon class="text-amber-700" name="material-symbols-light:location-on" size="70" />
-          </a>
+
+    <div class="relative h-[500px] w-full overflow-hidden rounded-[50px] bg-[#EAE8E4] lg:w-2/3">
+      <picture class="relative block size-full">
+        <Image
+          src={map}
+          alt="Mapa Galvez 1519"
+          class="size-full scale-105 object-cover opacity-0 blur-sm transition-all duration-1000 ease-out"
+          onload="this.classList.remove('opacity-0', 'blur-sm', 'scale-105')"
+        />
+
+        <div class="absolute left-1/2 top-1/2 z-10 translate-y-[50px]">
           <a
             href={location}
             target="_blank"
             rel="noopener"
-            class="absolute bottom-full left-1/2 flex aspect-square -translate-x-1/2 flex-col items-center justify-center gap-2 rounded-full bg-[#795a45] px-10 pb-2 font-tanPearl"
+            title="Ubicación | Pedro Galvez 1519"
+            class="block transition-all duration-500 hover:scale-125 active:scale-90"
+            style={{ transitionTimingFunction: boutiqueEase }}
+          >
+            <Icon class="text-amber-700" name="material-symbols-light:location-on" size="70" />
+          </a>
+
+          <a
+            href={location}
+            target="_blank"
+            rel="noopener"
+            class="absolute bottom-full left-1/2 flex aspect-square -translate-x-1/2 flex-col items-center justify-center gap-2 rounded-full bg-[#795a45] px-10 pb-2 font-tanPearl shadow-xl transition-all duration-500 hover:scale-110 active:scale-95"
+            style={{ transitionTimingFunction: boutiqueEase }}
             title="Ubicación | Pedro Galvez 1519"
           >
             <span class="block pt-2 text-2xl text-[#c0a288]">Galvez</span>
