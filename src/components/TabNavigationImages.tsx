@@ -4,6 +4,7 @@ import { sharedArea } from "../stores/states";
 import CircleArrow from "./CircleArrow";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/dist/photoswipe.css";
+import { pswpConfig } from "../lib/photoswipe";
 
 const FadeInImage = ({ src, alt }: { src: string; alt: string }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -55,7 +56,7 @@ export default function TabNavigationImages({ images }: { images: string[][] }) 
     lightbox.current = new PhotoSwipeLightbox({
       gallery: "#gallery-areas",
       children: "a.pswp-link",
-      pswpModule: () => import("photoswipe"),
+      ...pswpConfig,
     });
     lightbox.current.init();
 
@@ -70,8 +71,6 @@ export default function TabNavigationImages({ images }: { images: string[][] }) 
     firstLink?.click();
   };
 
-  // Mientras no esté montado, renderizamos un contenedor vacío con la misma altura
-  // Esto evita que el servidor mande datos que choquen con el cliente (Hydration Error)
   if (!isMounted) {
     return <div className="h-[332px] w-full animate-pulse rounded-[50px] bg-[#EAE8E4]" />;
   }
