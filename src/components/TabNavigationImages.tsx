@@ -5,7 +5,6 @@ import CircleArrow from "./CircleArrow";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/dist/photoswipe.css";
 
-// Sub-componente interno para el efecto de carga premium
 const FadeInImage = ({ src, alt }: { src: string; alt: string }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -14,7 +13,7 @@ const FadeInImage = ({ src, alt }: { src: string; alt: string }) => {
       src={src}
       alt={alt}
       onLoad={() => setIsLoaded(true)}
-      className={`size-full object-cover transition-all duration-1000 ease-out ${isLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-sm"}`}
+      className={`hover-boutique size-full object-cover transition-all duration-1000 ease-out ${isLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-sm"}`}
     />
   );
 };
@@ -113,7 +112,6 @@ export default function TabNavigationImages({ images }: { images: string[][] }) 
         </div>
       </article>
 
-      {/* Galería oculta para PhotoSwipe */}
       <div className="hidden">
         {currentImages.slice(3).map((img, idx) => (
           <a

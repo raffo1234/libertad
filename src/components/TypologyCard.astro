@@ -53,7 +53,12 @@ const { title, subtitle, features, floors, image } = Astro.props;
     </div>
   </div>
   <div class="pswp-gallery">
-    <a href={image.src} data-pswp-width={image.width} data-pswp-height={image.height}>
+    <a
+      href={image.src}
+      class="block overflow-hidden rounded-[50px]"
+      data-pswp-width={image.width}
+      data-pswp-height={image.height}
+    >
       <RoundedImage src={image} alt={title} />
     </a>
   </div>

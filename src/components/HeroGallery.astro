@@ -62,7 +62,7 @@ const maskStyle =
       fetchpriority="high"
       loading="eager"
       decoding="sync"
-      class="size-full rounded-[50px] object-cover"
+      class="hover-boutique size-full rounded-[50px] object-cover"
       style={maskStyle}
     />
   </a>
@@ -78,7 +78,7 @@ const maskStyle =
       alt={rawImages[1].alt}
       width={1200}
       loading="lazy"
-      class="size-full rounded-[50px] object-cover"
+      class="hover-boutique size-full rounded-[50px] object-cover"
       style={maskStyle}
     />
   </a>
@@ -108,7 +108,7 @@ const maskStyle =
       img.src = data.display;
       img.alt = data.alt;
       img.loading = "lazy";
-      img.className = "size-full rounded-[50px] object-cover";
+      img.className = "size-full rounded-[50px] object-cover hover-boutique";
       img.style.maskImage = "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)";
       // @ts-ignore
       img.style.WebkitMaskImage =
