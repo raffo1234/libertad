@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import bgImage from "../assets/interior-1.jpg";
+import RoundedImage from "../components/RoundedImage.astro";
+import { Image, getImage } from "astro:assets";
+import CircleArrow from "../components/CircleArrow";
+
+const title = "404 - Página no encontrada | Gálvez 1519";
+const maskStyle =
+  "mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 100%);";
+---
+
+<Layout title={title}>
+  <main class="px-4 py-8 text-center">
+    <h1 class="mb-28 flex justify-center">
+      <a
+        href="/"
+        title="Galvez 1519 - Hogar soñado en el corazón de El Tambo"
+        class="flex items-center space-x-1 self-center font-tanPearl text-2xl tracking-wider"
+      >
+        <span class="pt-1">GALVEZ</span>
+        <span class="rounded-md bg-[#795a45] px-2 pt-1.5 text-white"> 1519 </span>
+      </a>
+    </h1>
+    <p class="text-xl sm:text-2xl">Parece que te has desviado del camino.</p>
+    <h2
+      class="text-nowrap text-center font-manrope leading-[1em]"
+      style="font-size:clamp(24px, 10vw + 1rem, 160px)"
+    >
+      404
+    </h2>
+    <div class="relative mx-auto mt-[-2%] flex w-full max-w-[330px] justify-center">
+      <div
+        class="pointer-events-none absolute left-0 top-0 z-20 h-[140px] w-full rounded-t-[50px]"
+        style="backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); mask-image: linear-gradient(to bottom, black 2%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 2%, transparent 100%);"
+      >
+      </div>
+      <a
+        href="/"
+        class="block w-full rounded-[50px]"
+        title="Ir al inicio - Galvez 1519 - Hogar soñado en el corazón de El Tambo"
+        style={maskStyle}
+      >
+        <Image
+          src={bgImage}
+          width={300}
+          class="w-full"
+          alt="Galvez 1519 - Hogar soñado en el corazón de El Tambo"
+        />
+      </a>
+    </div>
+    <div class="flex justify-center pt-6">
+      <a
+        href="/"
+        title="Ir al inicio - Galvez 1519 - Hogar soñado en el corazón de El Tambo"
+        class="mx-auto"><CircleArrow /></a
+      >
+    </div>
+  </main>
+</Layout>
