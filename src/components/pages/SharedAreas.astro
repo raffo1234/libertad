@@ -8,12 +8,12 @@ const images = areas.map((area) => area.images);
 const hrefs = areas.map((area) => area.href);
 ---
 
-<section id="areas-comunes" class="mb-[50px] pt-[50px]">
-  <h2 class="reveal mb-8 text-center text-xl"><b>Áreas modernas</b></h2>
-  <div class="reveal mb-11 flex h-[60px] w-full justify-center">
-    <TabNavigation client:only tabs={tabs} />
+<section id="areas-comunes" class="mb-[50px] px-4 pt-[50px] md:px-0">
+  <h2 class="reveal mb-10 text-center text-2xl font-bold tracking-tight">Áreas modernas</h2>
+  <div class="reveal mb-10 flex justify-center">
+    <TabNavigation client:load tabs={tabs} />
   </div>
-  <div class="reveal h-[332px]">
-    <TabNavigationImages client:only images={images} hrefs={hrefs} />
+  <div class="reveal min-h-[332px]">
+    <TabNavigationImages client:visible images={images} />
   </div>
 </section>

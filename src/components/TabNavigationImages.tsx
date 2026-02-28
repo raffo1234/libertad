@@ -1,87 +1,105 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { sharedArea } from "../stores/states";
 import CircleArrow from "./CircleArrow";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/dist/photoswipe.css";
-import { createLightbox } from "../lib/photoswipe";
 
-const Image = ({ src, alt }: { src: string; alt: string }) => {
-  const [loading, setLoading] = useState(true);
+// Sub-componente para gestionar el fundido de cada imagen al cargar
+const FadeInImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
-    <>
-      {loading && <div className="size-full animate-pulse bg-[#EAE8E4]"></div>}
-      <img
-        loading="lazy"
-        src={src}
-        alt={alt}
-        onLoad={() => setLoading(false)}
-        className={`size-full object-cover transition-opacity duration-700 ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}
-      />
-    </>
+    <img
+      src={src}
+      alt={alt}
+      onLoad={() => setIsLoaded(true)}
+      className={`size-full object-cover transition-all duration-1000 ease-out ${isLoaded ? "scale-100 opacity-100 blur-0" : "blur-xs scale-105 opacity-0"}`}
+    />
   );
 };
 
-export default function TabNavigationImages({ images }: { images: string[][]; hrefs: string[] }) {
+export default function TabNavigationImages({ images }: { images: string[][] }) {
   const $sharedArea = useStore(sharedArea);
-  const areaIndex = Number($sharedArea);
-  const currentImages = images[areaIndex] || [];
+  const areaIndex = Number($sharedArea || 0);
+
+  const [displayIndex, setDisplayIndex] = useState(areaIndex);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const currentImages = images[displayIndex] || [];
+  const lightbox = useRef<PhotoSwipeLightbox | null>(null);
 
   useEffect(() => {
-    const lightbox = createLightbox("#gallery-areas");
+    if (areaIndex !== displayIndex) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => {
+        setDisplayIndex(areaIndex);
+        setIsTransitioning(false);
+      }, 350); // Tiempo para el fade-out
+      return () => clearTimeout(timer);
+    }
+  }, [areaIndex, displayIndex]);
 
-    lightbox.init();
-    return () => lightbox.destroy();
-  }, [areaIndex]);
+  useEffect(() => {
+    lightbox.current = new PhotoSwipeLightbox({
+      gallery: "#gallery-areas",
+      children: "a.pswp-link",
+      pswpModule: () => import("photoswipe"),
+    });
+    lightbox.current.init();
+    return () => {
+      lightbox.current?.destroy();
+      lightbox.current = null;
+    };
+  }, [displayIndex]);
 
-  const visibleImages = currentImages.slice(0, 3);
-  const hiddenImages = currentImages.slice(3);
+  const openFirst = () => {
+    const firstLink = document.querySelector("#gallery-areas .pswp-link") as HTMLElement;
+    firstLink?.click();
+  };
 
   return (
-    <div id="gallery-areas" className="-ml-2 flex h-[332px] space-x-2 lg:ml-0">
-      {visibleImages.map((img, idx) => (
+    <div id="gallery-areas" className="flex h-[332px] w-full gap-3">
+      {currentImages.slice(0, 3).map((img, idx) => (
         <article
-          key={`${areaIndex}-${idx}`}
-          className={`h-full flex-1 overflow-hidden rounded-[50px] ${idx === 0 ? "hidden lg:block" : ""} ${idx === 1 ? "hidden md:block" : ""} ${idx === 2 ? "block" : ""}`}
+          key={`${displayIndex}-${idx}`}
+          className={`relative flex-1 overflow-hidden rounded-[50px] transition-all duration-500 ease-in-out ${idx === 0 ? "hidden lg:block" : ""} ${idx === 1 ? "hidden md:block" : ""} ${isTransitioning ? "scale-[0.98] animate-pulse bg-[#EAE8E4]" : "scale-100 bg-[#EAE8E4]"} `}
         >
           <a
             href={img}
             data-pswp-width="1200"
             data-pswp-height="1600"
-            className="pswp-link block size-full"
-            target="_blank"
-            rel="noreferrer"
+            className={`pswp-link group block size-full transition-opacity duration-300 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
           >
-            <Image src={img} alt={`Área ${idx + 1}`} />
+            <FadeInImage src={img} alt="Área común" />
           </a>
         </article>
       ))}
-      <article className="flex-1">
-        <div className="relative h-full overflow-hidden rounded-[50px] bg-[#795a45] px-5 py-10 text-white sm:px-12 sm:py-16">
-          <h3 className="mb-5 text-xl font-semibold tracking-wider sm:text-2xl">
-            Espacios que Conectan
-          </h3>
-          <p className="text-sm opacity-90 sm:text-base">
-            {currentImages.length} fotos disponibles para inspirar tus momentos.
-          </p>
+
+      <article
+        className={`flex-1 transition-all duration-500 ${isTransitioning ? "scale-[0.98] opacity-80" : "scale-100 opacity-100"}`}
+      >
+        <div className="relative flex h-full flex-col justify-center overflow-hidden rounded-[50px] bg-[#795a45] p-8 text-white shadow-lg">
+          <h3 className="mb-2 text-xl font-semibold sm:text-2xl">Espacios que Conectan</h3>
+          <p className="mb-6 text-sm opacity-80">{currentImages.length} fotos disponibles</p>
           <button
-            onClick={() => (document.querySelector(".pswp-link") as HTMLElement)?.click()}
-            title="Ver Galería Completa"
-            className="absolute bottom-5 right-5"
+            onClick={openFirst}
+            className="absolute bottom-5 right-5 transition-transform hover:scale-110 active:scale-95"
           >
             <CircleArrow />
           </button>
         </div>
       </article>
+
       <div className="hidden">
-        {hiddenImages.map((img, idx) => (
+        {currentImages.slice(3).map((img, idx) => (
           <a
-            key={`hidden-${idx}`}
+            key={idx}
             href={img}
             data-pswp-width="1200"
             data-pswp-height="1600"
             className="pswp-link"
-          ></a>
+          />
         ))}
       </div>
     </div>
