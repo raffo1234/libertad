@@ -7,20 +7,19 @@ import image4 from "../assets/image4.jpg";
 import image5 from "../assets/image5.jpg";
 
 const rawImages = [
-  { src: image1, alt: "Galvez1519 | Sala luminosa..." },
-  { src: image2, alt: "Galvez1519 | Dormitorios..." },
-  { src: image3, alt: "Galvez1519 | Espacio de estudio..." },
-  { src: image4, alt: "Galvez1519 | Sala comedor..." },
-  { src: image5, alt: "Galvez1519 | Habitación bien iluminada..." },
+  { src: image1, alt: "Galvez 1519 | Fachada Boutique" },
+  { src: image2, alt: "Galvez 1519 | Sala de estar" },
+  { src: image3, alt: "Galvez 1519 | Dormitorio principal" },
+  { src: image4, alt: "Galvez 1519 | Cocina integrada" },
+  { src: image5, alt: "Galvez 1519 | Terraza" },
 ];
 
-const firstImageOptimized = await getImage({ src: rawImages[0].src, width: 1200, format: "webp" });
-const secondImageOptimized = await getImage({ src: rawImages[1].src, width: 1200, format: "webp" });
-
-const priorityImages = [
-  { ...rawImages[0], optimized: firstImageOptimized },
-  { ...rawImages[1], optimized: secondImageOptimized },
-];
+const lcpImage = await getImage({
+  src: rawImages[0].src,
+  width: 1200,
+  format: "webp",
+  quality: 85,
+});
 
 const secondaryImagesData = rawImages.slice(2).map((img) => ({
   full: img.src.src,
@@ -29,9 +28,14 @@ const secondaryImagesData = rawImages.slice(2).map((img) => ({
   height: img.src.height,
   alt: img.alt,
 }));
+
+const maskStyle =
+  "mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 2%, black 100%);";
 ---
 
-<link rel="preload" as="image" href={firstImageOptimized.src} fetchpriority="high" />
+<slot name="head">
+  <link rel="preload" as="image" href={lcpImage.src} fetchpriority="high" />
+</slot>
 
 <div
   id="gallery-container"
@@ -40,41 +44,44 @@ const secondaryImagesData = rawImages.slice(2).map((img) => ({
 >
   <div
     class="pointer-events-none absolute left-0 top-0 z-20 h-[140px] w-full rounded-t-[50px]"
-    style={{
-      backdropFilter: "blur(5px)",
-      WebkitBackdropFilter: "blur(5px)",
-      maskImage: "linear-gradient(to bottom, black 2%, transparent 100%)",
-      WebkitMaskImage: "linear-gradient(to bottom, black 2%, transparent 100%)",
-    }}
+    style="backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); mask-image: linear-gradient(to bottom, black 2%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 2%, transparent 100%);"
   >
   </div>
 
-  {
-    priorityImages.map((img, idx) => (
-      <a
-        id={idx === 0 ? "first-slide" : undefined}
-        href={img.src.src}
-        data-pswp-width={img.src.width}
-        data-pswp-height={img.src.height}
-        target="_blank"
-        class={`slide-js absolute inset-0 size-full cursor-pointer transition-opacity duration-1000 ease-in-out ${idx === 0 ? "visible opacity-100" : "invisible opacity-0"}`}
-      >
-        <Image
-          src={img.src}
-          alt={img.alt}
-          loading={idx === 0 ? "eager" : "lazy"}
-          fetchpriority={idx === 0 ? "high" : "low"}
-          decoding={idx === 0 ? "sync" : "async"}
-          class="size-full rounded-[50px] object-cover"
-          style={{
-            maskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)",
-            transform: "translateZ(0)",
-          }}
-        />
-      </a>
-    ))
-  }
+  <a
+    href={rawImages[0].src.src}
+    data-pswp-width={rawImages[0].src.width}
+    data-pswp-height={rawImages[0].src.height}
+    class="slide-js visible absolute inset-0 size-full cursor-pointer opacity-100 transition-opacity duration-1000"
+  >
+    <img
+      src={lcpImage.src}
+      alt={rawImages[0].alt}
+      width={lcpImage.attributes.width}
+      height={lcpImage.attributes.height}
+      fetchpriority="high"
+      loading="eager"
+      decoding="sync"
+      class="size-full rounded-[50px] object-cover"
+      style={maskStyle}
+    />
+  </a>
+
+  <a
+    href={rawImages[1].src.src}
+    data-pswp-width={rawImages[1].src.width}
+    data-pswp-height={rawImages[1].src.height}
+    class="slide-js invisible absolute inset-0 size-full cursor-pointer opacity-0 transition-opacity duration-1000"
+  >
+    <Image
+      src={rawImages[1].src}
+      alt={rawImages[1].alt}
+      width={1200}
+      loading="lazy"
+      class="size-full rounded-[50px] object-cover"
+      style={maskStyle}
+    />
+  </a>
 </div>
 
 <script>
@@ -84,78 +91,83 @@ const secondaryImagesData = rawImages.slice(2).map((img) => ({
 
   const container = document.getElementById("gallery-container") as HTMLElement;
   const secondaryData = JSON.parse(container.dataset.secondary || "[]");
-
-  let slides: HTMLElement[] = Array.from(container.querySelectorAll(".slide-js"));
+  let slides = Array.from(container.querySelectorAll(".slide-js")) as HTMLElement[];
   let current = 0;
-  let carouselInterval: number | null = null;
+  let interval: number;
 
-  function lazyLoadImages() {
+  const injectRemaining = () => {
     secondaryData.forEach((data: any) => {
-      const anchor = document.createElement("a");
-      anchor.href = data.full;
-      anchor.className =
-        "slide-js absolute inset-0 size-full cursor-pointer opacity-0 invisible transition-opacity duration-1000 ease-in-out";
-      anchor.setAttribute("data-pswp-width", data.width);
-      anchor.setAttribute("data-pswp-height", data.height);
-      anchor.target = "_blank";
+      const a = document.createElement("a");
+      a.href = data.full;
+      a.className =
+        "slide-js absolute inset-0 size-full opacity-0 invisible transition-opacity duration-1000";
+      a.setAttribute("data-pswp-width", data.width);
+      a.setAttribute("data-pswp-height", data.height);
 
       const img = document.createElement("img");
       img.src = data.display;
       img.alt = data.alt;
+      img.loading = "lazy";
       img.className = "size-full rounded-[50px] object-cover";
       img.style.maskImage = "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)";
       // @ts-ignore
       img.style.WebkitMaskImage =
         "linear-gradient(to bottom, transparent 0%, black 2%, black 100%)";
 
-      anchor.appendChild(img);
-      container.appendChild(anchor);
-      slides.push(anchor);
+      a.appendChild(img);
+      container.appendChild(a);
+      slides.push(a);
     });
-    if (slides.length > 1 && !carouselInterval) startCarousel();
-  }
+
+    if (slides.length > 1) startRotation();
+  };
 
   if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(() => setTimeout(lazyLoadImages, 2000));
+    window.requestIdleCallback(() => injectRemaining());
   } else {
-    setTimeout(lazyLoadImages, 3000);
+    setTimeout(injectRemaining, 2000);
   }
+
+  function goToSlide(nextIndex: number) {
+    if (nextIndex === current) return;
+
+    slides[current].classList.replace("opacity-100", "opacity-0");
+    slides[current].classList.replace("visible", "invisible");
+
+    current = nextIndex;
+
+    slides[current].classList.replace("opacity-0", "opacity-100");
+    slides[current].classList.replace("invisible", "visible");
+  }
+
+  const startRotation = () => {
+    if (interval) clearInterval(interval);
+    interval = window.setInterval(() => {
+      if (document.querySelector(".pswp--open")) return;
+      goToSlide((current + 1) % slides.length);
+    }, 4500);
+  };
 
   const lightbox = new PhotoSwipeLightbox({
     gallery: "#gallery-container",
     children: "a.slide-js",
     ...pswpConfig,
   });
+
   lightbox.init();
 
-  function goToSlide(nextIndex: number) {
-    if (!slides[current] || !slides[nextIndex]) return;
-    slides[current].classList.replace("opacity-100", "opacity-0");
-    slides[current].classList.replace("visible", "invisible");
-    current = nextIndex;
-    slides[current].classList.replace("opacity-0", "opacity-100");
-    slides[current].classList.replace("invisible", "visible");
-  }
-
-  function startCarousel() {
-    if (carouselInterval || slides.length <= 1) return;
-    carouselInterval = window.setInterval(() => {
-      if (!document.querySelector(".pswp--open")) {
-        goToSlide((current + 1) % slides.length);
-      }
-    }, 3500);
-  }
-
-  if (slides.length > 1) startCarousel();
-
   lightbox.on("beforeOpen", () => {
-    if (carouselInterval) clearInterval(carouselInterval);
-    carouselInterval = null;
+    if (interval) clearInterval(interval);
+    interval = 0;
   });
 
   lightbox.on("close", () => {
-    const index = lightbox.pswp?.currIndex;
-    if (typeof index === "number") goToSlide(index);
-    startCarousel();
+    const pswpIndex = lightbox.pswp?.currIndex;
+
+    if (typeof pswpIndex === "number") {
+      goToSlide(pswpIndex);
+    }
+
+    startRotation();
   });
 </script>

@@ -12,7 +12,7 @@ interface Props {
 
 const {
   title = "Galvez 1519 | Departamentos boutique",
-  description = "2-3 Dormitorios. Encuentra el departamento perfecto para ti en el corazón de la ciudad.",
+  description = "2 y 3 Dormitorios. Encuentra el departamento perfecto para ti en el corazón de la ciudad.",
   image = "/images/og-image.jpg",
 } = Astro.props;
 
@@ -80,18 +80,5 @@ const socialImageURL = new URL(image, Astro.url).href;
 <style is:global>
   :root {
     color-scheme: light;
-  }
-
-  body {
-    animation: fadeIn 0.5s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
   }
 </style>
