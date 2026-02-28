@@ -58,19 +58,23 @@ const typology4 = {
     { value: "Centro de lavado", label: "" },
   ],
 };
+
+const typologies = [{ ...typology1 }, { ...typology2 }, { ...typology3 }, { ...typology4 }];
 ---
 
-<section id="tipologias" class="mb-[70px] pt-12">
-  <h2 class="reveal mx-auto mb-8 max-w-[70%] text-center text-xl">
-    <b>Encuentra el departamento perfecto para ti!</b>
+<section id="tipologias" class="mb-[70px] overflow-hidden pt-12">
+  <h2 class="reveal mx-auto mb-12 max-w-[70%] text-center text-xl">
+    <b>¡Encuentra el departamento perfecto para ti!</b>
   </h2>
-  <div class="reveal flex flex-col gap-2">
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <TypologyCard {...typology1} />
-      <TypologyCard {...typology2} />
-      <TypologyCard {...typology3} />
-      <TypologyCard {...typology4} />
-    </div>
+
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    {
+      typologies.map((typo, index) => (
+        <div class="reveal" style={`transition-delay: ${index * 150}ms;`}>
+          <TypologyCard {...typo} />
+        </div>
+      ))
+    }
   </div>
 </section>
 
