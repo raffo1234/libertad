@@ -3,6 +3,7 @@ import "@fontsource/mulish/400.css";
 import "@fontsource/manrope/400.css";
 import "../styles/global.css";
 import WhatsappButton from "../components/WhatsappButton.astro";
+import tanPearl from "../fonts/tan-pearl.woff2";
 
 interface Props {
   title?: string;
@@ -30,7 +31,7 @@ const socialImageURL = new URL(image, Astro.url).href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preload" href="/fonts/tan-pearl.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={tanPearl} as="font" type="font/woff2" crossorigin />
 
     <meta name="theme-color" content="#e2e1df" />
 
