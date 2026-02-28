@@ -1,177 +1,105 @@
-.pswp__img {
-  border-radius: 1rem;
-}
-
-.pswp__button--arrow--prev,
-.pswp__button--arrow--next {
-  background: rgba(255, 255, 255, 0.3) !important;
-  backdrop-filter: blur(8px);
-  border-radius: 50% !important;
-  width: 60px !important;
-  height: 60px !important;
-  margin: 0 20px;
-  top: 50% !important;
-}
-
-.pswp__button--arrow--prev:hover,
-.pswp__button--arrow--next:hover {
-  background: rgba(255, 255, 255, 0.6) !important;
-}
-
-.pswp__button--close,
-.pswp__button--zoom {
-  background-color: rgba(255, 255, 255, 0.3) !important;
-  color: rgba(255, 255, 255, 0.3) !important;
-  border-radius: 50%;
-  margin-top: 10px !important;
-  margin-left: 10px !important;
-  width: 60px !important;
-}
-
-.pswp__button--close:hover,
-.pswp__button--zoom:hover {
-  background-color: rgba(255, 255, 255, 0.6) !important;
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.pswp__button--close svg,
-.pswp__button--zoom svg {
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-.pswp__button--arrow--next .pswp__icn {
-  right: 8px !important;
-}
-
-.pswp__counter {
-  background-color: #b45309 !important;
-  text-shadow: none !important;
-  color: #fff;
-  font-family: "Nourd";
-  font-size: 16px !important;
-  padding: 0.75rem !important;
-  opacity: 1 !important;
-  height: auto !important;
-  border-radius: 1rem;
-  line-height: 1.5;
-  align-self: center;
-}
-
-/* --- Personalización de PhotoSwipe Galvez1519 --- */
-
-/* 1. Fondo del Modal con Blur */
 .pswp__bg {
   background: rgba(15, 15, 15, 0.85) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* 2. Estilo de los Botones (Glassmorphism) */
 .pswp__button {
   background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 50% !important;
-  margin: 12px !important;
-  width: 50px !important;
-  height: 50px !important;
-  color: white !important;
+  margin: 15px !important;
+  width: 54px !important;
+  height: 54px !important;
+  color: #ffffff !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .pswp__button:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  transform: scale(1.1);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .pswp__button:active {
   transform: scale(0.95);
 }
 
-/* 3. Ajuste de los Iconos SVG internos */
-.pswp__button svg {
-  width: 24px !important;
-  height: 24px !important;
-  padding: 0 !important;
-  position: absolute !important;
-}
-
-/* 4. Flechas de Navegación (Más grandes y visibles) */
 .pswp__button--arrow--prev,
 .pswp__button--arrow--next {
   top: 50% !important;
-  margin-top: -25px !important;
-  width: 60px !important;
-  height: 60px !important;
+  margin-top: -27px !important;
+  position: absolute !important;
 }
 
-/* 5. Contador de imágenes (Top Left) */
+.pswp__button--arrow--prev {
+  left: 20px !important;
+}
+.pswp__button--arrow--next {
+  right: 20px !important;
+}
+
+.pswp__button svg {
+  width: 24px !important;
+  height: 24px !important;
+  position: relative !important;
+  padding: 0 !important;
+}
+
 .pswp__counter {
-  font-family: inherit;
-  font-weight: 500;
-  height: auto !important;
-  margin-top: 25px !important;
+  height: 36px !important;
+  margin-top: 24px !important;
   margin-left: 20px !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* 6. Animación de entrada de la imagen */
-.pswp__img {
-  border-radius: 12px; /* Un toque sutil para que no se vea el corte duro */
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-/* Ocultar botones innecesarios en mobile si estorban */
-@media (max-width: 768px) {
-  .pswp__button--arrow--prev,
-  .pswp__button--arrow--next {
-    display: none !important; /* En móvil se usa el swipe */
-  }
-}
-
-/* --- Contador Premium Gálvez 1519 --- */
-.pswp__counter {
-  /* 1. Posicionamiento y Reseteo */
-  height: 32px !important;
-  margin-top: 22px !important;
-  margin-left: 20px !important;
-  padding: 0 16px !important;
+  padding: 0 18px !important;
   display: flex !important;
   align-items: center !important;
-  opacity: 1 !important; /* Que no se desvanezca */
-
-  /* 2. Estética Glassmorphism */
+  opacity: 1 !important;
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px !important;
-
-  /* 3. Tipografía */
   color: #ffffff !important;
-  font-family: inherit; /* Usa la fuente de tu web */
-  font-size: 12px !important;
+  font-family: "Nourd", sans-serif;
+  font-size: 13px !important;
   font-weight: 600 !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-
-  /* 4. Sombra sutil para legibilidad sobre fotos claras */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Ajuste para que el contador no choque con el botón de cerrar en mobile */
-@media (max-width: 640px) {
+.pswp__img {
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+.pswp--one-slide .pswp__button--arrow--prev,
+.pswp--one-slide .pswp__button--arrow--next,
+.pswp--one-slide .pswp__counter {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .pswp__button--arrow--prev,
+  .pswp__button--arrow--next {
+    display: none !important;
+  }
+
+  .pswp__button {
+    width: 46px !important;
+    height: 46px !important;
+    margin: 8px !important;
+  }
+
   .pswp__counter {
     margin-top: 15px !important;
     margin-left: 15px !important;
-    padding: 0 12px !important;
     font-size: 11px !important;
   }
 }
