@@ -9,7 +9,7 @@ export default function DialogCloseButton({ children }: { children: React.ReactN
     <button
       onClick={closeModal}
       aria-label="Cerrar"
-      className="absolute right-5 top-5 z-30 flex size-16 items-center justify-center rounded-full bg-[#ff9100] text-white"
+      className="absolute right-5 top-5 z-30 flex size-16 items-center justify-center rounded-full bg-custom-orange text-white"
     >
       {children}
     </button>
