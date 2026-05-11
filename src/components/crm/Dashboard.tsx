@@ -6,16 +6,24 @@ import type { Lead, LeadStatus } from "../../types/lead";
 
 export default function Dashboard() {
   const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setLoading(false);
     });
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        window.location.href = "/";
+        return;
+      }
       setSession(session);
+      setLoading(false);
     });
   }, []);
 
+  if (loading) return null;
   if (!session) return <Login />;
   return <Leads />;
 }
@@ -66,6 +74,7 @@ function Leads() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    window.location.href = "/";
   };
 
   if (isLoading) return <div className="p-8 text-sm text-gray-500">Loading...</div>;
@@ -102,19 +111,19 @@ function Leads() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Name
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Phone
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Unit type
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Date
                 </th>
               </tr>

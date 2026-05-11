@@ -1,14 +1,8 @@
 ---
 import Dashboard from "../../components/crm/Dashboard";
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CRM · Galvez 1519</title>
-  </head>
-  <body>
-    <Dashboard client:only="react" />
-  </body>
-</html>
+<Layout>
+  <Dashboard client:only="react" />
+</Layout>
