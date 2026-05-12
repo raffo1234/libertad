@@ -1,6 +1,5 @@
 ---
-import CircleArrow from "./CircleArrow";
-import LeadCTAButton from "./LeadCTAButton";
+import type { UnitType } from "../constants/unitTypes";
 import LeadModal from "./LeadModal";
 import RoundedImage from "./RoundedImage.astro";
 
@@ -11,6 +10,7 @@ interface Spec {
 }
 
 interface Props {
+  type: UnitType;
   title: string;
   subtitle: string;
   features: Spec[];
@@ -18,7 +18,7 @@ interface Props {
   floors: string[];
 }
 
-const { title, subtitle, features, floors, image } = Astro.props;
+const { type, title, subtitle, features, floors, image } = Astro.props;
 ---
 
 <article class="grid grid-cols-1 gap-2 rounded-[58px] bg-[#E0DDD8] p-2 sm:grid-cols-2">
@@ -43,7 +43,7 @@ const { title, subtitle, features, floors, image } = Astro.props;
       {floors.map((floor) => <span class="block">{floor}</span>)}
     </h5>
     <div class="absolute right-5 bottom-5">
-      <LeadModal client:load type="type_1" />
+      <LeadModal client:load type={type} />
     </div>
   </div>
   <div class="pswp-gallery">

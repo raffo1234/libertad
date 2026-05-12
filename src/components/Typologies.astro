@@ -1,64 +1,6 @@
 ---
-import image1 from "../assets/interior-1.jpg";
+import { typologies } from "../data/typologies";
 import TypologyCard from "./TypologyCard.astro";
-
-const typology1 = {
-  title: "70m²",
-  subtitle: "Tipo 1",
-  floors: ["Piso 1"],
-  image: image1,
-  features: [
-    { value: 3, label: "Dorms", isBold: true },
-    { value: 2, label: "Baños", isBold: true },
-    { value: "Kitchenette", label: "" },
-    { value: "Sala / Comedor", label: "" },
-    { value: "Centro de lavado", label: "" },
-  ],
-};
-
-const typology2 = {
-  title: "81m²",
-  subtitle: "Tipo 2",
-  image: image1,
-  floors: ["Piso 1"],
-  features: [
-    { value: 3, label: "Dorms", isBold: true },
-    { value: 2, label: "Baños", isBold: true },
-    { value: "Kitchenette", label: "" },
-    { value: "Sala / Comedor", label: "" },
-    { value: "Centro de lavado", label: "" },
-  ],
-};
-
-const typology3 = {
-  title: "90m²",
-  subtitle: "Tipo 3",
-  floors: ["Piso 2", "Pisos 3 - 5, Balcón"],
-  image: image1,
-  features: [
-    { value: 3, label: "Dorms", isBold: true },
-    { value: 2, label: "Baños", isBold: true },
-    { value: "Kitchenette", label: "" },
-    { value: "Sala / Comedor", label: "" },
-    { value: "Centro de lavado", label: "" },
-  ],
-};
-
-const typology4 = {
-  title: "100m²",
-  subtitle: "Tipo 4",
-  floors: ["Piso 2", "Pisos 3 - 5, Balcón"],
-  image: image1,
-  features: [
-    { value: 3, label: "Dorms", isBold: true },
-    { value: 2, label: "Baños", isBold: true },
-    { value: "Kitchenette", label: "" },
-    { value: "Sala / Comedor", label: "" },
-    { value: "Centro de lavado", label: "" },
-  ],
-};
-
-const typologies = [typology1, typology2, typology3, typology4];
 ---
 
 <section id="tipologias" class="mb-[70px] overflow-hidden pt-12">
@@ -156,7 +98,6 @@ const typologies = [typology1, typology2, typology3, typology4];
   import "photoswipe/dist/photoswipe.css";
   import EmblaCarousel from "embla-carousel";
 
-  /* ── PhotoSwipe ── */
   const lightbox = new PhotoSwipeLightbox({
     gallery: ".pswp-gallery",
     children: "a",
@@ -164,7 +105,6 @@ const typologies = [typology1, typology2, typology3, typology4];
   });
   lightbox.init();
 
-  /* ── Embla ── */
   const viewportNode = document.querySelector<HTMLElement>(".embla__viewport")!;
   const prevBtn = document.querySelector<HTMLButtonElement>(".embla__button--prev")!;
   const nextBtn = document.querySelector<HTMLButtonElement>(".embla__button--next")!;

@@ -6,4 +6,5 @@ export const UNIT_TYPES = {
   parking: "Estacionamiento",
 } as const;
 
-export type UnitType = keyof typeof UNIT_TYPES | "";
+export type UnitType = keyof typeof UNIT_TYPES;
+export type UnitTypeOrEmpty = UnitType | "";

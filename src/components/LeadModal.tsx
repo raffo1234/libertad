@@ -1,4 +1,4 @@
-// src/components/LeadModal.tsx
+import type { UnitType, UnitTypeOrEmpty } from "../constants/unitTypes";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -12,8 +12,6 @@ export const UNIT_TYPES = {
   parking: "Estacionamiento",
 } as const;
 
-export type UnitType = keyof typeof UNIT_TYPES;
-
 interface LeadModalProps {
   type?: UnitType;
 }
@@ -22,7 +20,7 @@ interface LeadFormValues {
   name: string;
   phone: string;
   email: string;
-  unit_type: UnitType | "";
+  unit_type: UnitTypeOrEmpty;
 }
 
 const PHONE_REGEX = /^(?:\+?51)?9\d{8}$/;
