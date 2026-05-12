@@ -2,10 +2,10 @@
 @import "./custom-photoswipe.css";
 
 @theme {
-  --font-family-mulish: "Mulish", sans-serif;
-  --font-family-manrope: "Manrope", sans-serif;
-  --font-family-tan-pearl: "Tan Pearl", sans-serif;
-  --font-family-nourd: "Nourd", sans-serif;
+  --font-mulish: "Mulish", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+  --font-tan-pearl: "Tan Pearl", sans-serif;
+  --font-nourd: "Nourd", sans-serif;
   --color-custom-orange: #ff9100;
 }
 

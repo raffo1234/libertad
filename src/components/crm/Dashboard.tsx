@@ -57,17 +57,17 @@ function Login() {
       <div className="relative hidden w-1/2 flex-col justify-between p-16 lg:flex">
         <div className="flex items-center gap-3">
           <div className="h-px w-8 bg-[#c9a96e]" />
-          <span className="text-[10px] tracking-[0.35em] text-[#c9a96e] uppercase">
+          <span className="font-mulish text-[10px] tracking-[0.35em] text-[#c9a96e] uppercase">
             Galvez 1519
           </span>
         </div>
 
         <div>
-          <p className="mb-5 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">
+          <p className="font-mulish mb-5 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">
             El Tambo · Huancayo · Peru
           </p>
           <h2
-            className="text-[64px] leading-[1.02] font-normal text-[#1c1a16]"
+            className="font-tan-pearl text-[64px] leading-[1.02] font-normal text-[#1c1a16]"
             style={{ letterSpacing: "-0.025em" }}
           >
             Live a
@@ -76,8 +76,7 @@ function Login() {
             <br />
             experience.
           </h2>
-
-          <p className="mt-6 max-w-xs text-sm leading-relaxed text-[#9e9890]">
+          <p className="font-manrope mt-6 max-w-xs text-sm leading-relaxed text-[#9e9890]">
             Find the perfect apartment for you in the heart of the city.
           </p>
           <div className="mt-10 flex items-center gap-5">
@@ -87,7 +86,7 @@ function Login() {
         </div>
 
         <div>
-          <span className="text-[10px] tracking-[0.25em] text-[#c2bdb6] uppercase">
+          <span className="font-mulish text-[10px] tracking-[0.25em] text-[#c2bdb6] uppercase">
             CRM · Internal Access
           </span>
         </div>
@@ -103,20 +102,22 @@ function Login() {
           <div className="mb-14 lg:hidden">
             <div className="flex items-center gap-3">
               <div className="h-px w-6 bg-[#c9a96e]" />
-              <span className="text-[10px] tracking-[0.35em] text-[#c9a96e] uppercase">
+              <span className="font-mulish text-[10px] tracking-[0.35em] text-[#c9a96e] uppercase">
                 Galvez 1519
               </span>
             </div>
           </div>
 
-          <p className="mb-2 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">Access</p>
+          <p className="font-mulish mb-2 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">
+            Access
+          </p>
           <h1
-            className="mb-2 text-[32px] leading-tight font-normal text-[#1c1a16]"
+            className="font-tan-pearl mb-2 text-[32px] leading-tight font-normal text-[#1c1a16]"
             style={{ letterSpacing: "-0.015em" }}
           >
             Welcome back
           </h1>
-          <p className="mb-10 text-sm text-[#9e9890] italic">Sign in to continue</p>
+          <p className="font-manrope mb-10 text-sm text-[#9e9890] italic">Sign in to continue</p>
 
           <button
             onClick={handleLogin}
@@ -143,7 +144,7 @@ function Login() {
                     fill="#EA4335"
                   />
                 </svg>
-                <span className="text-sm text-[#2a2820] transition-colors duration-200 group-hover:text-[#1c1a16]">
+                <span className="font-manrope text-sm text-[#2a2820] transition-colors duration-200 group-hover:text-[#1c1a16]">
                   Continue with Google
                 </span>
               </span>
@@ -163,13 +164,13 @@ function Login() {
 
           <div className="mt-8 flex items-center gap-3">
             <div className="h-px flex-1 bg-[#ede9e3]" />
-            <p className="text-[10px] tracking-[0.2em] text-[#ccc9c3] uppercase">
+            <p className="font-mulish text-[10px] tracking-[0.2em] text-[#ccc9c3] uppercase">
               Authorized personnel only
             </p>
             <div className="h-px flex-1 bg-[#ede9e3]" />
           </div>
 
-          <p className="mt-6 text-center text-[10px] text-[#d4d0ca]">
+          <p className="font-manrope mt-6 text-center text-[10px] text-[#d4d0ca]">
             © 2026 Galvez 1519. All rights reserved.
           </p>
         </div>
