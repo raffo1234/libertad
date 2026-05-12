@@ -279,7 +279,9 @@ function Leads() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-400">
-                    {new Date(lead.created_at).toLocaleDateString("en-US")}
+                    {new Date(lead.created_at).toLocaleString("es-PE", {
+                      timeZone: "America/Lima",
+                    })}
                   </td>
                 </tr>
               ))}

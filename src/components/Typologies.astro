@@ -72,7 +72,7 @@ const typologies = [typology1, typology2, typology3, typology4];
         {
           typologies.map((typo) => (
             <div class="embla__slide">
-              <TypologyCard {...typo} />
+              <TypologyCard {...typo} client:load />
             </div>
           ))
         }

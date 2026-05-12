@@ -17,7 +17,7 @@ export default function CircleArrow({ isDark }: Props) {
         width="40"
         height="40"
         viewBox="0 0 24 24"
-        className="transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+        className="transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
       >
         <path
           fill="currentColor"
