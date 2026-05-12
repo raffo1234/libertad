@@ -3,6 +3,7 @@ import { supabase } from "../../lib/supabase";
 import type { Session } from "@supabase/supabase-js";
 import { useLeads } from "../../hooks/useLeads";
 import type { Lead, LeadStatus } from "../../types/lead";
+import LogoLink from "../LogoLink";
 
 export default function Dashboard() {
   const [session, setSession] = useState<Session | null>(null);
@@ -55,13 +56,9 @@ function Login() {
 
       {/* Left — branding */}
       <div className="relative hidden w-1/2 flex-col justify-between p-16 lg:flex">
-        <div className="flex items-center gap-3">
-          <div className="h-px w-8 bg-[#c9a96e]" />
-          <span className="font-mulish text-[10px] tracking-[0.35em] text-[#c9a96e] uppercase">
-            Galvez 1519
-          </span>
+        <div className="flex items-center">
+          <LogoLink />
         </div>
-
         <div>
           <p className="font-mulish mb-5 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">
             El Tambo · Huancayo · Peru
@@ -212,7 +209,9 @@ function Leads() {
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">Galvez 1519 · CRM</h1>
+          <h1>
+            <LogoLink />
+          </h1>
           <button
             onClick={handleSignOut}
             className="text-sm text-gray-500 transition-colors hover:text-gray-700"

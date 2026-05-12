@@ -4,6 +4,7 @@ import bgImage from "../assets/interior-1.jpg";
 import RoundedImage from "../components/RoundedImage.astro";
 import { Image, getImage } from "astro:assets";
 import CircleArrow from "../components/CircleArrow";
+import LogoLink from "../components/LogoLink";
 
 const title = "404 - Página no encontrada | Gálvez 1519";
 const maskStyle =
@@ -13,14 +14,7 @@ const maskStyle =
 <Layout title={title}>
   <main class="px-4 py-8 text-center">
     <h1 class="mb-28 flex justify-center">
-      <a
-        href="/"
-        title="Galvez 1519 - Hogar soñado en el corazón de El Tambo"
-        class="font-tan-pearl flex items-center space-x-1 self-center text-2xl tracking-wider"
-      >
-        <span class="pt-1">GALVEZ</span>
-        <span class="rounded-md bg-[#795a45] px-2 pt-1.5 text-white"> 1519 </span>
-      </a>
+      <LogoLink />
     </h1>
     <p class="text-xl sm:text-2xl">Parece que te has desviado del camino.</p>
     <h2
