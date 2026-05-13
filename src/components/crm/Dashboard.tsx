@@ -197,7 +197,7 @@ const STATUS_CLASSES: Record<LeadStatus, { badge: string; border: string }> = {
 const KPI_STATUSES: LeadStatus[] = ["new", "contacted", "visit", "reserved"];
 
 function Leads() {
-  const { data: leads, isLoading, error } = useLeads();
+  const { data: leads, isLoading, error, mutate } = useLeads();
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
 
   const visibleLeads = leads?.filter((l) => !deletedIds.has(l.id));
@@ -205,6 +205,23 @@ function Leads() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.location.href = "/";
+  };
+
+  const handleStatusChange = async (id: string, newStatus: LeadStatus) => {
+    mutate(
+      leads?.map((l) => (l.id === id ? { ...l, status: newStatus } : l)),
+      false,
+    );
+
+    const { error: updateError } = await supabase
+      .from("lead")
+      .update({ status: newStatus })
+      .eq("id", id);
+
+    if (updateError) {
+      console.error("Update failed:", updateError);
+      mutate(); // revert — refetch real data
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -290,17 +307,29 @@ function Leads() {
                   key={lead.id}
                   className="border-b border-gray-50 transition-colors hover:bg-gray-50"
                 >
-                  <td className="px-4 py-3 font-medium text-gray-900">{lead.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{lead.phone}</td>
+                  <td className="truncate px-4 py-3">{lead.name}</td>
+                  <td className="truncate px-4 py-3 text-gray-600">{lead.phone}</td>
                   <td className="px-4 py-3 text-gray-600">{lead.unit_type ?? "—"}</td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex rounded px-2 py-0.5 text-xs font-medium ${STATUS_CLASSES[lead.status].badge}`}
-                    >
-                      {STATUS_LABEL[lead.status]}
-                    </span>
+                    <div className="relative inline-flex items-center gap-1">
+                      <select
+                        value={lead.status ?? "new"}
+                        onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
+                        className={`cursor-pointer appearance-none rounded-lg border-0 py-2 pr-10 pl-4 ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status ?? "new"].badge}`}
+                      >
+                        {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
+                          <option key={s} value={s}>
+                            {STATUS_LABEL[s]}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        icon="solar:pen-2-bold"
+                        className="pointer-events-none absolute right-3 h-5 w-5 opacity-50"
+                      />
+                    </div>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">
+                  <td className="truncate px-4 py-3 text-gray-500">
                     {new Date(lead.created_at).toLocaleString("es-PE", {
                       timeZone: "America/Lima",
                     })}
@@ -308,10 +337,10 @@ function Leads() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => handleDelete(lead.id)}
-                      className="text-gray-400 transition-colors hover:text-red-500"
+                      className="rounded-lg bg-slate-100 p-2 transition-colors hover:text-red-500"
                       title="Delete lead"
                     >
-                      <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
+                      <Icon icon="solar:trash-bin-trash-bold" className="h-5 w-5" />
                     </button>
                   </td>
                 </tr>
