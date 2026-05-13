@@ -98,11 +98,11 @@ export default function LeadModal({ type }: LeadModalProps) {
                 Galvez 1519 · El Tambo
               </span>
               <h2 className="text-2xl font-semibold">
-                Reserva tu consulta
+                Asesoria
                 <br />
-                sin compromiso
+                personalizada
               </h2>
-              <p className="mt-1.5 text-sm text-[#807357]">Te contactamos en menos de 24 horas</p>
+              <p className="mt-1.5 text-sm text-[#807357]">Compra tu depa</p>
             </div>
 
             <div className="flex flex-col gap-7 p-7">
