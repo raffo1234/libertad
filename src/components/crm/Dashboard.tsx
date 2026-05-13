@@ -4,6 +4,8 @@ import type { Session } from "@supabase/supabase-js";
 import { useLeads } from "../../hooks/useLeads";
 import type { Lead, LeadStatus } from "../../types/lead";
 import LogoLink from "../LogoLink";
+import { Icon } from "@iconify/react";
+import { mutate } from "swr";
 
 export default function Dashboard() {
   const [session, setSession] = useState<Session | null>(null);
@@ -196,10 +198,26 @@ const KPI_STATUSES: LeadStatus[] = ["new", "contacted", "visit", "reserved"];
 
 function Leads() {
   const { data: leads, isLoading, error } = useLeads();
+  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
+
+  const visibleLeads = leads?.filter((l) => !deletedIds.has(l.id));
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.location.href = "/";
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this lead?")) return;
+    console.log({ id });
+    const { error: deleteError } = await supabase.from("lead").delete().eq("id", id).select();
+    if (deleteError) {
+      console.error("Delete failed:", deleteError);
+      alert("Error al eliminar: " + deleteError.message);
+      return;
+    }
+
+    mutate(leads?.filter((l) => l.id !== id));
   };
 
   if (isLoading) return <div className="p-8 text-sm text-gray-500">Loading...</div>;
@@ -208,6 +226,7 @@ function Leads() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-6xl px-6 py-8">
+        {/* header */}
         <div className="mb-8 flex items-center justify-between">
           <h1>
             <LogoLink />
@@ -220,6 +239,7 @@ function Leads() {
           </button>
         </div>
 
+        {/* KPIs — usa visibleLeads para que el contador también se actualice */}
         <div className="mb-8 grid grid-cols-4 gap-4">
           {KPI_STATUSES.map((status) => (
             <div
@@ -228,14 +248,15 @@ function Leads() {
             >
               <div className="mb-1 text-xs text-gray-500">{STATUS_LABEL[status]}</div>
               <div className="text-2xl font-semibold text-gray-900">
-                {leads?.filter((l) => l.status === status).length ?? 0}
+                {visibleLeads?.filter((l) => l.status === status).length ?? 0}
               </div>
             </div>
           ))}
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-gray-100 bg-white">
-          <table className="w-full text-sm">
+        {/* tabla */}
+        <div className="overflow-auto rounded-xl border border-gray-100 bg-white">
+          <table className="w-full min-w-[600px] text-sm">
             <thead>
               <tr className="border-b border-gray-100">
                 <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
@@ -253,17 +274,18 @@ function Leads() {
                 <th className="px-4 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
                   Date
                 </th>
+                <th className="px-4 py-3" />
               </tr>
             </thead>
             <tbody>
-              {leads?.length === 0 && (
+              {visibleLeads?.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-12 text-center text-gray-400">
+                  <td colSpan={6} className="px-4 py-12 text-center text-gray-400">
                     No leads yet
                   </td>
                 </tr>
               )}
-              {leads?.map((lead: Lead) => (
+              {visibleLeads?.map((lead: Lead) => (
                 <tr
                   key={lead.id}
                   className="border-b border-gray-50 transition-colors hover:bg-gray-50"
@@ -282,6 +304,15 @@ function Leads() {
                     {new Date(lead.created_at).toLocaleString("es-PE", {
                       timeZone: "America/Lima",
                     })}
+                  </td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => handleDelete(lead.id)}
+                      className="text-gray-400 transition-colors hover:text-red-500"
+                      title="Delete lead"
+                    >
+                      <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
+                    </button>
                   </td>
                 </tr>
               ))}
