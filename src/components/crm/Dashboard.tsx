@@ -644,6 +644,17 @@ function Leads() {
           <span className="font-manrope text-xs text-[#b5b0a8]">
             {filteredLeads.length} lead{filteredLeads.length !== 1 ? "s" : ""}
           </span>
+          {(search || statusFilter !== "all") && (
+            <button
+              onClick={() => {
+                handleSearch("");
+                handleStatusFilter("all");
+              }}
+              className="text-sm text-[#b5b0a8] transition-colors hover:text-[#a06658]"
+            >
+              Clear filters
+            </button>
+          )}
 
           {/* Status filter */}
           <div className="relative">
