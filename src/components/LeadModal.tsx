@@ -92,15 +92,15 @@ export default function LeadModal({ type }: LeadModalProps) {
 
         {!success ? (
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="px-7 pt-7">
+            <div className="mb-6 px-7 pt-7">
               <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-[#EAE8E4] px-3 py-1 text-[11px] font-semibold tracking-wider text-[#795a45]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#795a45]" />
                 Galvez 1519 · El Tambo
               </span>
               <h2 className="text-2xl font-semibold">
-                Asesoria
+                Asesor&iacute;a
                 <br />
-                personalizada
+                Personalizada
               </h2>
               <p className="mt-1.5 text-sm text-[#807357]">Compra tu depa</p>
             </div>
