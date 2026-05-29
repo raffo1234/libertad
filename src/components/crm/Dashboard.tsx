@@ -6,8 +6,6 @@ import type { Lead, LeadStatus } from "../../types/lead";
 import LogoLink from "../LogoLink";
 import { Icon } from "@iconify/react";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 const PAGE_SIZE_KEY = "crm_leads_page_size";
 const PAGE_SIZES = [10, 20, 50];
 
@@ -28,7 +26,6 @@ const STATUS_CLASSES: Record<LeadStatus, { badge: string; border: string }> = {
 };
 
 const KPI_STATUSES: LeadStatus[] = ["new", "contacted", "visit", "reserved"];
-
 type Page = "home" | "leads";
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -37,17 +34,26 @@ function Sidebar({
   activePage,
   onNavigate,
   onSignOut,
+  open,
+  onClose,
 }: {
   activePage: Page;
-  onNavigate: (page: Page) => void;
+  onNavigate: (p: Page) => void;
   onSignOut: () => void;
+  open: boolean;
+  onClose: () => void;
 }) {
+  const handleNavigate = (page: Page) => {
+    onNavigate(page);
+    onClose();
+  };
+
   const navItem = (page: Page, label: string, icon: string) => {
     const isActive = activePage === page;
     return (
       <button
         key={page}
-        onClick={() => onNavigate(page)}
+        onClick={() => handleNavigate(page)}
         className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150 ${
           isActive
             ? "border-l-2 border-[#1c1a16] bg-[#f0ede8] pl-[10px] font-medium text-[#1c1a16]"
@@ -56,32 +62,39 @@ function Sidebar({
       >
         <Icon
           icon={icon}
-          className={`h-[18px] w-[18px] shrink-0 transition-colors ${
-            isActive ? "text-[#1c1a16]" : "text-[#c2bdb6] group-hover:text-[#6b665e]"
-          }`}
+          className={`h-[18px] w-[18px] shrink-0 transition-colors ${isActive ? "text-[#1c1a16]" : "text-[#c2bdb6] group-hover:text-[#6b665e]"}`}
         />
         <span className="font-manrope">{label}</span>
       </button>
     );
   };
 
-  return (
-    <aside className="flex h-screen w-[240px] shrink-0 flex-col bg-white px-4 py-6 shadow-[1px_0_0_#ede9e3]">
-      {/* Logo */}
-      <div className="mb-8">
+  const content = (
+    <aside className="flex h-full w-full flex-col bg-white px-4 py-6 lg:shadow-[1px_0_0_#ede9e3]">
+      <div className="mb-8 flex items-center justify-between">
         <LogoLink />
+        <button
+          onClick={onClose}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[#b5b0a8] transition-colors hover:bg-[#f0ede8] hover:text-[#1c1a16] lg:hidden"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          >
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-
-      {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1">
         {navItem("home", "Home", "solar:home-2-linear")}
         {navItem("leads", "Leads", "solar:users-group-rounded-linear")}
       </nav>
-
-      {/* Divider */}
       <div className="my-4 h-px bg-[#ede9e3]" />
-
-      {/* Sign out */}
       <button
         onClick={onSignOut}
         className="group flex w-full items-center gap-3 rounded-lg border-l-2 border-transparent px-3 py-2.5 pl-[10px] text-sm text-[#9e9890] transition-all duration-150 hover:bg-[#f3e8e6] hover:text-[#a06658]"
@@ -93,6 +106,26 @@ function Sidebar({
         <span className="font-manrope">Sign out</span>
       </button>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop */}
+      <div className="hidden h-screen w-[240px] shrink-0 lg:block">{content}</div>
+
+      {/* Mobile overlay */}
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+      />
+
+      {/* Mobile drawer */}
+      <div
+        className={`fixed inset-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${open ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        {content}
+      </div>
+    </>
   );
 }
 
@@ -126,6 +159,13 @@ export default function Dashboard() {
 
 function AppShell() {
   const [activePage, setActivePage] = useState<Page>("leads");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSidebarOpen(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -134,11 +174,42 @@ function AppShell() {
 
   return (
     <div className="flex min-h-screen bg-[#f7f4ef]">
-      <Sidebar activePage={activePage} onNavigate={setActivePage} onSignOut={handleSignOut} />
-      <main className="flex-1 overflow-auto">
-        {activePage === "home" && <Home />}
-        {activePage === "leads" && <Leads />}
-      </main>
+      <Sidebar
+        activePage={activePage}
+        onNavigate={setActivePage}
+        onSignOut={handleSignOut}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <div className="flex flex-1 flex-col overflow-auto">
+        {/* Mobile topbar */}
+        <header className="flex h-14 items-center border-b border-[#e8e3db] bg-white px-4 lg:hidden">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-[#9e9890] transition-colors hover:bg-[#f0ede8] hover:text-[#1c1a16]"
+            aria-label="Open menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </button>
+          <div className="ml-3">
+            <LogoLink />
+          </div>
+        </header>
+        <main className="flex-1">
+          {activePage === "home" && <Home />}
+          {activePage === "leads" && <Leads />}
+        </main>
+      </div>
     </div>
   );
 }
@@ -186,7 +257,6 @@ function Login() {
       />
       <div className="pointer-events-none absolute -top-32 -right-32 h-[480px] w-[480px] rounded-full bg-[#c9a96e] opacity-[0.06] blur-[100px]" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-[320px] w-[320px] rounded-full bg-[#c9a96e] opacity-[0.04] blur-[80px]" />
-
       <div className="relative hidden w-1/2 flex-col justify-between p-16 lg:flex">
         <div className="flex items-center">
           <LogoLink />
@@ -216,9 +286,7 @@ function Login() {
           CRM · Internal Access
         </span>
       </div>
-
       <div className="hidden w-px bg-[#e8e3db] lg:block" />
-
       <div className="flex w-full flex-col items-center justify-center bg-[#faf8f5] px-8 lg:w-1/2">
         <div className="w-full max-w-[360px]">
           <div className="mb-14 lg:hidden">
@@ -229,7 +297,6 @@ function Login() {
               </span>
             </div>
           </div>
-
           <p className="font-mulish mb-2 text-[10px] tracking-[0.3em] text-[#b5b0a8] uppercase">
             Access
           </p>
@@ -240,7 +307,6 @@ function Login() {
             Welcome back
           </h1>
           <p className="font-manrope mb-10 text-sm text-[#9e9890] italic">Sign in to continue</p>
-
           <button
             onClick={handleLogin}
             className="group relative w-full overflow-hidden border border-[#dedad4] bg-white px-6 py-4 text-left shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[#c9a96e]/50 hover:shadow-[0_4px_16px_rgba(201,169,110,0.12)]"
@@ -283,7 +349,6 @@ function Login() {
               </svg>
             </span>
           </button>
-
           <div className="mt-8 flex items-center gap-3">
             <div className="h-px flex-1 bg-[#ede9e3]" />
             <p className="font-mulish text-[10px] tracking-[0.2em] text-[#ccc9c3] uppercase">
@@ -345,14 +410,12 @@ function Leads() {
     setPage(1);
     localStorage.setItem(PAGE_SIZE_KEY, String(size));
   };
-
   const handleSearch = (value: string) => {
     setSearch(value);
     setPage(1);
   };
 
   const activeLeads = leads?.filter((l) => !deletedIds.has(l.id)) ?? [];
-
   const q = search.trim().toLowerCase();
   const filteredLeads = q
     ? activeLeads.filter((l) =>
@@ -380,8 +443,8 @@ function Leads() {
     );
 
   return (
-    <div className="p-10">
-      {/* Page title */}
+    <div className="p-6 lg:p-10">
+      {/* Title */}
       <div className="mb-8 border-b border-[#e8e3db] pb-6">
         <h2
           className="font-tan-pearl text-[28px] font-normal text-[#1c1a16]"
@@ -395,7 +458,7 @@ function Leads() {
       </div>
 
       {/* KPIs */}
-      <div className="mb-8 grid grid-cols-4 gap-4">
+      <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {KPI_STATUSES.map((status) => (
           <div
             key={status}
@@ -414,9 +477,9 @@ function Leads() {
         ))}
       </div>
 
-      {/* Buscador + page size */}
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <div className="relative max-w-sm flex-1">
+      {/* Search + page size */}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full sm:max-w-sm">
           <svg
             className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#c2bdb6]"
             width="14"
@@ -457,7 +520,6 @@ function Leads() {
             </button>
           )}
         </div>
-
         <div className="flex items-center gap-3">
           <span className="font-manrope text-xs text-[#b5b0a8]">
             {filteredLeads.length} lead{filteredLeads.length !== 1 ? "s" : ""}
@@ -492,7 +554,7 @@ function Leads() {
         </div>
       </div>
 
-      {/* Tabla */}
+      {/* Table */}
       <div className="overflow-auto border border-[#e8e3db] bg-[#faf8f5] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
         <table className="font-manrope w-full min-w-[600px] text-sm">
           <thead>
@@ -560,7 +622,7 @@ function Leads() {
         </table>
       </div>
 
-      {/* Paginador */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-4 flex items-center justify-between">
           <span className="font-manrope text-xs text-[#b5b0a8]">
@@ -585,7 +647,6 @@ function Leads() {
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
-
             {Array.from({ length: totalPages }, (_, i) => i + 1)
               .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
               .reduce<(number | "…")[]>((acc, p, i, arr) => {
@@ -596,7 +657,7 @@ function Leads() {
               .map((p, i) =>
                 p === "…" ? (
                   <span
-                    key={`ellipsis-${i}`}
+                    key={`e-${i}`}
                     className="font-manrope flex h-8 w-8 items-center justify-center text-xs text-[#c2bdb6]"
                   >
                     …
@@ -605,17 +666,12 @@ function Leads() {
                   <button
                     key={p}
                     onClick={() => setPage(p as number)}
-                    className={`font-manrope flex h-8 w-8 items-center justify-center border text-xs transition-colors ${
-                      safePage === p
-                        ? "border-[#c9a96e]/40 bg-[#c9a96e]/10 text-[#a07d4a]"
-                        : "border-[#e8e3db] bg-[#faf8f5] text-[#9e9890] hover:border-[#c9a96e]/50 hover:text-[#c9a96e]"
-                    }`}
+                    className={`font-manrope flex h-8 w-8 items-center justify-center border text-xs transition-colors ${safePage === p ? "border-[#c9a96e]/40 bg-[#c9a96e]/10 text-[#a07d4a]" : "border-[#e8e3db] bg-[#faf8f5] text-[#9e9890] hover:border-[#c9a96e]/50 hover:text-[#c9a96e]"}`}
                   >
                     {p}
                   </button>
                 ),
               )}
-
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={safePage === totalPages}
