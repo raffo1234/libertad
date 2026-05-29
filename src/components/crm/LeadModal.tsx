@@ -1,8 +1,8 @@
-import type { UnitType, UnitTypeOrEmpty } from "../constants/unitTypes";
+import type { UnitType, UnitTypeOrEmpty } from "../../constants/unitTypes";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import CircleArrow from "./CircleArrow";
+import CircleArrow from "../CircleArrow";
 
 export const UNIT_TYPES = {
   type_1: "Tipo 1",

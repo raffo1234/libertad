@@ -1,0 +1,8 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import LeadDetail from "../../../components/crm/LeadDetail";
+---
+
+<Layout title="Lead Detail">
+  <LeadDetail id={Astro.params.id!} client:load />
+</Layout>

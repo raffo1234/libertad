@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import type { Session } from "@supabase/supabase-js";
 import { useLeads } from "../../hooks/useLeads";
-import type { Lead, LeadStatus } from "../../types/lead";
+import type { Lead, LeadSource, LeadStatus } from "../../types/lead";
 import LogoLink from "../LogoLink";
 import { Icon } from "@iconify/react";
+import { Toaster, toast } from "react-hot-toast";
+import Modal from "./Modal";
+import CreateLeadForm from "./CreateLeadForm";
+import EditLeadForm from "./EditLeadForm";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 const PAGE_SIZE_KEY = "crm_leads_page_size";
 const PAGE_SIZES = [10, 20, 50];
@@ -25,24 +31,48 @@ const STATUS_CLASSES: Record<LeadStatus, { badge: string; border: string }> = {
   lost: { badge: "bg-[#f3e8e6] text-[#a06658]", border: "border-l-[#c08878]" },
 };
 
+const SOURCE_CLASSES: Record<LeadSource, string> = {
+  web: "bg-[#f0f0ee] text-[#7a7870]",
+  manual: "bg-[#f4ece0] text-[#a07d4a]",
+};
+
+const SOURCE_LABEL: Record<LeadSource, string> = {
+  web: "Web",
+  manual: "Manual",
+};
+
 const KPI_STATUSES: LeadStatus[] = ["new", "contacted", "visit", "reserved"];
+
 type Page = "home" | "leads";
+type SortKey = "name" | "created_at" | "status";
+type SortDir = "asc" | "desc";
+
+const STATUS_FILTER_OPTIONS: { value: LeadStatus | "all"; label: string }[] = [
+  { value: "all", label: "All statuses" },
+  { value: "new", label: "New" },
+  { value: "contacted", label: "Contacted" },
+  { value: "visit", label: "Visit" },
+  { value: "reserved", label: "Reserved" },
+  { value: "lost", label: "Lost" },
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function isRecent(dateStr: string): boolean {
+  return Date.now() - new Date(dateStr).getTime() < 24 * 60 * 60 * 1000;
+}
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
-function Sidebar({
-  activePage,
-  onNavigate,
-  onSignOut,
-  open,
-  onClose,
-}: {
+interface SidebarProps {
   activePage: Page;
-  onNavigate: (p: Page) => void;
+  onNavigate: (page: Page) => void;
   onSignOut: () => void;
   open: boolean;
   onClose: () => void;
-}) {
+}
+
+function Sidebar({ activePage, onNavigate, onSignOut, open, onClose }: SidebarProps) {
   const handleNavigate = (page: Page) => {
     onNavigate(page);
     onClose();
@@ -62,7 +92,9 @@ function Sidebar({
       >
         <Icon
           icon={icon}
-          className={`h-[18px] w-[18px] shrink-0 transition-colors ${isActive ? "text-[#1c1a16]" : "text-[#c2bdb6] group-hover:text-[#6b665e]"}`}
+          className={`h-[18px] w-[18px] shrink-0 transition-colors ${
+            isActive ? "text-[#1c1a16]" : "text-[#c2bdb6] group-hover:text-[#6b665e]"
+          }`}
         />
         <span className="font-manrope">{label}</span>
       </button>
@@ -110,16 +142,13 @@ function Sidebar({
 
   return (
     <>
-      {/* Desktop */}
       <div className="hidden h-screen w-[240px] shrink-0 lg:block">{content}</div>
-
-      {/* Mobile overlay */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
       />
-
-      {/* Mobile drawer */}
       <div
         className={`fixed inset-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
@@ -174,6 +203,7 @@ function AppShell() {
 
   return (
     <div className="flex min-h-screen bg-[#f7f4ef]">
+      <Toaster position="top-right" />
       <Sidebar
         activePage={activePage}
         onNavigate={setActivePage}
@@ -182,7 +212,6 @@ function AppShell() {
         onClose={() => setSidebarOpen(false)}
       />
       <div className="flex flex-1 flex-col overflow-auto">
-        {/* Mobile topbar */}
         <header className="flex h-14 items-center border-b border-[#e8e3db] bg-white px-4 lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -365,13 +394,53 @@ function Login() {
   );
 }
 
+// ─── Source Badge ─────────────────────────────────────────────────────────────
+
+function SourceBadge({ source }: { source: LeadSource }) {
+  return (
+    <span
+      className={`font-mulish inline-flex items-center rounded-full px-2.5 py-1 text-[10px] tracking-wider uppercase ${SOURCE_CLASSES[source]}`}
+    >
+      {SOURCE_LABEL[source]}
+    </span>
+  );
+}
+
+// ─── Sort Icon ────────────────────────────────────────────────────────────────
+
+function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`ml-1 inline-block transition-colors ${active ? "text-[#1c1a16]" : "text-[#d4d0ca]"}`}
+    >
+      {dir === "asc" || !active ? (
+        <path d="M12 5v14M5 12l7-7 7 7" />
+      ) : (
+        <path d="M12 19V5M5 12l7 7 7-7" />
+      )}
+    </svg>
+  );
+}
+
 // ─── Leads ────────────────────────────────────────────────────────────────────
 
 function Leads() {
   const { data: leads, isLoading, error, mutate } = useLeads();
-  const [deletedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
+  const [sortKey, setSortKey] = useState<SortKey>("created_at");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [page, setPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [pageSize, setPageSize] = useState<number>(() => {
     if (typeof window === "undefined") return 10;
     const saved = localStorage.getItem(PAGE_SIZE_KEY);
@@ -391,6 +460,7 @@ function Leads() {
     if (updateError) {
       console.error("Update failed:", updateError);
       mutate();
+      toast.error("Failed to update status");
     }
   };
 
@@ -398,11 +468,11 @@ function Leads() {
     if (!confirm("Delete this lead?")) return;
     const { error: deleteError } = await supabase.from("lead").delete().eq("id", id).select();
     if (deleteError) {
-      console.error("Delete failed:", deleteError);
-      alert("Error al eliminar: " + deleteError.message);
+      toast.error("Failed to delete lead");
       return;
     }
     mutate(leads?.filter((l) => l.id !== id));
+    toast.success("Lead deleted");
   };
 
   const handlePageSizeChange = (size: number) => {
@@ -410,20 +480,57 @@ function Leads() {
     setPage(1);
     localStorage.setItem(PAGE_SIZE_KEY, String(size));
   };
+
   const handleSearch = (value: string) => {
     setSearch(value);
     setPage(1);
   };
+  const handleStatusFilter = (value: LeadStatus | "all") => {
+    setStatusFilter(value);
+    setPage(1);
+  };
 
-  const activeLeads = leads?.filter((l) => !deletedIds.has(l.id)) ?? [];
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+    setPage(1);
+  };
+
+  const handleLeadCreated = () => {
+    setModalOpen(false);
+    mutate();
+    toast.success("Lead created");
+  };
+
+  const handleLeadEdited = () => {
+    setEditingLead(null);
+    mutate();
+    toast.success("Lead updated");
+  };
+
   const q = search.trim().toLowerCase();
-  const filteredLeads = q
-    ? activeLeads.filter((l) =>
-        [l.name, l.phone, l.email, l.unit_type, STATUS_LABEL[l.status ?? "new"]]
+
+  const filteredLeads = (leads ?? [])
+    .filter((l) => statusFilter === "all" || l.status === statusFilter)
+    .filter(
+      (l) =>
+        !q ||
+        [l.name, l.phone, l.email, l.unit_type, STATUS_LABEL[l.status], SOURCE_LABEL[l.source]]
           .filter(Boolean)
           .some((v) => v!.toLowerCase().includes(q)),
-      )
-    : activeLeads;
+    )
+    .sort((a, b) => {
+      const mul = sortDir === "asc" ? 1 : -1;
+      if (sortKey === "name") return mul * a.name.localeCompare(b.name);
+      if (sortKey === "status") return mul * a.status.localeCompare(b.status);
+      if (sortKey === "created_at")
+        return mul * (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      return 0;
+    });
 
   const totalPages = Math.max(1, Math.ceil(filteredLeads.length / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -442,6 +549,16 @@ function Leads() {
       </div>
     );
 
+  const sortableHeader = (label: string, key: SortKey) => (
+    <th
+      className="font-mulish cursor-pointer px-5 py-4 text-left text-[10px] font-normal tracking-[0.2em] text-[#b5b0a8] uppercase transition-colors select-none hover:text-[#1c1a16]"
+      onClick={() => handleSort(key)}
+    >
+      {label}
+      <SortIcon active={sortKey === key} dir={sortDir} />
+    </th>
+  );
+
   return (
     <div className="p-6 lg:p-10">
       {/* Title */}
@@ -453,7 +570,7 @@ function Leads() {
           Leads
         </h2>
         <p className="font-manrope mt-1 text-sm text-[#9e9890]">
-          {activeLeads.length} total · {filteredLeads.length} shown
+          {(leads ?? []).length} total · {filteredLeads.length} shown
         </p>
       </div>
 
@@ -477,8 +594,9 @@ function Leads() {
         ))}
       </div>
 
-      {/* Search + page size */}
+      {/* Filters + actions */}
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Search */}
         <div className="relative w-full sm:max-w-sm">
           <svg
             className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[#c2bdb6]"
@@ -498,7 +616,7 @@ function Leads() {
             type="text"
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search by name, phone, status…"
+            placeholder="Search by name, phone, source…"
             className="font-manrope h-10 w-full border border-[#e8e3db] bg-[#faf8f5] py-2 pr-9 pl-9 text-sm text-[#1c1a16] placeholder-[#c2bdb6] transition-colors outline-none focus:border-[#c9a96e] focus:bg-white"
           />
           {search && (
@@ -520,11 +638,42 @@ function Leads() {
             </button>
           )}
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* Right controls */}
+        <div className="flex flex-wrap items-center gap-3">
           <span className="font-manrope text-xs text-[#b5b0a8]">
             {filteredLeads.length} lead{filteredLeads.length !== 1 ? "s" : ""}
-            {q && ` for "${search}"`}
           </span>
+
+          {/* Status filter */}
+          <div className="relative">
+            <select
+              value={statusFilter}
+              onChange={(e) => handleStatusFilter(e.target.value as LeadStatus | "all")}
+              className="font-mulish cursor-pointer appearance-none border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+            >
+              {STATUS_FILTER_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+            <svg
+              className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#c2bdb6]"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+
+          {/* Page size */}
           <div className="relative">
             <select
               value={pageSize}
@@ -551,28 +700,53 @@ function Leads() {
               <path d="M6 9l6 6 6-6" />
             </svg>
           </div>
+
+          {/* New lead */}
+          <button
+            onClick={() => setModalOpen(true)}
+            className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
+          >
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            New lead
+          </button>
         </div>
       </div>
 
       {/* Table */}
       <div className="overflow-auto border border-[#e8e3db] bg-[#faf8f5] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-        <table className="font-manrope w-full min-w-[600px] text-sm">
+        <table className="font-manrope w-full min-w-[700px] text-sm">
           <thead>
             <tr className="border-b border-[#e8e3db]">
-              {["Name", "Phone", "Unit type", "Status", "Date", ""].map((h, i) => (
-                <th
-                  key={i}
-                  className="font-mulish px-5 py-4 text-left text-[10px] font-normal tracking-[0.2em] text-[#b5b0a8] uppercase"
-                >
-                  {h}
-                </th>
-              ))}
+              {sortableHeader("Name", "name")}
+              <th className="font-mulish px-5 py-4 text-left text-[10px] font-normal tracking-[0.2em] text-[#b5b0a8] uppercase">
+                Phone
+              </th>
+              <th className="font-mulish px-5 py-4 text-left text-[10px] font-normal tracking-[0.2em] text-[#b5b0a8] uppercase">
+                Unit type
+              </th>
+              {sortableHeader("Status", "status")}
+              <th className="font-mulish px-5 py-4 text-left text-[10px] font-normal tracking-[0.2em] text-[#b5b0a8] uppercase">
+                Source
+              </th>
+              {sortableHeader("Date", "created_at")}
+              <th className="px-5 py-4" />
             </tr>
           </thead>
           <tbody>
             {paginatedLeads.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-16 text-center text-[#c2bdb6] italic">
+                <td colSpan={7} className="px-5 py-16 text-center text-[#c2bdb6] italic">
                   {q ? `No results for "${search}"` : "No leads yet"}
                 </td>
               </tr>
@@ -580,17 +754,28 @@ function Leads() {
             {paginatedLeads.map((lead: Lead) => (
               <tr
                 key={lead.id}
-                className="border-b border-[#ede9e3] transition-colors last:border-b-0 hover:bg-[#f7f4ef]"
+                onClick={() => (window.location.href = `/crm/lead/${lead.id}`)}
+                className="cursor-pointer border-b border-[#ede9e3] transition-colors last:border-b-0 hover:bg-[#f7f4ef]"
               >
-                <td className="truncate px-5 py-4 font-medium text-[#1c1a16]">{lead.name}</td>
+                <td className="px-5 py-4 font-medium text-[#1c1a16]">
+                  <div className="flex items-center gap-2">
+                    <span className="truncate">{lead.name}</span>
+                    {isRecent(lead.created_at) && (
+                      <span
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#7ba07b]"
+                        title="New today"
+                      />
+                    )}
+                  </div>
+                </td>
                 <td className="truncate px-5 py-4 text-[#6b665e]">{lead.phone}</td>
                 <td className="px-5 py-4 text-[#6b665e]">{lead.unit_type ?? "—"}</td>
-                <td className="px-5 py-4">
+                <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                   <div className="relative inline-flex items-center gap-1">
                     <select
-                      value={lead.status ?? "new"}
+                      value={lead.status}
                       onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
-                      className={`cursor-pointer appearance-none rounded-full border-0 py-2 pr-10 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status ?? "new"].badge}`}
+                      className={`cursor-pointer appearance-none rounded-full border-0 py-2 pr-10 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
                     >
                       {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
                         <option key={s} value={s}>
@@ -604,17 +789,31 @@ function Leads() {
                     />
                   </div>
                 </td>
+                <td className="px-5 py-4">
+                  <SourceBadge source={lead.source} />
+                </td>
                 <td className="truncate px-5 py-4 text-[13px] text-[#9e9890]">
                   {new Date(lead.created_at).toLocaleString("es-PE", { timeZone: "America/Lima" })}
                 </td>
-                <td className="px-5 py-4">
-                  <button
-                    onClick={() => handleDelete(lead.id)}
-                    className="rounded-full border border-[#e8e3db] bg-white p-2 text-[#b5b0a8] transition-colors hover:border-[#c08878]/40 hover:text-[#a06658]"
-                    title="Delete lead"
-                  >
-                    <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
-                  </button>
+                <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
+                  <div className="flex items-center gap-2">
+                    {lead.source === "manual" && (
+                      <button
+                        onClick={() => setEditingLead(lead)}
+                        className="rounded-full border border-[#e8e3db] bg-white p-2 text-[#b5b0a8] transition-colors hover:border-[#c9a96e]/40 hover:text-[#a07d4a]"
+                        title="Edit lead"
+                      >
+                        <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDelete(lead.id)}
+                      className="rounded-full border border-[#e8e3db] bg-white p-2 text-[#b5b0a8] transition-colors hover:border-[#c08878]/40 hover:text-[#a06658]"
+                      title="Delete lead"
+                    >
+                      <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -693,6 +892,14 @@ function Leads() {
           </div>
         </div>
       )}
+
+      {/* Modals */}
+      <Modal title="New lead" open={modalOpen} onClose={() => setModalOpen(false)}>
+        <CreateLeadForm onSuccess={handleLeadCreated} />
+      </Modal>
+      <Modal title="Edit lead" open={editingLead !== null} onClose={() => setEditingLead(null)}>
+        {editingLead && <EditLeadForm lead={editingLead} onSuccess={handleLeadEdited} />}
+      </Modal>
     </div>
   );
 }
