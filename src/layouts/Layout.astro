@@ -19,6 +19,7 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.url).href;
+const isCrm = Astro.url.pathname.startsWith("/crm");
 ---
 
 <!doctype html>
@@ -76,7 +77,7 @@ const socialImageURL = new URL(image, Astro.url).href;
   </head>
   <body class="font-mulish text-gray-800 antialiased">
     <slot />
-    <WhatsappButton />
+    {!isCrm && <WhatsappButton />}
   </body>
 </html>
 
