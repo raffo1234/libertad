@@ -1,8 +1,8 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+import CrmLayout from "../../../layouts/CrmLayout.astro";
 import LeadDetail from "../../../components/crm/LeadDetail";
 ---
 
-<Layout title="Lead Detail">
+<CrmLayout title="Lead · CRM Galvez 1519">
   <LeadDetail id={Astro.params.id!} client:load />
-</Layout>
+</CrmLayout>

@@ -175,7 +175,7 @@ export default function LeadDetail({ id }: LeadDetailProps) {
         <div className="mx-auto flex max-w-3xl items-center justify-between">
           <div className="flex items-center gap-4">
             <a
-              href="/crm"
+              href="/crm/leads"
               className="font-manrope flex items-center gap-1.5 text-sm text-[#b5b0a8] transition-colors hover:text-[#1c1a16]"
             >
               <svg

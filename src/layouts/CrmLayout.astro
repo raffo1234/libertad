@@ -1,0 +1,25 @@
+---
+import Layout from "./Layout.astro";
+import CrmSidebar from "../components/crm/CrmSidebar";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "CRM · Galvez 1519" } = Astro.props;
+const activePath = Astro.url.pathname;
+---
+
+<Layout title={title}>
+  <div class="flex min-h-screen bg-[#f7f4ef]">
+    <!-- Sidebar (desktop fixed, mobile drawer) -->
+    <CrmSidebar activePath={activePath} client:load />
+
+    <!-- Main content -->
+    <div class="flex flex-1 flex-col overflow-auto pt-14 lg:pt-0">
+      <main class="flex-1">
+        <slot />
+      </main>
+    </div>
+  </div>
+</Layout>
