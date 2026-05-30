@@ -1,12 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { supabase } from "../../../lib/supabase";
-import type { Session } from "@supabase/supabase-js";
 import type { BitacoraEntry, BitacoraFile } from "../../../types/bitacora";
 import { Icon } from "@iconify/react";
 import { toast, Toaster } from "react-hot-toast";
 import Modal from "../Modal";
 import BitacoraForm from "./BitacoraForm";
-import LogoLink from "../../LogoLink";
+import CrmAuthGuard from "../CrmAuthGuard";
+import { useBitacora } from "../../../hooks/useBitacora";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -153,65 +153,20 @@ function EntryCard({ entry, onDelete }: { entry: BitacoraEntry; onDelete: (id: s
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
+// ─── Inner component (requires session) ───────────────────────────────────────
 
-interface BitacoraListProps {
+interface BitacoraInnerProps {
   projectSlug: string;
+  userId: string;
 }
 
-export default function BitacoraList({ projectSlug }: BitacoraListProps) {
-  const [session, setSession] = useState<Session | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [entries, setEntries] = useState<BitacoraEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
+  const { data: entries = [], isLoading, error, mutate } = useBitacora(projectSlug);
   const [modalOpen, setModalOpen] = useState(false);
-
-  // ─── Auth ──────────────────────────────────────────────────────────────────
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setAuthLoading(false);
-    });
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        window.location.href = "/crm";
-        return;
-      }
-      setSession(session);
-      setAuthLoading(false);
-    });
-  }, []);
-
-  // ─── Fetch entries ─────────────────────────────────────────────────────────
-
-  const fetchEntries = useCallback(async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("bitacora_entry")
-      .select("*, files:bitacora_file(*)")
-      .eq("project_slug", projectSlug)
-      .order("date", { ascending: false });
-
-    if (error) {
-      toast.error("Error loading bitácora");
-      setLoading(false);
-      return;
-    }
-    setEntries(data ?? []);
-    setLoading(false);
-  }, [projectSlug]);
-
-  useEffect(() => {
-    if (!session) return;
-    fetchEntries();
-  }, [session, fetchEntries]);
-
-  // ─── Handlers ──────────────────────────────────────────────────────────────
 
   const handleEntryCreated = () => {
     setModalOpen(false);
-    fetchEntries();
+    mutate();
     toast.success("Entrada guardada");
   };
 
@@ -222,114 +177,96 @@ export default function BitacoraList({ projectSlug }: BitacoraListProps) {
       toast.error("Error al eliminar");
       return;
     }
-    setEntries((prev) => prev.filter((e) => e.id !== id));
+    mutate();
     toast.success("Entrada eliminada");
   };
 
-  // ─── States ────────────────────────────────────────────────────────────────
-
-  if (authLoading || loading) {
+  if (isLoading && entries.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f7f4ef]">
+      <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#e8e3db] border-t-[#c9a96e]" />
       </div>
     );
   }
 
-  if (!session) {
-    window.location.href = "/crm";
-    return null;
+  if (error) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <p className="font-manrope text-sm text-[#a06658]">Error al cargar la bitácora.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f4ef]">
-      <Toaster position="top-right" />
-
-      {/* Header */}
-      <header className="border-b border-[#e8e3db] bg-white px-6 py-4">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a
-              href="/crm"
-              className="font-manrope flex items-center gap-1.5 text-sm text-[#b5b0a8] transition-colors hover:text-[#1c1a16]"
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 12H5M12 5l-7 7 7 7" />
-              </svg>
-              CRM
-            </a>
-            <span className="text-[#e8e3db]">/</span>
-            <span className="font-manrope text-sm text-[#1c1a16]">Bitácora</span>
-          </div>
-          <LogoLink />
-        </div>
-      </header>
-
-      {/* Content */}
-      <div className="mx-auto max-w-4xl px-6 py-10">
-        <div className="mb-8 flex items-end justify-between border-b border-[#e8e3db] pb-6">
-          <div>
-            <h1
-              className="font-tan-pearl text-[28px] font-normal text-[#1c1a16]"
-              style={{ letterSpacing: "-0.02em" }}
-            >
-              Bitácora
-            </h1>
-            <p className="font-manrope mt-1 text-sm text-[#9e9890]">
-              {entries.length} entrada{entries.length !== 1 ? "s" : ""} · {projectSlug}
-            </p>
-          </div>
-
-          <button
-            onClick={() => setModalOpen(true)}
-            className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
+    <div className="p-6 lg:p-10">
+      {/* Title */}
+      <div className="mb-8 flex items-end justify-between border-b border-[#e8e3db] pb-6">
+        <div>
+          <h1
+            className="font-tan-pearl text-[28px] font-normal text-[#1c1a16]"
+            style={{ letterSpacing: "-0.02em" }}
           >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            >
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-            Nueva entrada
-          </button>
+            Bitácora
+          </h1>
+          <p className="font-manrope mt-1 text-sm text-[#9e9890]">
+            {entries.length} entrada{entries.length !== 1 ? "s" : ""} · {projectSlug}
+          </p>
         </div>
 
-        {entries.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 py-20">
-            <Icon icon="solar:notebook-linear" className="h-10 w-10 text-[#c2bdb6]" />
-            <p className="font-manrope text-sm text-[#9e9890]">No hay entradas aún.</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {entries.map((entry) => (
-              <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
-            ))}
-          </div>
-        )}
+        <button
+          onClick={() => setModalOpen(true)}
+          className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
+        >
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Nueva entrada
+        </button>
       </div>
 
+      {/* Entries */}
+      {entries.length === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-3 py-20">
+          <Icon icon="solar:notebook-linear" className="h-10 w-10 text-[#c2bdb6]" />
+          <p className="font-manrope text-sm text-[#9e9890]">No hay entradas aún.</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {entries.map((entry) => (
+            <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
+          ))}
+        </div>
+      )}
+
       <Modal title="Nueva entrada" open={modalOpen} onClose={() => setModalOpen(false)}>
-        <BitacoraForm
-          projectSlug={projectSlug}
-          userId={session.user.id}
-          onSuccess={handleEntryCreated}
-        />
+        <BitacoraForm projectSlug={projectSlug} userId={userId} onSuccess={handleEntryCreated} />
       </Modal>
     </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+interface BitacoraListProps {
+  projectSlug: string;
+}
+
+export default function BitacoraList({ projectSlug }: BitacoraListProps) {
+  return (
+    <>
+      <Toaster position="top-right" />
+      <CrmAuthGuard>
+        {(session) => <BitacoraInner projectSlug={projectSlug} userId={session.user.id} />}
+      </CrmAuthGuard>
+    </>
   );
 }
