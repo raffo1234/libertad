@@ -4,6 +4,7 @@ import "@fontsource/manrope/400.css";
 import "../styles/global.css";
 import WhatsappButton from "../components/WhatsappButton.astro";
 import tanPearl from "../fonts/tan-pearl.woff2";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -27,7 +28,7 @@ const isCrm = Astro.url.pathname.startsWith("/crm");
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-
+    <ClientRouter />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
