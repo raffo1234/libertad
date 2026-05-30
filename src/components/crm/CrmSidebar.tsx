@@ -41,6 +41,7 @@ export default function CrmSidebar({ activePath }: CrmSidebarProps) {
     const active = isActive(href);
     return (
       <a
+        data-astro-prefetch
         key={href}
         href={href}
         onClick={() => setOpen(false)}

@@ -10,6 +10,7 @@ import { defineConfig, envField } from "astro/config";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  prefetch: true,
   integrations: [icon(), react(), sitemap()],
   site: "https://www.galvez1519.com",
   adapter: vercel(),
