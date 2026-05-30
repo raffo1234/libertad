@@ -16,6 +16,8 @@
     "@astrojs/react": "^5.0.4",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/vercel": "^10.0.6",
+    "@aws-sdk/client-s3": "^3.1057.0",
+    "@aws-sdk/s3-request-presigner": "^3.1057.0",
     "@fontsource/manrope": "^5.1.1",
     "@fontsource/mulish": "^5.1.1",
     "@iconify-json/material-symbols-light": "^1.2.12",
