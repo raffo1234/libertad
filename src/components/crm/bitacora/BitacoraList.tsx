@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { toast, Toaster } from "react-hot-toast";
 import Modal from "../Modal";
 import BitacoraForm from "./BitacoraForm";
+import EditBitacoraForm from "./EditBitacoraForm";
 import CrmAuthGuard from "../CrmAuthGuard";
 import { useBitacora } from "../../../hooks/useBitacora";
 
@@ -94,7 +95,13 @@ function FilePreview({ file }: { file: BitacoraFile }) {
 
 // ─── Entry card ───────────────────────────────────────────────────────────────
 
-function EntryCard({ entry, onDelete }: { entry: BitacoraEntry; onDelete: (id: string) => void }) {
+interface EntryCardProps {
+  entry: BitacoraEntry;
+  onDelete: (id: string) => void;
+  onEdit: (entry: BitacoraEntry) => void;
+}
+
+function EntryCard({ entry, onDelete, onEdit }: EntryCardProps) {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -116,6 +123,16 @@ function EntryCard({ entry, onDelete }: { entry: BitacoraEntry; onDelete: (id: s
               {entry.files.length}
             </span>
           )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(entry);
+            }}
+            className="text-[#c2bdb6] transition-colors hover:text-[#a07d4a]"
+            title="Editar entrada"
+          >
+            <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -153,7 +170,7 @@ function EntryCard({ entry, onDelete }: { entry: BitacoraEntry; onDelete: (id: s
   );
 }
 
-// ─── Inner component (requires session) ───────────────────────────────────────
+// ─── Inner component ──────────────────────────────────────────────────────────
 
 interface BitacoraInnerProps {
   projectSlug: string;
@@ -163,11 +180,18 @@ interface BitacoraInnerProps {
 function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
   const { data: entries = [], isLoading, error, mutate } = useBitacora(projectSlug);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingEntry, setEditingEntry] = useState<BitacoraEntry | null>(null);
 
   const handleEntryCreated = () => {
     setModalOpen(false);
     mutate();
     toast.success("Entrada guardada");
+  };
+
+  const handleEntryEdited = () => {
+    setEditingEntry(null);
+    mutate();
+    toast.success("Entrada actualizada");
   };
 
   const handleDelete = async (id: string) => {
@@ -242,13 +266,34 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
       ) : (
         <div className="flex flex-col gap-3">
           {entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
+            <EntryCard
+              key={entry.id}
+              entry={entry}
+              onDelete={handleDelete}
+              onEdit={setEditingEntry}
+            />
           ))}
         </div>
       )}
 
+      {/* New entry modal */}
       <Modal title="Nueva entrada" open={modalOpen} onClose={() => setModalOpen(false)}>
         <BitacoraForm projectSlug={projectSlug} userId={userId} onSuccess={handleEntryCreated} />
+      </Modal>
+
+      {/* Edit entry modal */}
+      <Modal
+        title="Editar entrada"
+        open={editingEntry !== null}
+        onClose={() => setEditingEntry(null)}
+      >
+        {editingEntry && (
+          <EditBitacoraForm
+            entry={editingEntry}
+            projectSlug={projectSlug}
+            onSuccess={handleEntryEdited}
+          />
+        )}
       </Modal>
     </div>
   );
