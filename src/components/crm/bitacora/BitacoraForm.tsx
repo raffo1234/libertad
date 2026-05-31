@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../lib/supabase";
-import type { BitacoraEntry } from "../../../types/bitacora";
-import type { UploadedFile } from "../../../lib/uploadR2";
+import { uploadFiles } from "../../../lib/uploadR2";
+import type { UploadProgress } from "../../../lib/uploadR2";
 import FileUploader from "./FileUploader";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -16,7 +16,7 @@ interface FormValues {
 interface BitacoraFormProps {
   projectSlug: string;
   userId: string;
-  onSuccess: (entry: BitacoraEntry) => void;
+  onSuccess: () => void;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -52,7 +52,8 @@ const inputCls = (hasError: boolean) =>
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function BitacoraForm({ projectSlug, userId, onSuccess }: BitacoraFormProps) {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
+  const [progress, setProgress] = useState<Record<string, number>>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -67,57 +68,75 @@ export default function BitacoraForm({ projectSlug, userId, onSuccess }: Bitacor
     defaultValues: { date: today, title: "", description: "" },
   });
 
-  const handleFilesUploaded = (files: UploadedFile[]) => {
-    setUploadedFiles((prev) => [...prev, ...files]);
-  };
-
   const onSubmit = async (data: FormValues) => {
     setSaving(true);
     setSaveError(null);
 
-    // 1. Insert entry
-    const { data: entry, error: entryError } = await supabase
-      .from("bitacora_entry")
-      .insert({
-        project_slug: projectSlug,
-        date: data.date,
-        title: data.title.trim(),
-        description: data.description.trim() || null,
-        created_by: userId,
-      })
-      .select()
-      .single();
+    try {
+      // 1. Upload files to R2 if any
+      let uploadedFiles: Awaited<ReturnType<typeof uploadFiles>> = [];
 
-    if (entryError || !entry) {
-      setSaveError("Error al guardar la entrada.");
-      setSaving(false);
-      return;
-    }
+      if (queuedFiles.length > 0) {
+        uploadedFiles = await uploadFiles(
+          queuedFiles,
+          `bitacora/${projectSlug}`,
+          (progressList) => {
+            const map: Record<string, number> = {};
+            progressList.forEach((p) => {
+              map[p.file] = p.percent;
+            });
+            setProgress(map);
+          },
+        );
+      }
 
-    // 2. Insert files if any
-    if (uploadedFiles.length > 0) {
-      const fileRows = uploadedFiles.map((f) => ({
-        entry_id: entry.id,
-        name: f.name,
-        size: f.size,
-        type: f.type,
-        r2_key: f.r2Key,
-        url: f.url,
-      }));
+      // 2. Insert entry in Supabase
+      const { data: entry, error: entryError } = await supabase
+        .from("bitacora_entry")
+        .insert({
+          project_slug: projectSlug,
+          date: data.date,
+          title: data.title.trim(),
+          description: data.description.trim() || null,
+          created_by: userId,
+        })
+        .select()
+        .single();
 
-      const { error: filesError } = await supabase.from("bitacora_file").insert(fileRows);
-
-      if (filesError) {
-        setSaveError("Entrada guardada pero hubo un error con los archivos.");
-        setSaving(false);
+      if (entryError || !entry) {
+        setSaveError("Error al guardar la entrada.");
         return;
       }
-    }
 
-    reset({ date: today, title: "", description: "" });
-    setUploadedFiles([]);
-    setSaving(false);
-    onSuccess({ ...entry, files: [] });
+      // 3. Insert files metadata in Supabase
+      if (uploadedFiles.length > 0) {
+        const fileRows = uploadedFiles.map((f) => ({
+          entry_id: entry.id,
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          r2_key: f.r2Key,
+          url: f.url,
+        }));
+
+        const { error: filesError } = await supabase.from("bitacora_file").insert(fileRows);
+
+        if (filesError) {
+          setSaveError("Entrada guardada pero hubo un error con los archivos.");
+          return;
+        }
+      }
+
+      // 4. Reset and notify
+      reset({ date: today, title: "", description: "" });
+      setQueuedFiles([]);
+      setProgress({});
+      onSuccess();
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Error inesperado.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -131,7 +150,6 @@ export default function BitacoraForm({ projectSlug, userId, onSuccess }: Bitacor
             {...register("date", { required: "Campo requerido" })}
           />
         </Field>
-
         <Field label="Título" required error={errors.title?.message}>
           <input
             type="text"
@@ -155,31 +173,35 @@ export default function BitacoraForm({ projectSlug, userId, onSuccess }: Bitacor
         />
       </Field>
 
-      {/* File uploader */}
+      {/* Files */}
       <Field label="Archivos">
         <FileUploader
-          folder={`bitacora/${projectSlug}`}
-          onUploaded={handleFilesUploaded}
+          files={queuedFiles}
+          onChange={setQueuedFiles}
+          progress={progress}
           disabled={saving}
         />
-        {uploadedFiles.length > 0 && (
-          <p className="font-manrope mt-1 text-xs text-[#7ba07b]">
-            ✓ {uploadedFiles.length} archivo{uploadedFiles.length !== 1 ? "s" : ""} listos para
-            guardar
+        {queuedFiles.length > 0 && !saving && (
+          <p className="font-manrope mt-1 text-xs text-[#9e9890]">
+            {queuedFiles.length} archivo{queuedFiles.length !== 1 ? "s" : ""} se subirán al guardar
           </p>
         )}
       </Field>
 
       {saveError && <p className="font-manrope text-xs text-red-500">{saveError}</p>}
 
-      {/* Submit */}
+      {/* Single submit button */}
       <button
         type="submit"
         disabled={saving}
         className="group font-manrope relative mt-1 flex h-12 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-[#1c1a16] text-sm font-medium tracking-wide text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
       >
         <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-        {saving ? "Guardando…" : "Guardar entrada"}
+        {saving
+          ? queuedFiles.length > 0
+            ? "Subiendo archivos…"
+            : "Guardando…"
+          : "Guardar entrada"}
       </button>
     </form>
   );

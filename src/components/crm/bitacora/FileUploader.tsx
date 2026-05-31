@@ -1,7 +1,5 @@
 import { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
-import { uploadFiles } from "../../../lib/uploadR2";
-import type { UploadedFile, UploadProgress } from "../../../lib/uploadR2";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -21,51 +19,34 @@ const fileIcon = (type: string): string => {
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 interface FileUploaderProps {
-  folder: string;
-  onUploaded: (files: UploadedFile[]) => void;
+  files: File[];
+  onChange: (files: File[]) => void;
+  progress?: Record<string, number>; // filename → percent
   disabled?: boolean;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function FileUploader({ folder, onUploaded, disabled }: FileUploaderProps) {
+export default function FileUploader({
+  files,
+  onChange,
+  progress = {},
+  disabled,
+}: FileUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [queued, setQueued] = useState<File[]>([]);
-  const [progress, setProgress] = useState<UploadProgress[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleFiles = (files: FileList | null) => {
-    if (!files) return;
-    const arr = Array.from(files);
-    setQueued((prev) => [...prev, ...arr]);
-    setError(null);
+  const handleFiles = (list: FileList | null) => {
+    if (!list) return;
+    onChange([...files, ...Array.from(list)]);
   };
 
-  const removeQueued = (index: number) => {
-    setQueued((prev) => prev.filter((_, i) => i !== index));
+  const removeFile = (index: number) => {
+    onChange(files.filter((_, i) => i !== index));
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     handleFiles(e.dataTransfer.files);
-  };
-
-  const handleUpload = async () => {
-    if (queued.length === 0) return;
-    setUploading(true);
-    setError(null);
-
-    try {
-      const uploaded = await uploadFiles(queued, folder, setProgress);
-      onUploaded(uploaded);
-      setQueued([]);
-      setProgress([]);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
-    } finally {
-      setUploading(false);
-    }
   };
 
   return (
@@ -93,10 +74,10 @@ export default function FileUploader({ folder, onUploaded, disabled }: FileUploa
       </div>
 
       {/* Queued files */}
-      {queued.length > 0 && (
+      {files.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          {queued.map((file, i) => {
-            const prog = progress.find((p) => p.file === file.name);
+          {files.map((file, i) => {
+            const percent = progress[file.name];
             return (
               <div
                 key={i}
@@ -112,20 +93,21 @@ export default function FileUploader({ folder, onUploaded, disabled }: FileUploa
                       {formatBytes(file.size)}
                     </span>
                   </div>
-                  {prog && (
+                  {percent !== undefined && (
                     <div className="h-1 w-full overflow-hidden bg-[#f0ede8]">
                       <div
                         className="h-full bg-[#c9a96e] transition-all duration-200"
-                        style={{ width: `${prog.percent}%` }}
+                        style={{ width: `${percent}%` }}
                       />
                     </div>
                   )}
                 </div>
-                {!uploading && (
+                {!disabled && (
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      removeQueued(i);
+                      removeFile(i);
                     }}
                     className="shrink-0 text-[#c2bdb6] hover:text-[#a06658]"
                   >
@@ -136,23 +118,6 @@ export default function FileUploader({ folder, onUploaded, disabled }: FileUploa
             );
           })}
         </div>
-      )}
-
-      {/* Error */}
-      {error && <p className="font-manrope text-xs text-red-500">{error}</p>}
-
-      {/* Upload button */}
-      {queued.length > 0 && (
-        <button
-          onClick={handleUpload}
-          disabled={uploading}
-          className="group font-manrope relative flex items-center justify-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-          {uploading
-            ? `Subiendo ${queued.length} archivo${queued.length !== 1 ? "s" : ""}…`
-            : `Subir ${queued.length} archivo${queued.length !== 1 ? "s" : ""}`}
-        </button>
       )}
     </div>
   );
