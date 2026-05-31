@@ -57,7 +57,7 @@ export default function BitacoraForm({ projectSlug, userId, onSuccess }: Bitacor
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA");
 
   const {
     register,
