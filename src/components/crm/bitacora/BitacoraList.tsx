@@ -7,6 +7,7 @@ import Modal from "../Modal";
 import BitacoraForm from "./BitacoraForm";
 import EditBitacoraForm from "./EditBitacoraForm";
 import CrmAuthGuard from "../CrmAuthGuard";
+import IconButton from "../IconButton";
 import { useBitacora } from "../../../hooks/useBitacora";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -123,26 +124,23 @@ function EntryCard({ entry, onDelete, onEdit }: EntryCardProps) {
               {entry.files.length}
             </span>
           )}
-          <button
+          <IconButton
+            icon="solar:pen-2-bold"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(entry);
             }}
-            className="text-[#c2bdb6] transition-colors hover:text-[#a07d4a]"
             title="Editar entrada"
-          >
-            <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
-          </button>
-          <button
+          />
+          <IconButton
+            icon="solar:trash-bin-trash-bold"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(entry.id);
             }}
-            className="text-[#c2bdb6] transition-colors hover:text-[#a06658]"
             title="Eliminar entrada"
-          >
-            <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
-          </button>
+            variant="danger"
+          />
           <Icon
             icon="solar:alt-arrow-down-linear"
             className={`h-4 w-4 text-[#b5b0a8] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
@@ -187,7 +185,6 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
     mutate();
     toast.success("Entrada guardada");
   };
-
   const handleEntryEdited = () => {
     setEditingEntry(null);
     mutate();
@@ -223,7 +220,6 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
 
   return (
     <div className="p-6 lg:p-10">
-      {/* Title */}
       <div className="mb-8 flex items-end justify-between border-b border-[#e8e3db] pb-6">
         <div>
           <h1
@@ -236,7 +232,6 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
             {entries.length} entrada{entries.length !== 1 ? "s" : ""} · {projectSlug}
           </p>
         </div>
-
         <button
           onClick={() => setModalOpen(true)}
           className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
@@ -257,7 +252,6 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
         </button>
       </div>
 
-      {/* Entries */}
       {entries.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 py-20">
           <Icon icon="solar:notebook-linear" className="h-10 w-10 text-[#c2bdb6]" />
@@ -276,12 +270,10 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
         </div>
       )}
 
-      {/* New entry modal */}
       <Modal title="Nueva entrada" open={modalOpen} onClose={() => setModalOpen(false)}>
         <BitacoraForm projectSlug={projectSlug} userId={userId} onSuccess={handleEntryCreated} />
       </Modal>
 
-      {/* Edit entry modal */}
       <Modal
         title="Editar entrada"
         open={editingEntry !== null}

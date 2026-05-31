@@ -8,6 +8,7 @@ import Modal from "./Modal";
 import CreateLeadForm from "./CreateLeadForm";
 import EditLeadForm from "./EditLeadForm";
 import CrmAuthGuard from "./CrmAuthGuard";
+import IconButton from "./IconButton";
 
 const PAGE_SIZE_KEY = "crm_leads_page_size";
 const PAGE_SIZES = [10, 20, 50];
@@ -466,21 +467,18 @@ function Leads() {
                 <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center gap-2">
                     {lead.source === "manual" && (
-                      <button
+                      <IconButton
                         onClick={() => setEditingLead(lead)}
-                        className="rounded-full border border-[#e8e3db] bg-white p-2 text-[#b5b0a8] transition-colors hover:border-[#c9a96e]/40 hover:text-[#a07d4a]"
+                        icon="solar:pen-2-bold"
                         title="Edit lead"
-                      >
-                        <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
-                      </button>
+                      ></IconButton>
                     )}
-                    <button
+                    <IconButton
                       onClick={() => handleDelete(lead.id)}
-                      className="rounded-full border border-[#e8e3db] bg-white p-2 text-[#b5b0a8] transition-colors hover:border-[#c08878]/40 hover:text-[#a06658]"
+                      icon="solar:trash-bin-trash-bold"
                       title="Delete lead"
-                    >
-                      <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
-                    </button>
+                      variant="danger"
+                    ></IconButton>
                   </div>
                 </td>
               </tr>
