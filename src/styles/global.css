@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "./custom-photoswipe.css";
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0s;
+}
+
 @theme {
   --font-mulish: "Mulish", sans-serif;
   --font-manrope: "Manrope", sans-serif;
