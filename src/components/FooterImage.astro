@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import outside from "../assets/outside.png";
+import outside from "../assets/facade.png";
 import CircleArrow from "./CircleArrow";
 
 const mainGallery = [{ src: outside, alt: "Galvez1519 | Fachada Exterior Premium" }];
@@ -19,7 +19,7 @@ const mainGallery = [{ src: outside, alt: "Galvez1519 | Fachada Exterior Premium
         <Image
           src={img.src}
           alt={img.alt}
-          class="hover-boutique size-full rounded-[30px] object-cover object-left-top"
+          class="hover-boutique size-full rounded-[30px] object-cover"
         />
       </a>
     ))
@@ -27,7 +27,7 @@ const mainGallery = [{ src: outside, alt: "Galvez1519 | Fachada Exterior Premium
   <button
     onclick="this.parentElement.querySelector('.main-img-link').click();"
     aria-label="Ver Imagen"
-    class="absolute right-5 top-5 z-10"
+    class="absolute top-5 right-5 z-10"
   >
     <CircleArrow />
   </button>
