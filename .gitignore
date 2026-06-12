@@ -24,3 +24,4 @@ pnpm-debug.log*
 .idea/
 .qodo
 .env.local
+supabase/.temp/
