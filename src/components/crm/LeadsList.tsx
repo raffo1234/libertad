@@ -11,6 +11,7 @@ import CreateLeadForm from "./CreateLeadForm";
 import EditLeadForm from "./EditLeadForm";
 import CrmAuthGuard from "./CrmAuthGuard";
 import IconButton from "./IconButton";
+import RequirePermission from "./RequirePermission";
 import SwrCacheProvider from "./SwrCacheProvider";
 
 const PAGE_SIZE_KEY = "crm_leads_page_size";
@@ -98,7 +99,13 @@ export default function Dashboard() {
   return (
     <SwrCacheProvider>
       <Toaster position="top-right" />
-      <CrmAuthGuard>{() => <Leads />}</CrmAuthGuard>
+      <CrmAuthGuard>
+        {() => (
+          <RequirePermission permission={PERMISSIONS.VIEW_LEADS}>
+            <Leads />
+          </RequirePermission>
+        )}
+      </CrmAuthGuard>
     </SwrCacheProvider>
   );
 }
@@ -111,6 +118,7 @@ function Leads() {
   const canEditLeads = (permissions ?? []).includes(PERMISSIONS.EDIT_LEADS);
   const canDeleteLeads = (permissions ?? []).includes(PERMISSIONS.DELETE_LEADS);
   const canEditLeadStatus = (permissions ?? []).includes(PERMISSIONS.EDIT_LEAD_STATUS);
+  const canCreateLeads = (permissions ?? []).includes(PERMISSIONS.CREATE_LEADS);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
@@ -378,24 +386,26 @@ function Leads() {
               <path d="M6 9l6 6 6-6" />
             </svg>
           </div>
-          <button
-            onClick={() => setModalOpen(true)}
-            className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
-          >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
+          {canCreateLeads && (
+            <button
+              onClick={() => setModalOpen(true)}
+              className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
             >
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-            New lead
-          </button>
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              New lead
+            </button>
+          )}
         </div>
       </div>
 

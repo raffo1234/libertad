@@ -34,12 +34,14 @@ const NAV_ITEMS: {
     href: "/crm/leads",
     label: "Leads",
     icon: "solar:users-group-rounded-linear",
+    permission: PERMISSIONS.VIEW_LEADS,
     preload: () => preload(LEADS_KEY, fetchLeads),
   },
   {
     href: "/crm/bitacora",
     label: "Bitácora",
     icon: "solar:notebook-linear",
+    permission: PERMISSIONS.VIEW_BITACORA,
     preload: () => preload(bitacoraKey("galvez1519"), () => fetchBitacora("galvez1519")),
   },
   {

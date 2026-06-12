@@ -8,8 +8,11 @@ import BitacoraForm from "./BitacoraForm";
 import EditBitacoraForm from "./EditBitacoraForm";
 import CrmAuthGuard from "../CrmAuthGuard";
 import IconButton from "../IconButton";
+import RequirePermission from "../RequirePermission";
 import SwrCacheProvider from "../SwrCacheProvider";
 import { useBitacora } from "../../../hooks/useBitacora";
+import { usePermissions } from "../../../hooks/usePermissions";
+import { PERMISSIONS } from "../../../lib/permissions";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -99,11 +102,13 @@ function FilePreview({ file }: { file: BitacoraFile }) {
 
 interface EntryCardProps {
   entry: BitacoraEntry;
+  canEdit: boolean;
+  canDelete: boolean;
   onDelete: (id: string) => void;
   onEdit: (entry: BitacoraEntry) => void;
 }
 
-function EntryCard({ entry, onDelete, onEdit }: EntryCardProps) {
+function EntryCard({ entry, canEdit, canDelete, onDelete, onEdit }: EntryCardProps) {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -125,23 +130,27 @@ function EntryCard({ entry, onDelete, onEdit }: EntryCardProps) {
               {entry.files.length}
             </span>
           )}
-          <IconButton
-            icon="solar:pen-2-bold"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(entry);
-            }}
-            title="Editar entrada"
-          />
-          <IconButton
-            icon="solar:trash-bin-trash-bold"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(entry.id);
-            }}
-            title="Eliminar entrada"
-            variant="danger"
-          />
+          {canEdit && (
+            <IconButton
+              icon="solar:pen-2-bold"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(entry);
+              }}
+              title="Editar entrada"
+            />
+          )}
+          {canDelete && (
+            <IconButton
+              icon="solar:trash-bin-trash-bold"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(entry.id);
+              }}
+              title="Eliminar entrada"
+              variant="danger"
+            />
+          )}
           <Icon
             icon="solar:alt-arrow-down-linear"
             className={`h-4 w-4 text-[#b5b0a8] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
@@ -178,6 +187,10 @@ interface BitacoraInnerProps {
 
 function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
   const { data: rawEntries, error, mutate } = useBitacora(projectSlug);
+  const { data: permissions } = usePermissions();
+  const canCreate = (permissions ?? []).includes(PERMISSIONS.CREATE_BITACORA);
+  const canEdit = (permissions ?? []).includes(PERMISSIONS.EDIT_BITACORA);
+  const canDelete = (permissions ?? []).includes(PERMISSIONS.DELETE_BITACORA);
   const entries = rawEntries ?? [];
   const [modalOpen, setModalOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<BitacoraEntry | null>(null);
@@ -234,24 +247,26 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
             {entries.length} entrada{entries.length !== 1 ? "s" : ""} · {projectSlug}
           </p>
         </div>
-        <button
-          onClick={() => setModalOpen(true)}
-          className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
-        >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
+        {canCreate && (
+          <button
+            onClick={() => setModalOpen(true)}
+            className="group font-manrope relative flex items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.98]"
           >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          Nueva entrada
-        </button>
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Nueva entrada
+          </button>
+        )}
       </div>
 
       {entries.length === 0 ? (
@@ -265,6 +280,8 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
             <EntryCard
               key={entry.id}
               entry={entry}
+              canEdit={canEdit}
+              canDelete={canDelete}
               onDelete={handleDelete}
               onEdit={setEditingEntry}
             />
@@ -304,7 +321,11 @@ export default function BitacoraList({ projectSlug }: BitacoraListProps) {
     <SwrCacheProvider>
       <Toaster position="top-right" />
       <CrmAuthGuard>
-        {(session) => <BitacoraInner projectSlug={projectSlug} userId={session.user.id} />}
+        {(session) => (
+          <RequirePermission permission={PERMISSIONS.VIEW_BITACORA}>
+            <BitacoraInner projectSlug={projectSlug} userId={session.user.id} />
+          </RequirePermission>
+        )}
       </CrmAuthGuard>
     </SwrCacheProvider>
   );
