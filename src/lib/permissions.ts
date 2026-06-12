@@ -5,6 +5,7 @@ export const PERMISSIONS = {
   CREATE_LEADS: "create_leads",
   EDIT_LEADS: "edit_leads",
   DELETE_LEADS: "delete_leads",
+  EDIT_LEAD_STATUS: "edit_lead_status",
   VIEW_BITACORA: "view_bitacora",
   CREATE_BITACORA: "create_bitacora",
   EDIT_BITACORA: "edit_bitacora",

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useLeads } from "../../hooks/useLeads";
+import { usePermissions } from "../../hooks/usePermissions";
+import { PERMISSIONS } from "../../lib/permissions";
 import type { Lead, LeadSource, LeadStatus } from "../../types/lead";
 import { Icon } from "@iconify/react";
 import { Toaster, toast } from "react-hot-toast";
@@ -105,6 +107,10 @@ export default function Dashboard() {
 
 function Leads() {
   const { data: leads, error, mutate } = useLeads();
+  const { data: permissions } = usePermissions();
+  const canEditLeads = (permissions ?? []).includes(PERMISSIONS.EDIT_LEADS);
+  const canDeleteLeads = (permissions ?? []).includes(PERMISSIONS.DELETE_LEADS);
+  const canEditLeadStatus = (permissions ?? []).includes(PERMISSIONS.EDIT_LEAD_STATUS);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
@@ -441,23 +447,31 @@ function Leads() {
                 <td className="truncate px-5 py-4 text-[#6b665e]">{lead.phone}</td>
                 <td className="px-5 py-4 text-[#6b665e]">{lead.unit_type ?? "—"}</td>
                 <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
-                  <div className="relative inline-flex items-center gap-1">
-                    <select
-                      value={lead.status}
-                      onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
-                      className={`cursor-pointer appearance-none rounded-full border-0 py-2 pr-10 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
+                  {canEditLeadStatus ? (
+                    <div className="relative inline-flex items-center gap-1">
+                      <select
+                        value={lead.status}
+                        onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
+                        className={`cursor-pointer appearance-none rounded-full border-0 py-2 pr-10 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
+                      >
+                        {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
+                          <option key={s} value={s}>
+                            {STATUS_LABEL[s]}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        icon="solar:pen-2-bold"
+                        className="pointer-events-none absolute right-3 h-4 w-4 opacity-40"
+                      />
+                    </div>
+                  ) : (
+                    <span
+                      className={`font-mulish inline-flex items-center rounded-full px-2.5 py-1 text-[10px] tracking-wider uppercase ${STATUS_CLASSES[lead.status].badge}`}
                     >
-                      {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
-                        <option key={s} value={s}>
-                          {STATUS_LABEL[s]}
-                        </option>
-                      ))}
-                    </select>
-                    <Icon
-                      icon="solar:pen-2-bold"
-                      className="pointer-events-none absolute right-3 h-4 w-4 opacity-40"
-                    />
-                  </div>
+                      {STATUS_LABEL[lead.status]}
+                    </span>
+                  )}
                 </td>
                 <td className="px-5 py-4">
                   <SourceBadge source={lead.source} />
@@ -467,19 +481,21 @@ function Leads() {
                 </td>
                 <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center gap-2">
-                    {lead.source === "manual" && (
+                    {canEditLeads && lead.source === "manual" && (
                       <IconButton
                         onClick={() => setEditingLead(lead)}
                         icon="solar:pen-2-bold"
                         title="Edit lead"
                       ></IconButton>
                     )}
-                    <IconButton
-                      onClick={() => handleDelete(lead.id)}
-                      icon="solar:trash-bin-trash-bold"
-                      title="Delete lead"
-                      variant="danger"
-                    ></IconButton>
+                    {canDeleteLeads && (
+                      <IconButton
+                        onClick={() => handleDelete(lead.id)}
+                        icon="solar:trash-bin-trash-bold"
+                        title="Delete lead"
+                        variant="danger"
+                      ></IconButton>
+                    )}
                   </div>
                 </td>
               </tr>
