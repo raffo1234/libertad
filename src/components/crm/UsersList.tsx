@@ -2,25 +2,37 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useUsers } from "../../hooks/useUsers";
 import { useRoles } from "../../hooks/useRoles";
+import { usePermissions } from "../../hooks/usePermissions";
 import { Toaster, toast } from "react-hot-toast";
 import CrmAuthGuard from "./CrmAuthGuard";
+import RequirePermission from "./RequirePermission";
+import SwrCacheProvider from "./SwrCacheProvider";
+import { PERMISSIONS } from "../../lib/permissions";
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
 export default function UsersList() {
   return (
-    <>
+    <SwrCacheProvider>
       <Toaster position="top-right" />
-      <CrmAuthGuard>{() => <Users />}</CrmAuthGuard>
-    </>
+      <CrmAuthGuard>
+        {() => (
+          <RequirePermission permission={PERMISSIONS.VIEW_USERS}>
+            <Users />
+          </RequirePermission>
+        )}
+      </CrmAuthGuard>
+    </SwrCacheProvider>
   );
 }
 
 // ─── Users ────────────────────────────────────────────────────────────────────
 
 function Users() {
-  const { data: users, error, isLoading, mutate } = useUsers();
+  const { data: users, error, mutate } = useUsers();
   const { data: roles } = useRoles();
+  const { data: permissions } = usePermissions();
+  const canEditRole = (permissions ?? []).includes(PERMISSIONS.EDIT_USER_ROLE);
   const [search, setSearch] = useState("");
 
   const handleRoleChange = async (id: string, roleId: string) => {
@@ -50,7 +62,7 @@ function Users() {
         .some((v) => v!.toLowerCase().includes(q)),
   );
 
-  if (isLoading)
+  if (users === undefined)
     return (
       <div className="font-manrope flex h-full items-center justify-center p-12 text-sm text-[#9e9890] italic">
         Loading...
@@ -146,7 +158,8 @@ function Users() {
                     <select
                       value={user.role_id ?? ""}
                       onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                      className="cursor-pointer appearance-none rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+                      disabled={!canEditRole}
+                      className="cursor-pointer appearance-none rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <option value="">No role</option>
                       {(roles ?? []).map((role) => (

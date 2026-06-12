@@ -2,7 +2,9 @@ import useSWR from "swr";
 import { supabase } from "../lib/supabase";
 import type { User } from "../types/user";
 
-const fetcher = async (): Promise<User[]> => {
+export const USERS_KEY = "users";
+
+export const fetcher = async (): Promise<User[]> => {
   const { data, error } = await supabase
     .from("user")
     .select("*")
@@ -13,5 +15,5 @@ const fetcher = async (): Promise<User[]> => {
 };
 
 export function useUsers() {
-  return useSWR<User[]>("users", fetcher);
+  return useSWR<User[]>(USERS_KEY, fetcher);
 }

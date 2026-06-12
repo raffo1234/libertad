@@ -2,7 +2,9 @@ import useSWR from "swr";
 import { supabase } from "../lib/supabase";
 import type { Role } from "../types/role";
 
-const fetcher = async (): Promise<Role[]> => {
+export const ROLES_KEY = "roles";
+
+export const fetcher = async (): Promise<Role[]> => {
   const { data, error } = await supabase
     .from("role")
     .select("*")
@@ -13,5 +15,5 @@ const fetcher = async (): Promise<Role[]> => {
 };
 
 export function useRoles() {
-  return useSWR<Role[]>("roles", fetcher);
+  return useSWR<Role[]>(ROLES_KEY, fetcher);
 }

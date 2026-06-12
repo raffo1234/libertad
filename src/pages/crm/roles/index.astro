@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+
+import CrmLayout from "../../../layouts/CrmLayout.astro";
+import RolesList from "../../../components/crm/RolesList";
+---
+
+<CrmLayout title="Roles · CRM Galvez 1519">
+  <RolesList client:only="react" />
+</CrmLayout>

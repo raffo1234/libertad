@@ -1,0 +1,14 @@
+export const PERMISSIONS = {
+  VIEW_USERS: "view_users",
+  EDIT_USER_ROLE: "edit_user_role",
+  VIEW_LEADS: "view_leads",
+  CREATE_LEADS: "create_leads",
+  EDIT_LEADS: "edit_leads",
+  DELETE_LEADS: "delete_leads",
+  VIEW_BITACORA: "view_bitacora",
+  CREATE_BITACORA: "create_bitacora",
+  EDIT_BITACORA: "edit_bitacora",
+  DELETE_BITACORA: "delete_bitacora",
+  VIEW_ROLES: "view_roles",
+  MANAGE_ROLES: "manage_roles",
+} as const;

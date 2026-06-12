@@ -1,8 +1,10 @@
 ---
+export const prerender = true;
+
 import CrmLayout from "../../../layouts/CrmLayout.astro";
 import UsersList from "../../../components/crm/UsersList";
 ---
 
 <CrmLayout title="Usuarios · CRM Galvez 1519">
-  <UsersList client:load />
+  <UsersList client:only="react" />
 </CrmLayout>

@@ -9,6 +9,7 @@ import CreateLeadForm from "./CreateLeadForm";
 import EditLeadForm from "./EditLeadForm";
 import CrmAuthGuard from "./CrmAuthGuard";
 import IconButton from "./IconButton";
+import SwrCacheProvider from "./SwrCacheProvider";
 
 const PAGE_SIZE_KEY = "crm_leads_page_size";
 const PAGE_SIZES = [10, 20, 50];
@@ -93,17 +94,17 @@ function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
 
 export default function Dashboard() {
   return (
-    <>
+    <SwrCacheProvider>
       <Toaster position="top-right" />
       <CrmAuthGuard>{() => <Leads />}</CrmAuthGuard>
-    </>
+    </SwrCacheProvider>
   );
 }
 
 // ─── Leads ────────────────────────────────────────────────────────────────────
 
 function Leads() {
-  const { data: leads, isLoading, error, mutate } = useLeads();
+  const { data: leads, error, mutate } = useLeads();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
@@ -202,7 +203,7 @@ function Leads() {
   const safePage = Math.min(page, totalPages);
   const paginatedLeads = filteredLeads.slice((safePage - 1) * pageSize, safePage * pageSize);
 
-  if (isLoading)
+  if (leads === undefined)
     return (
       <div className="font-manrope flex h-full items-center justify-center p-12 text-sm text-[#9e9890] italic">
         Loading...

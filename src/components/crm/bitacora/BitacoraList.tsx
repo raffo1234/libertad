@@ -8,6 +8,7 @@ import BitacoraForm from "./BitacoraForm";
 import EditBitacoraForm from "./EditBitacoraForm";
 import CrmAuthGuard from "../CrmAuthGuard";
 import IconButton from "../IconButton";
+import SwrCacheProvider from "../SwrCacheProvider";
 import { useBitacora } from "../../../hooks/useBitacora";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -176,7 +177,8 @@ interface BitacoraInnerProps {
 }
 
 function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
-  const { data: entries = [], isLoading, error, mutate } = useBitacora(projectSlug);
+  const { data: rawEntries, error, mutate } = useBitacora(projectSlug);
+  const entries = rawEntries ?? [];
   const [modalOpen, setModalOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<BitacoraEntry | null>(null);
 
@@ -202,7 +204,7 @@ function BitacoraInner({ projectSlug, userId }: BitacoraInnerProps) {
     toast.success("Entrada eliminada");
   };
 
-  if (isLoading && entries.length === 0) {
+  if (rawEntries === undefined) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#e8e3db] border-t-[#c9a96e]" />
@@ -299,11 +301,11 @@ interface BitacoraListProps {
 
 export default function BitacoraList({ projectSlug }: BitacoraListProps) {
   return (
-    <>
+    <SwrCacheProvider>
       <Toaster position="top-right" />
       <CrmAuthGuard>
         {(session) => <BitacoraInner projectSlug={projectSlug} userId={session.user.id} />}
       </CrmAuthGuard>
-    </>
+    </SwrCacheProvider>
   );
 }

@@ -1,16 +1,71 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import {
+  usePermissions,
+  fetcher as fetchMyPermissions,
+  MY_PERMISSIONS_KEY,
+} from "../../hooks/usePermissions";
+import { fetcher as fetchUsers, USERS_KEY } from "../../hooks/useUsers";
+import { fetcher as fetchRoles, ROLES_KEY } from "../../hooks/useRoles";
+import { fetcher as fetchPermissionsList, PERMISSIONS_KEY } from "../../hooks/usePermissionsList";
+import {
+  fetcher as fetchRolePermissions,
+  ROLE_PERMISSIONS_KEY,
+} from "../../hooks/useRolePermissions";
+import { fetcher as fetchLeads, LEADS_KEY } from "../../hooks/useLeads";
+import { fetcher as fetchBitacora, bitacoraKey } from "../../hooks/useBitacora";
+import { preload, STORAGE_KEY as SWR_STORAGE_KEY } from "../../lib/swrCache";
+import { PERMISSIONS } from "../../lib/permissions";
 import { Icon } from "@iconify/react";
 import LogoLink from "../LogoLink";
+import SwrCacheProvider from "./SwrCacheProvider";
 
 // ─── Nav items ────────────────────────────────────────────────────────────────
 
-const NAV_ITEMS = [
+const NAV_ITEMS: {
+  href: string;
+  label: string;
+  icon: string;
+  permission?: string;
+  preload?: () => void;
+}[] = [
   { href: "/crm", label: "Home", icon: "solar:home-2-linear" },
-  { href: "/crm/leads", label: "Leads", icon: "solar:users-group-rounded-linear" },
-  { href: "/crm/bitacora", label: "Bitácora", icon: "solar:notebook-linear" },
-  { href: "/crm/users", label: "Usuarios", icon: "solar:users-group-two-rounded-linear" },
-] as const;
+  {
+    href: "/crm/leads",
+    label: "Leads",
+    icon: "solar:users-group-rounded-linear",
+    preload: () => preload(LEADS_KEY, fetchLeads),
+  },
+  {
+    href: "/crm/bitacora",
+    label: "Bitácora",
+    icon: "solar:notebook-linear",
+    preload: () => preload(bitacoraKey("galvez1519"), () => fetchBitacora("galvez1519")),
+  },
+  {
+    href: "/crm/users",
+    label: "Usuarios",
+    icon: "solar:users-group-two-rounded-linear",
+    permission: PERMISSIONS.VIEW_USERS,
+    preload: () => {
+      preload(USERS_KEY, fetchUsers);
+      preload(ROLES_KEY, fetchRoles);
+      preload(MY_PERMISSIONS_KEY, fetchMyPermissions);
+    },
+  },
+  {
+    href: "/crm/roles",
+    label: "Roles",
+    icon: "solar:shield-keyhole-linear",
+    permission: PERMISSIONS.VIEW_ROLES,
+    preload: () => {
+      preload(ROLES_KEY, fetchRoles);
+      preload(PERMISSIONS_KEY, fetchPermissionsList);
+      preload(ROLE_PERMISSIONS_KEY, fetchRolePermissions);
+      preload(MY_PERMISSIONS_KEY, fetchMyPermissions);
+    },
+  },
+];
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -20,8 +75,20 @@ interface CrmSidebarProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function CrmSidebar({ activePath }: CrmSidebarProps) {
+export default function CrmSidebar(props: CrmSidebarProps) {
+  return (
+    <SwrCacheProvider>
+      <CrmSidebarInner {...props} />
+    </SwrCacheProvider>
+  );
+}
+
+function CrmSidebarInner({ activePath }: CrmSidebarProps) {
   const [open, setOpen] = useState(false);
+  const { data: permissions } = usePermissions();
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !item.permission || (permissions ?? []).includes(item.permission),
+  );
 
   // Close on Escape
   useEffect(() => {
@@ -30,15 +97,45 @@ export default function CrmSidebar({ activePath }: CrmSidebarProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
+  // Redirect to login if there's no active session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) window.location.href = "/crm/login";
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) window.location.href = "/crm/login";
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    window.location.href = "/";
+    try {
+      // `scope: "local"` still makes a server call to revoke the session;
+      // if that call is blocked (e.g. by an ad blocker), signOut() returns
+      // an error without clearing local storage, leaving a stale session
+      // that silently logs the user back in on /crm/login.
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // ignore — fall through to the manual cleanup below
+    }
+    try {
+      const ref = new URL(import.meta.env.PUBLIC_SUPABASE_URL).hostname.split(".")[0];
+      localStorage.removeItem(`sb-${ref}-auth-token`);
+      // Drop cached data (permissions, users, etc.) so a different account
+      // logging in afterwards doesn't see this user's cached results.
+      sessionStorage.removeItem(SWR_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    window.location.href = "/crm/login";
   };
 
   const isActive = (href: string) =>
     href === "/crm" ? activePath === "/crm" || activePath === "/crm/" : activePath.startsWith(href);
 
-  const navItem = (href: string, label: string, icon: string) => {
+  const navItem = (href: string, label: string, icon: string, onPreload?: () => void) => {
     const active = isActive(href);
     return (
       <a
@@ -46,6 +143,8 @@ export default function CrmSidebar({ activePath }: CrmSidebarProps) {
         key={href}
         href={href}
         onClick={() => setOpen(false)}
+        onMouseEnter={onPreload}
+        onFocus={onPreload}
         className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150 ${
           active
             ? "border-l-2 border-[#1c1a16] bg-[#f0ede8] pl-[10px] font-medium text-[#1c1a16]"
@@ -89,7 +188,9 @@ export default function CrmSidebar({ activePath }: CrmSidebarProps) {
 
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV_ITEMS.map(({ href, label, icon }) => navItem(href, label, icon))}
+        {visibleNavItems.map(({ href, label, icon, preload }) =>
+          navItem(href, label, icon, preload),
+        )}
       </nav>
 
       {/* Divider */}

@@ -12,7 +12,12 @@ export default function CrmLogin() {
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/crm` },
+      options: {
+        redirectTo: `${window.location.origin}/crm`,
+        // Force Google's account chooser instead of silently reusing
+        // whichever Google account is currently active in the browser.
+        queryParams: { prompt: "select_account" },
+      },
     });
   };
 

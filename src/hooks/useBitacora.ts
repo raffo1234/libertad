@@ -2,7 +2,9 @@ import useSWR from "swr";
 import { supabase } from "../lib/supabase";
 import type { BitacoraEntry } from "../types/bitacora";
 
-const fetcher = async (projectSlug: string): Promise<BitacoraEntry[]> => {
+export const bitacoraKey = (projectSlug: string) => `bitacora:${projectSlug}`;
+
+export const fetcher = async (projectSlug: string): Promise<BitacoraEntry[]> => {
   const { data, error } = await supabase
     .from("bitacora_entry")
     .select("*, files:bitacora_file(*)")
@@ -14,5 +16,5 @@ const fetcher = async (projectSlug: string): Promise<BitacoraEntry[]> => {
 };
 
 export function useBitacora(projectSlug: string) {
-  return useSWR<BitacoraEntry[]>(`bitacora:${projectSlug}`, () => fetcher(projectSlug));
+  return useSWR<BitacoraEntry[]>(bitacoraKey(projectSlug), () => fetcher(projectSlug));
 }

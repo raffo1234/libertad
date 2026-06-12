@@ -8,9 +8,20 @@ interface Props {
 
 const { title = "CRM · Galvez 1519" } = Astro.props;
 const activePath = Astro.url.pathname;
+
+const supabaseProjectRef = new URL(import.meta.env.PUBLIC_SUPABASE_URL).hostname.split(".")[0];
+const supabaseAuthStorageKey = `sb-${supabaseProjectRef}-auth-token`;
 ---
 
 <Layout title={title}>
+  <script is:inline slot="head" data-astro-rerun define:vars={{ supabaseAuthStorageKey }}>
+    const isOAuthCallback =
+      location.hash.includes("access_token") || new URL(location.href).searchParams.has("code");
+    if (!isOAuthCallback && !localStorage.getItem(supabaseAuthStorageKey)) {
+      location.replace("/crm/login");
+    }
+  </script>
+
   <div class="flex min-h-screen bg-[#f7f4ef]">
     <!-- Sidebar (desktop fixed, mobile drawer) -->
     <CrmSidebar transition:persist activePath={activePath} client:load />
