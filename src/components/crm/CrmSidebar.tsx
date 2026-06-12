@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/crm", label: "Home", icon: "solar:home-2-linear" },
   { href: "/crm/leads", label: "Leads", icon: "solar:users-group-rounded-linear" },
   { href: "/crm/bitacora", label: "Bitácora", icon: "solar:notebook-linear" },
+  { href: "/crm/users", label: "Usuarios", icon: "solar:users-group-two-rounded-linear" },
 ] as const;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
