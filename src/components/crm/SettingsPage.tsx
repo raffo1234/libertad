@@ -14,7 +14,7 @@ export default function SettingsPage() {
       <Toaster position="top-right" />
       <CrmAuthGuard>
         {() => (
-          <RequirePermission permission={PERMISSIONS.MANAGE_ROLES}>
+          <RequirePermission permission={PERMISSIONS.MANAGE_GLOBAL_SETTINGS}>
             <Settings />
           </RequirePermission>
         )}
@@ -27,7 +27,7 @@ function Settings() {
   const { data: roles } = useRoles();
   const { data: permissions } = usePermissions();
   const { data: settings, mutate: mutateSettings } = useGlobalSettings();
-  const canManage = (permissions ?? []).includes(PERMISSIONS.MANAGE_ROLES);
+  const canManage = (permissions ?? []).includes(PERMISSIONS.MANAGE_GLOBAL_SETTINGS);
 
   const handleDefaultRoleChange = async (roleId: string) => {
     const newValue = roleId || null;

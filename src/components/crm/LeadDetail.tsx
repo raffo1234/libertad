@@ -1,3 +1,4 @@
+import { PERMISSIONS } from "../../lib/permissions";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import type { Session } from "@supabase/supabase-js";
@@ -7,6 +8,7 @@ import { Toaster, toast } from "react-hot-toast";
 import Modal from "./Modal";
 import EditLeadForm from "./EditLeadForm";
 import LogoLink from "../LogoLink";
+import { usePermissions } from "../../hooks/usePermissions";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -81,6 +83,9 @@ export default function LeadDetail({ id }: LeadDetailProps) {
   const [lead, setLead] = useState<Lead | null>(null);
   const [leadLoading, setLeadLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
+
+  const { data: permissions } = usePermissions();
+  const canEditLead = (permissions ?? []).includes(PERMISSIONS.EDIT_LEADS);
 
   // ─── Auth ──────────────────────────────────────────────────────────────────
 
@@ -225,14 +230,18 @@ export default function LeadDetail({ id }: LeadDetailProps) {
           </div>
 
           {lead.source === "manual" && (
-            <button
-              onClick={() => setEditOpen(true)}
-              className="group font-manrope relative flex shrink-0 items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.99]"
-            >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
-              <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
-              Edit
-            </button>
+            <>
+              {canEditLead && (
+                <button
+                  onClick={() => setEditOpen(true)}
+                  className="group font-manrope relative flex shrink-0 items-center gap-2 overflow-hidden border border-[#1c1a16] bg-[#1c1a16] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-[#2e2b24] active:scale-[0.99]"
+                >
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.06)_50%,transparent_70%)] transition-transform duration-500 group-hover:translate-x-full" />
+                  <Icon icon="solar:pen-2-bold" className="h-4 w-4" />
+                  Edit
+                </button>
+              )}
+            </>
           )}
         </div>
 

@@ -72,7 +72,7 @@ const NAV_ITEMS: {
     href: "/crm/settings",
     label: "Settings",
     icon: "solar:settings-linear",
-    permission: PERMISSIONS.MANAGE_ROLES,
+    permission: PERMISSIONS.MANAGE_GLOBAL_SETTINGS,
     preload: () => {
       preload(GLOBAL_SETTINGS_KEY, fetchGlobalSettings);
       preload(ROLES_KEY, fetchRoles);

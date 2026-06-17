@@ -12,4 +12,5 @@ export const PERMISSIONS = {
   DELETE_BITACORA: "delete_bitacora",
   VIEW_ROLES: "view_roles",
   MANAGE_ROLES: "manage_roles",
+  MANAGE_GLOBAL_SETTINGS: "manage_global_settings",
 } as const;
