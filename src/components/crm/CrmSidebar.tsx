@@ -14,6 +14,7 @@ import {
 } from "../../hooks/useRolePermissions";
 import { fetcher as fetchLeads, LEADS_KEY } from "../../hooks/useLeads";
 import { fetcher as fetchBitacora, bitacoraKey } from "../../hooks/useBitacora";
+import { fetcher as fetchGlobalSettings, GLOBAL_SETTINGS_KEY } from "../../hooks/useGlobalSettings";
 import { preload, STORAGE_KEY as SWR_STORAGE_KEY } from "../../lib/swrCache";
 import { PERMISSIONS } from "../../lib/permissions";
 import { Icon } from "@iconify/react";
@@ -65,6 +66,16 @@ const NAV_ITEMS: {
       preload(PERMISSIONS_KEY, fetchPermissionsList);
       preload(ROLE_PERMISSIONS_KEY, fetchRolePermissions);
       preload(MY_PERMISSIONS_KEY, fetchMyPermissions);
+    },
+  },
+  {
+    href: "/crm/settings",
+    label: "Settings",
+    icon: "solar:settings-linear",
+    permission: PERMISSIONS.MANAGE_ROLES,
+    preload: () => {
+      preload(GLOBAL_SETTINGS_KEY, fetchGlobalSettings);
+      preload(ROLES_KEY, fetchRoles);
     },
   },
 ];

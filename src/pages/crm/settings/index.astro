@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+
+import CrmLayout from "../../../layouts/CrmLayout.astro";
+import SettingsPage from "../../../components/crm/SettingsPage";
+---
+
+<CrmLayout title="Settings · CRM Galvez 1519">
+  <SettingsPage client:only="react" />
+</CrmLayout>
