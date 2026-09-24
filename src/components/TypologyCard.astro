@@ -43,7 +43,7 @@ const { type, title, subtitle, features, floors, image } = Astro.props;
       {floors.map((floor) => <span class="block">{floor}</span>)}
     </h5>
     <div class="absolute right-5 bottom-5">
-      <LeadModal client:load type={type} />
+      <LeadModal client:visible type={type} />
     </div>
   </div>
   <div class="pswp-gallery">

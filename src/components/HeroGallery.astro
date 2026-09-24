@@ -14,12 +14,13 @@ const rawImages = [
   { src: image5, alt: "Galvez 1519 | Terraza" },
 ];
 
-const lcpImage = await getImage({
-  src: rawImages[0].src,
-  width: 1200,
-  format: "webp",
-  quality: 85,
-});
+const lcpWidths = [480, 800, 1200];
+const lcpVariants = await Promise.all(
+  lcpWidths.map((width) => getImage({ src: rawImages[0].src, width, format: "webp", quality: 75 })),
+);
+const lcpImage = lcpVariants[lcpVariants.length - 1];
+const lcpSrcset = lcpVariants.map((v, i) => `${v.src} ${lcpWidths[i]}w`).join(", ");
+const lcpSizes = "(max-width: 640px) 100vw, (max-width: 1280px) 90vw, 1200px";
 
 const secondaryImagesData = rawImages.slice(2).map((img) => ({
   full: img.src.src,
@@ -34,7 +35,14 @@ const maskStyle =
 ---
 
 <slot name="head">
-  <link rel="preload" as="image" href={lcpImage.src} fetchpriority="high" />
+  <link
+    rel="preload"
+    as="image"
+    href={lcpImage.src}
+    imagesrcset={lcpSrcset}
+    imagesizes={lcpSizes}
+    fetchpriority="high"
+  />
 </slot>
 
 <div
@@ -43,7 +51,7 @@ const maskStyle =
   data-secondary={JSON.stringify(secondaryImagesData)}
 >
   <div
-    class="pointer-events-none absolute left-0 top-0 z-20 h-[140px] w-full rounded-t-[50px]"
+    class="pointer-events-none absolute top-0 left-0 z-20 h-[140px] w-full rounded-t-[50px]"
     style="backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); mask-image: linear-gradient(to bottom, black 2%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 2%, transparent 100%);"
   >
   </div>
@@ -56,6 +64,8 @@ const maskStyle =
   >
     <img
       src={lcpImage.src}
+      srcset={lcpSrcset}
+      sizes={lcpSizes}
       alt={rawImages[0].alt}
       width={lcpImage.attributes.width}
       height={lcpImage.attributes.height}

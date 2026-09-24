@@ -14,7 +14,7 @@ import TypologyCard from "./TypologyCard.astro";
         {
           typologies.map((typo) => (
             <div class="embla__slide">
-              <TypologyCard {...typo} client:load />
+              <TypologyCard {...typo} />
             </div>
           ))
         }
