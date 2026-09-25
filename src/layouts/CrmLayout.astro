@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import CrmSidebar from "../components/crm/CrmSidebar";
+import UserMenu from "../components/crm/UserMenu";
 
 interface Props {
   title?: string;
@@ -28,6 +29,11 @@ const supabaseAuthStorageKey = `sb-${supabaseProjectRef}-auth-token`;
 
     <!-- Main content -->
     <div class="flex flex-1 flex-col overflow-auto pt-14 lg:pt-0">
+      <header
+        class="hidden h-14 shrink-0 items-center justify-end border-b border-[#e8e3db] bg-white px-6 lg:flex"
+      >
+        <UserMenu client:load />
+      </header>
       <main class="flex-1">
         <slot />
       </main>

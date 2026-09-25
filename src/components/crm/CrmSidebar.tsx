@@ -15,11 +15,13 @@ import {
 import { fetcher as fetchLeads, LEADS_KEY } from "../../hooks/useLeads";
 import { fetcher as fetchBitacora, bitacoraKey } from "../../hooks/useBitacora";
 import { fetcher as fetchGlobalSettings, GLOBAL_SETTINGS_KEY } from "../../hooks/useGlobalSettings";
-import { preload, STORAGE_KEY as SWR_STORAGE_KEY } from "../../lib/swrCache";
+import { preload } from "../../lib/swrCache";
+import { signOut } from "../../lib/auth";
 import { PERMISSIONS } from "../../lib/permissions";
 import { Icon } from "@iconify/react";
 import LogoLink from "../LogoLink";
 import SwrCacheProvider from "./SwrCacheProvider";
+import UserMenu from "./UserMenu";
 
 // ─── Nav items ────────────────────────────────────────────────────────────────
 
@@ -123,28 +125,6 @@ function CrmSidebarInner({ activePath }: CrmSidebarProps) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  const handleSignOut = async () => {
-    try {
-      // `scope: "local"` still makes a server call to revoke the session;
-      // if that call is blocked (e.g. by an ad blocker), signOut() returns
-      // an error without clearing local storage, leaving a stale session
-      // that silently logs the user back in on /crm/login.
-      await supabase.auth.signOut({ scope: "local" });
-    } catch {
-      // ignore — fall through to the manual cleanup below
-    }
-    try {
-      const ref = new URL(import.meta.env.PUBLIC_SUPABASE_URL).hostname.split(".")[0];
-      localStorage.removeItem(`sb-${ref}-auth-token`);
-      // Drop cached data (permissions, users, etc.) so a different account
-      // logging in afterwards doesn't see this user's cached results.
-      sessionStorage.removeItem(SWR_STORAGE_KEY);
-    } catch {
-      // ignore
-    }
-    window.location.href = "/crm/login";
-  };
-
   const isActive = (href: string) =>
     href === "/crm" ? activePath === "/crm" || activePath === "/crm/" : activePath.startsWith(href);
 
@@ -211,7 +191,7 @@ function CrmSidebarInner({ activePath }: CrmSidebarProps) {
 
       {/* Sign out */}
       <button
-        onClick={handleSignOut}
+        onClick={signOut}
         className="group flex w-full items-center gap-3 rounded-lg border-l-2 border-transparent px-3 py-2.5 pl-[10px] text-sm text-[#9e9890] transition-all duration-150 hover:bg-[#f3e8e6] hover:text-[#a06658]"
       >
         <Icon
@@ -249,6 +229,9 @@ function CrmSidebarInner({ activePath }: CrmSidebarProps) {
         </button>
         <div className="ml-3">
           <LogoLink />
+        </div>
+        <div className="ml-auto">
+          <UserMenu />
         </div>
       </header>
 
