@@ -77,9 +77,9 @@ function Settings() {
               <td className="px-5 py-4">
                 <Select
                   value={settings?.signup_default_role ?? ""}
-                  onChange={(e) => handleDefaultRoleChange(e.target.value)}
+                  onChange={handleDefaultRoleChange}
                   disabled={!canManage}
-                  className="rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-full border border-[#e8e3db] bg-white text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <option value="">Sin rol</option>
                   {(roles ?? []).map((role) => (

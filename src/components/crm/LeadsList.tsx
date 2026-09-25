@@ -337,8 +337,8 @@ function Leads() {
           )}
           <Select
             value={statusFilter}
-            onChange={(e) => handleStatusFilter(e.target.value as LeadStatus | "all")}
-            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+            onChange={(v) => handleStatusFilter(v as LeadStatus | "all")}
+            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
           >
             {STATUS_FILTER_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -347,12 +347,12 @@ function Leads() {
             ))}
           </Select>
           <Select
-            value={pageSize}
-            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+            value={String(pageSize)}
+            onChange={(v) => handlePageSizeChange(Number(v))}
+            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
           >
             {PAGE_SIZES.map((s) => (
-              <option key={s} value={s}>
+              <option key={s} value={String(s)}>
                 {s} per page
               </option>
             ))}
@@ -431,8 +431,8 @@ function Leads() {
                   {canEditLeadStatus ? (
                     <Select
                       value={lead.status}
-                      onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
-                      className={`rounded-full border-0 py-2 pr-8 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
+                      onChange={(v) => handleStatusChange(lead.id, v as LeadStatus)}
+                      className={`rounded-full border-0 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
                     >
                       {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
                         <option key={s} value={s}>

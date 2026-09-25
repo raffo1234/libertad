@@ -157,9 +157,9 @@ function Users() {
                 <td className="px-5 py-4">
                   <Select
                     value={user.role_id ?? ""}
-                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                    onChange={(v) => handleRoleChange(user.id, v)}
                     disabled={!canEditRole}
-                    className="rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full border border-[#e8e3db] bg-white text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <option value="">No role</option>
                     {(roles ?? []).map((role) => (

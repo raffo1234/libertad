@@ -1,7 +1,7 @@
 import type { UnitType, UnitTypeOrEmpty } from "../../constants/unitTypes";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import CircleArrow from "../CircleArrow";
 import Select from "./Select";
 
@@ -33,6 +33,7 @@ export default function LeadModal({ type }: LeadModalProps) {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
@@ -155,17 +156,25 @@ export default function LeadModal({ type }: LeadModalProps) {
               </Field>
 
               <Field label="Tipo de unidad" error={errors.unit_type?.message}>
-                <Select
-                  className={inputCls(!!errors.unit_type) + " pr-10"}
-                  {...register("unit_type")}
-                >
-                  <option value="">¿Qué te interesa?</option>
-                  {Object.entries(UNIT_TYPES).map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </Select>
+                <Controller
+                  control={control}
+                  name="unit_type"
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      className={inputCls(!!errors.unit_type)}
+                    >
+                      <option value="">¿Qué te interesa?</option>
+                      {Object.entries(UNIT_TYPES).map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                />
               </Field>
 
               <button

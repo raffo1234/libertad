@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { supabase } from "../../lib/supabase";
 import type { CreateLeadPayload, UnitType } from "../../types/lead";
 import Select from "./Select";
@@ -28,6 +28,7 @@ interface CreateLeadFormProps {
 export default function CreateLeadForm({ onSuccess }: CreateLeadFormProps) {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -102,14 +103,25 @@ export default function CreateLeadForm({ onSuccess }: CreateLeadFormProps) {
 
       {/* Unit type */}
       <Field label="Tipo de unidad" error={errors.unit_type?.message}>
-        <Select className={inputCls(!!errors.unit_type) + " pr-10"} {...register("unit_type")}>
-          <option value="">¿Qué te interesa?</option>
-          {UNIT_TYPE_OPTIONS.map(({ value, label }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </Select>
+        <Controller
+          control={control}
+          name="unit_type"
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              className={inputCls(!!errors.unit_type)}
+            >
+              <option value="">¿Qué te interesa?</option>
+              {UNIT_TYPE_OPTIONS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Select>
+          )}
+        />
       </Field>
 
       {/* Notes */}
