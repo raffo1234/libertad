@@ -13,6 +13,7 @@ import CrmAuthGuard from "./CrmAuthGuard";
 import IconButton from "./IconButton";
 import RequirePermission from "./RequirePermission";
 import SwrCacheProvider from "./SwrCacheProvider";
+import Select from "./Select";
 
 const PAGE_SIZE_KEY = "crm_leads_page_size";
 const PAGE_SIZES = [10, 20, 50];
@@ -334,58 +335,28 @@ function Leads() {
               Clear filters
             </button>
           )}
-          <div className="relative">
-            <select
-              value={statusFilter}
-              onChange={(e) => handleStatusFilter(e.target.value as LeadStatus | "all")}
-              className="font-mulish cursor-pointer appearance-none border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
-            >
-              {STATUS_FILTER_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            <svg
-              className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#c2bdb6]"
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div className="relative">
-            <select
-              value={pageSize}
-              onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-              className="font-mulish cursor-pointer appearance-none border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
-            >
-              {PAGE_SIZES.map((s) => (
-                <option key={s} value={s}>
-                  {s} per page
-                </option>
-              ))}
-            </select>
-            <svg
-              className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#c2bdb6]"
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
+          <Select
+            value={statusFilter}
+            onChange={(e) => handleStatusFilter(e.target.value as LeadStatus | "all")}
+            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+          >
+            {STATUS_FILTER_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </Select>
+          <Select
+            value={pageSize}
+            onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+            className="font-mulish border border-[#e8e3db] bg-[#faf8f5] py-2 pr-8 pl-3 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e]"
+          >
+            {PAGE_SIZES.map((s) => (
+              <option key={s} value={s}>
+                {s} per page
+              </option>
+            ))}
+          </Select>
           {canCreateLeads && (
             <button
               onClick={() => setModalOpen(true)}
@@ -458,23 +429,17 @@ function Leads() {
                 <td className="px-5 py-4 text-[#6b665e]">{lead.unit_type ?? "—"}</td>
                 <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                   {canEditLeadStatus ? (
-                    <div className="relative inline-flex items-center gap-1">
-                      <select
-                        value={lead.status}
-                        onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
-                        className={`cursor-pointer appearance-none rounded-full border-0 py-2 pr-10 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
-                      >
-                        {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
-                          <option key={s} value={s}>
-                            {STATUS_LABEL[s]}
-                          </option>
-                        ))}
-                      </select>
-                      <Icon
-                        icon="solar:pen-2-bold"
-                        className="pointer-events-none absolute right-3 h-4 w-4 opacity-40"
-                      />
-                    </div>
+                    <Select
+                      value={lead.status}
+                      onChange={(e) => handleStatusChange(lead.id, e.target.value as LeadStatus)}
+                      className={`rounded-full border-0 py-2 pr-8 pl-4 text-xs ring-0 transition-colors outline-none ${STATUS_CLASSES[lead.status].badge}`}
+                    >
+                      {(Object.keys(STATUS_LABEL) as LeadStatus[]).map((s) => (
+                        <option key={s} value={s}>
+                          {STATUS_LABEL[s]}
+                        </option>
+                      ))}
+                    </Select>
                   ) : (
                     <span
                       className={`font-mulish inline-flex items-center rounded-full px-2.5 py-1 text-[10px] tracking-wider uppercase ${STATUS_CLASSES[lead.status].badge}`}

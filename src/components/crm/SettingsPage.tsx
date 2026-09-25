@@ -6,6 +6,7 @@ import { Toaster, toast } from "react-hot-toast";
 import CrmAuthGuard from "./CrmAuthGuard";
 import RequirePermission from "./RequirePermission";
 import SwrCacheProvider from "./SwrCacheProvider";
+import Select from "./Select";
 import { PERMISSIONS } from "../../lib/permissions";
 
 export default function SettingsPage() {
@@ -74,11 +75,11 @@ function Settings() {
                 Rol por defecto para nuevos usuarios
               </td>
               <td className="px-5 py-4">
-                <select
+                <Select
                   value={settings?.signup_default_role ?? ""}
                   onChange={(e) => handleDefaultRoleChange(e.target.value)}
                   disabled={!canManage}
-                  className="cursor-pointer appearance-none rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-full border border-[#e8e3db] bg-white py-2 pr-8 pl-4 text-xs text-[#6b665e] transition-colors outline-none hover:border-[#c9a96e]/50 focus:border-[#c9a96e] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <option value="">Sin rol</option>
                   {(roles ?? []).map((role) => (
@@ -86,7 +87,7 @@ function Settings() {
                       {role.name}
                     </option>
                   ))}
-                </select>
+                </Select>
               </td>
             </tr>
           </tbody>

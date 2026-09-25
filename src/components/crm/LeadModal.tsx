@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import CircleArrow from "../CircleArrow";
+import Select from "./Select";
 
 export const UNIT_TYPES = {
   type_1: "Tipo 1",
@@ -154,35 +155,17 @@ export default function LeadModal({ type }: LeadModalProps) {
               </Field>
 
               <Field label="Tipo de unidad" error={errors.unit_type?.message}>
-                <div className="relative">
-                  <select
-                    className={
-                      inputCls(!!errors.unit_type) + " cursor-pointer appearance-none pr-10"
-                    }
-                    {...register("unit_type")}
-                  >
-                    <option value="">¿Qué te interesa?</option>
-                    {Object.entries(UNIT_TYPES).map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                  <svg
-                    className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#9e8c7f]"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
+                <Select
+                  className={inputCls(!!errors.unit_type) + " pr-10"}
+                  {...register("unit_type")}
+                >
+                  <option value="">¿Qué te interesa?</option>
+                  {Object.entries(UNIT_TYPES).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Select>
               </Field>
 
               <button
