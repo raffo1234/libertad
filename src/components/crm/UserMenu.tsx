@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { signOut } from "../../lib/auth";
 import SwrCacheProvider from "./SwrCacheProvider";
+import RoleBadge from "./RoleBadge";
 
 function UserMenuInner() {
   const { data: user } = useCurrentUser();
@@ -55,11 +56,19 @@ function UserMenuInner() {
               <p className="font-manrope truncate text-xs text-[#9e9890]">{user.email}</p>
             )}
             {user?.role && (
-              <p className="font-mulish mt-1 text-[10px] tracking-[0.2em] text-[#9e9890] uppercase">
-                {user.role}
-              </p>
+              <div className="mt-2">
+                <RoleBadge role={user.role} />
+              </div>
             )}
           </div>
+          <a
+            href="/crm/perfil"
+            onClick={() => setOpen(false)}
+            className="font-manrope flex w-full items-center gap-2 px-4 py-2.5 text-sm text-[#1c1a16] transition-colors hover:bg-[#f0ede8]"
+          >
+            <Icon icon="solar:user-circle-linear" className="h-4 w-4" />
+            Ver perfil
+          </a>
           <button
             onClick={signOut}
             className="font-manrope flex w-full items-center gap-2 px-4 py-2.5 text-sm text-[#a06658] transition-colors hover:bg-[#f3e8e6]"

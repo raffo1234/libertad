@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+
+import CrmLayout from "../../../layouts/CrmLayout.astro";
+import ProfilePage from "../../../components/crm/ProfilePage";
+---
+
+<CrmLayout title="Perfil · CRM Galvez 1519">
+  <ProfilePage client:only="react" />
+</CrmLayout>
